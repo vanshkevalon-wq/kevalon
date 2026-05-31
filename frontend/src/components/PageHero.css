@@ -1,0 +1,146 @@
+/* ═══════════════════════════════════════════════
+   PAGE HERO  –  shared banner used on every page
+═══════════════════════════════════════════════ */
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(1, 72, 103, 0.08) 0%, rgba(0, 207, 255, 0.06) 100%);
+  padding: 80px 1rem 64px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── decorative blobs ── */
+.page-hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.page-hero__blob--tl {
+  width: 380px;
+  height: 380px;
+  top: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(1, 72, 103, 0.28) 0%, transparent 70%);
+}
+.page-hero__blob--br {
+  width: 440px;
+  height: 440px;
+  bottom: -120px;
+  right: -120px;
+  background: radial-gradient(circle, rgba(97, 187, 197, 0.24) 0%, transparent 70%);
+}
+
+/* dot grid overlay */
+.page-hero__dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(1, 72, 103, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── inner content ── */
+.page-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* badge pill */
+.page-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(1, 72, 103, 0.18);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #014964;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  margin-bottom: 18px;
+}
+.page-hero__badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #014964;
+  animation: heroDotPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes heroDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+/* heading */
+.page-hero__title {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #0d2f3f;
+  margin: 0 0 16px;
+}
+.page-hero__title span {
+  background: linear-gradient(137.68deg, #61BBC5 0.13%, #034665 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* subtitle */
+.page-hero__subtitle {
+  font-size: 1rem;
+  color: #3a5a6a;
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0 auto 28px;
+}
+
+/* breadcrumb */
+.page-hero__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+.page-hero__breadcrumb a {
+  color: #034665;
+  text-decoration: none;
+}
+.page-hero__breadcrumb a:hover {
+  text-decoration: underline;
+}
+.page-hero__breadcrumb-sep {
+  opacity: 0.5;
+}
+
+/* divider line below hero */
+.page-hero__divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #61BBC5 30%, #034665 70%, transparent 100%);
+}
+
+/* ── responsive ── */
+@media (max-width: 768px) {
+  .page-hero {
+    padding: 60px 1rem 48px;
+  }
+  .page-hero__title {
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+  }
+}

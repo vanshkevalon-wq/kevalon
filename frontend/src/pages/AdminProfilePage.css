@@ -1,0 +1,114 @@
+.admin-shell--profile {
+  min-height: 100vh;
+  padding: 28px 18px;
+  background:
+    radial-gradient(circle at top left, rgba(97, 187, 197, 0.2), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(3, 70, 101, 0.35), transparent 28%),
+    linear-gradient(180deg, #031018 0%, #07131d 100%);
+  color: var(--admin-text);
+}
+
+.admin-profile-page {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
+}
+
+.admin-profile-page__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.admin-profile-page__hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.admin-profile-page__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-profile-grid-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 16px;
+}
+
+.admin-profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.admin-profile-summary__avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #42c2ff, #7d57ff);
+  color: white;
+  font-weight: 900;
+  font-size: 2.2rem;
+  flex: 0 0 auto;
+}
+
+.admin-profile-summary h2 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.admin-profile-details__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.admin-profile-details__grid div {
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(129, 192, 221, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-profile-details__grid span {
+  display: block;
+  color: var(--admin-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.admin-profile-details__grid strong {
+  display: block;
+  margin-top: 8px;
+  word-break: break-word;
+}
+
+@media (max-width: 900px) {
+  .admin-profile-page__hero,
+  .admin-profile-summary,
+  .admin-profile-grid-layout {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .admin-profile-page__hero {
+    justify-content: start;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-shell--profile {
+    padding: 18px 12px;
+  }
+
+  .admin-profile-details__grid {
+    grid-template-columns: 1fr;
+  }
+}

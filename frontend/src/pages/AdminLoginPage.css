@@ -1,0 +1,142 @@
+.admin-login-page {
+  min-height: 100vh;
+  padding: 28px 18px;
+  background:
+    radial-gradient(circle at top left, rgba(97, 187, 197, 0.22), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(130, 92, 240, 0.2), transparent 24%),
+    linear-gradient(180deg, #04111a 0%, #07131d 100%);
+  color: var(--admin-text);
+}
+
+.admin-login-page__shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  min-height: calc(100vh - 56px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 460px);
+  gap: 22px;
+  align-items: center;
+}
+
+.admin-login-page__brand {
+  padding: 30px 18px;
+}
+
+.admin-login-page__brand h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 4.4rem);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.admin-login-page__brand p {
+  max-width: 640px;
+  margin: 18px 0 0;
+  color: rgba(234, 246, 251, 0.74);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.admin-login-page__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.admin-login-page__stats article,
+.admin-login-page__notes {
+  border: 1px solid rgba(129, 192, 221, 0.16);
+  background: rgba(10, 24, 36, 0.78);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.admin-login-page__stats article {
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.admin-login-page__stats strong {
+  display: block;
+  font-size: 1.02rem;
+}
+
+.admin-login-page__stats span,
+.admin-login-page__notes span {
+  display: block;
+  margin-top: 6px;
+  color: var(--admin-muted);
+  font-size: 0.9rem;
+}
+
+.admin-login-page__notes {
+  margin-top: 18px;
+  border-radius: 22px;
+  padding: 18px 20px;
+  display: grid;
+  gap: 14px;
+}
+
+.admin-login-page__notes strong {
+  display: block;
+  margin-top: 5px;
+  font-size: 1rem;
+}
+
+.admin-login-card--entry {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(129, 192, 221, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(97, 187, 197, 0.16), transparent 32%),
+    rgba(10, 24, 36, 0.92);
+}
+
+.admin-login-card--entry::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -35% auto;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(97, 187, 197, 0.2), transparent 68%);
+  pointer-events: none;
+}
+
+.admin-login-card--entry .admin-title {
+  font-size: 2.3rem;
+}
+
+@media (max-width: 980px) {
+  .admin-login-page__shell {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .admin-login-page__brand {
+    padding-bottom: 0;
+  }
+
+  .admin-login-page__stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-login-page {
+    padding: 18px 12px;
+  }
+
+  .admin-login-page__brand {
+    padding: 20px 6px 8px;
+  }
+
+  .admin-login-page__brand p {
+    font-size: 0.95rem;
+  }
+
+  .admin-login-card--entry .admin-title {
+    font-size: 1.85rem;
+  }
+}

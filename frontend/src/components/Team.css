@@ -1,0 +1,129 @@
+.team-section {
+  background: linear-gradient(135deg, #e3f3f8 0%, #d5eff5 100%);
+  padding-top: 6rem;
+  padding-bottom: 10rem;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+.team-badge {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.text-primary-custom {
+  color: #1a576d;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+}
+
+.team-title {
+  color: #1c5e76;
+  font-size: 2.6rem;
+  letter-spacing: -0.5px;
+}
+
+.team-subtitle {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 900px;
+  color: #333333 !important;
+}
+
+.team-slider-wrapper {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.team-swiper {
+  padding-bottom: 3rem !important;
+  overflow: visible !important;
+}
+
+.team-swiper .swiper-wrapper {
+  align-items: flex-start;
+}
+
+.team-member-slide {
+  height: auto;
+  padding-bottom: 10px;
+}
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.team-pagination .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: #b5c4c9;
+  opacity: 1;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.team-pagination .swiper-pagination-bullet-active {
+  background-color: #245d71;
+  transform: scale(1.3);
+}
+
+/* Team Member styling */
+.member-image-wrapper {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.member-image-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.member-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+}
+
+.member-name {
+  color: #124d61;
+  font-size: 1.25rem;
+  letter-spacing: 0.2px;
+}
+
+.member-role {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555555 !important;
+}
+
+/* Keep all profile cards aligned on the same baseline */
+@media (min-width: 992px) {
+  .team-slider-wrapper {
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-title {
+    font-size: 2.2rem;
+  }
+  .member-image-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+  .team-section {
+    padding-bottom: 6rem;
+  }
+  .team-slider-wrapper {
+    padding-bottom: 0;
+  }
+}

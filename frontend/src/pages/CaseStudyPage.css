@@ -1,0 +1,51 @@
+.case-study {
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  padding: 48px 20px;
+}
+.case-hero img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(3,70,101,0.12);
+}
+.case-body {
+  margin-top: 28px;
+  max-width: 980px;
+}
+.case-body h1 {
+  color: #0d3d5a;
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+.case-body .lead {
+  color: #374151;
+  font-size: 1.05rem;
+}
+.case-body h4 { margin-top: 18px; color: #034665; }
+
+.case-study__topbar {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.case-study__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(97,187,197,0.10);
+  color: #034665;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.case-study__back:hover {
+  background: rgba(97,187,197,0.16);
+  color: #034665;
+}
+
+@media (max-width: 900px) {
+  .case-body { padding: 0 8px; }
+  .case-body h1 { font-size: 1.5rem; }
+}

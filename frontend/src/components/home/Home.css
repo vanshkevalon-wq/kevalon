@@ -1,0 +1,307 @@
+/* ══════════════════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════════════════ */
+
+@keyframes waveDrift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes bubbleFloat {
+  0%   { transform: translateY(0)     scale(1);    opacity: 0.16; }
+  50%  { transform: translateY(-44px) scale(1.05); opacity: 0.26; }
+  100% { transform: translateY(0)     scale(1);    opacity: 0.16; }
+}
+
+@keyframes heroDotPulse {
+  0%, 100% { opacity: 1;    transform: scale(1);   }
+  50%       { opacity: 0.4; transform: scale(1.5); }
+}
+
+/* legacy — used by other components */
+@keyframes waveMove    { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes popUp       { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes floatUpDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+.animate-wave-slow     { animation: waveMove 20s linear infinite; }
+.animate-wave-fast     { animation: waveMove 14s linear infinite reverse; }
+.animate-pop-up        { animation: popUp 1.2s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.animate-float-up-down { animation: floatUpDown 8s ease-in-out infinite; }
+
+
+/* ══════════════════════════════════════════════════════
+   HERO WRAPPER
+══════════════════════════════════════════════════════ */
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  /* single dark-blue background for the whole section */
+  background: linear-gradient(160deg, #03243a 0%, #04364f 45%, #021e2e 100%);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   BUBBLES  — scattered across the full hero height
+══════════════════════════════════════════════════════ */
+.home-hero__bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(97, 187, 197, 0.22) 0%,
+    rgba(1, 72, 103, 0.10) 60%,
+    transparent 100%
+  );
+  border: 1.5px solid rgba(97, 187, 197, 0.22);
+  box-shadow:
+    inset 0 0 30px rgba(97, 187, 197, 0.07),
+    0 0 40px rgba(97, 187, 197, 0.05);
+  animation: bubbleFloat ease-in-out infinite;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   TOP ZONE  — badge + headings + tagline
+   Light-ish dark blue, text above the wave crest
+══════════════════════════════════════════════════════ */
+.home-hero__top {
+  position: relative;
+  z-index: 10;
+  padding: 110px 1rem 52px;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   WAVE DIVIDER  — 3 layered SVG waves
+   Crest sits right below the tagline
+══════════════════════════════════════════════════════ */
+.home-hero__wave-divider {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 90px;          /* height of the wave band */
+  overflow: hidden;
+  /* the deepest wave (--3) fills the bottom with the same colour as .home-hero__bottom */
+  background: transparent;
+}
+
+.wave-svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /* double-wide for seamless scroll */
+  width: 200%;
+  height: 100%;
+}
+
+.wave-svg--1 { animation: waveDrift 12s linear infinite;         z-index: 1; }
+.wave-svg--2 { animation: waveDrift 16s linear infinite reverse; z-index: 2; }
+.wave-svg--3 { animation: waveDrift  9s linear infinite;         z-index: 3; }
+
+
+/* ══════════════════════════════════════════════════════
+   BOTTOM ZONE  — desc + buttons + stats
+   Pulled UP with negative margin so stats overlap the
+   section below, creating a clean floating-card cutoff
+══════════════════════════════════════════════════════ */
+.home-hero__bottom {
+  position: relative;
+  z-index: 10;
+  background: #04364f;
+  padding: 36px 1rem 100px;   /* extra bottom padding — the overlap hides it */
+  margin-bottom: -72px;        /* pulls the whole block up into the next section */
+}
+
+/* ══════════════════════════════════════════════════════
+   SHARED INNER CONTAINER
+══════════════════════════════════════════════════════ */
+.home-hero__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   BADGE
+══════════════════════════════════════════════════════ */
+.home-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(97, 187, 197, 0.35);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #a8dde4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  margin-bottom: 22px;
+}
+.home-hero__badge-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #61BBC5;
+  animation: heroDotPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   HEADINGS
+══════════════════════════════════════════════════════ */
+.home-hero__title {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  margin: 0 0 6px;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.35);
+}
+.home-hero__subtitle {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: #e0f4f7;
+  line-height: 1.1;
+  margin: 0 0 28px;
+  letter-spacing: -0.5px;
+}
+.home-hero__highlight {
+  background: linear-gradient(137.68deg, #61BBC5 0%, #a8e6ec 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   TAGLINE  — sits right at the wave crest
+══════════════════════════════════════════════════════ */
+.home-hero__tagline {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;              /* no bottom margin — wave divider follows immediately */
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.45);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   DESCRIPTION
+══════════════════════════════════════════════════════ */
+.home-hero__desc {
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 680px;
+  color: #e2f4f7;
+  font-weight: 500;
+  margin: 0 0 32px;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   CTA BUTTONS
+══════════════════════════════════════════════════════ */
+.home-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.btn-primary-custom {
+  background: linear-gradient(137.68deg, #61BBC5 0.13%, #034665 100%);
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(97, 187, 197, 0.35);
+  color: #fff !important;
+  font-size: 0.95rem;
+}
+.btn-primary-custom:hover {
+  background: linear-gradient(137.68deg, #53a3ac 0.13%, #02364f 100%) !important;
+}
+.hero-cta-custom {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.hero-cta-custom:hover {
+  background: linear-gradient(137.68deg, #034665 0.13%, #61BBC5 100%) !important;
+  color: #fff !important;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(97, 187, 197, 0.3);
+}
+.btn-outline-custom {
+  background-color: transparent !important;
+  border: 1.5px solid rgba(97, 187, 197, 0.7) !important;
+  color: #ffffff !important;
+  font-size: 0.95rem;
+}
+.btn-outline-custom:hover {
+  background-color: rgba(97, 187, 197, 0.15) !important;
+  border-color: #61BBC5 !important;
+  color: #fff !important;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   STATS
+══════════════════════════════════════════════════════ */
+.home-hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+.home-hero__stat {
+  min-width: 150px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(97, 187, 197, 0.35) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(97,187,197,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.home-hero__stat h3 {
+  color: #61BBC5;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.home-hero__stat p {
+  color: #d4eef3;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.home-hero__stat:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(97,187,197,0.2);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .home-hero__top      { padding: 80px 1rem 40px; }
+  .home-hero__bottom   { padding: 28px 1rem 90px; margin-bottom: -56px; }
+  .home-hero__wave-divider { height: 60px; }
+  .home-hero__title    { font-size: 2.2rem; }
+  .home-hero__subtitle { font-size: 1.8rem; }
+  .home-hero__tagline  { font-size: 1rem; }
+  .bubble:nth-child(n+5) { display: none; }
+}
