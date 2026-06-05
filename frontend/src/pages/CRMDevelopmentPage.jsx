@@ -199,12 +199,41 @@ export default function CRMDevelopmentPage() {
   return (
     <div className="crm-page">
       <section className="crm-hero">
+        {/* White theme decorations */}
+        <div className="crm-hero__orb crm-hero__orb--1" aria-hidden="true" />
+        <div className="crm-hero__orb crm-hero__orb--2" aria-hidden="true" />
+        <div className="crm-hero__beam" aria-hidden="true" />
+        <div className="crm-hero__ripple crm-hero__ripple--1" aria-hidden="true" />
+        <div className="crm-hero__ripple crm-hero__ripple--2" aria-hidden="true" />
+        <div className="crm-hero__ripple crm-hero__ripple--3" aria-hidden="true" />
+
         <div className="crm-hero__inner">
           <div className="crm-hero__grid">
             <div className="crm-hero__copy">
-              <div className="crm-hero__badge">CRM Development</div>
-              <h1>Know More About CRM Development</h1>
-              <p>Streamline your customer relationships and boost sales with custom CRM solutions.</p>
+              <div className="crm-hero__badge">
+                <div className="crm-hero__badge-dot" />
+                CRM Development
+              </div>
+              <h1>
+                CRM<br />
+                <span className="crm-hero__title-accent">Development</span>
+              </h1>
+              <p>Streamline your customer relationships and boost sales with custom CRM solutions built for growth.</p>
+
+              <div className="crm-hero__actions">
+                <Link to="/contact" className="crm-btn-hero crm-btn-hero--primary">
+                  Get Started <i className="bi bi-arrow-right ms-2" />
+                </Link>
+                <Link to="/portfolio" className="crm-btn-hero crm-btn-hero--ghost">
+                  View Work
+                </Link>
+              </div>
+
+              <div className="crm-hero__stats">
+                <div className="crm-hero__stat-chip"><strong>1.2k+</strong><span>Leads tracked</span></div>
+                <div className="crm-hero__stat-chip"><strong>32%</strong><span>Better close rate</span></div>
+                <div className="crm-hero__stat-chip"><strong>Auto</strong><span>Workflow engine</span></div>
+              </div>
             </div>
 
             <div className="crm-hero__visual" aria-hidden="true">
@@ -254,20 +283,14 @@ export default function CRMDevelopmentPage() {
 
           </div>
 
-          <div className="crm-bars" aria-hidden="true">
-            {heroBars.map((bar, index) => (
-              <span key={index} style={{ height: `${bar.h}%`, background: bar.c }} />
-            ))}
-          </div>
         </div>
       </section>
 
       <section className="crm-content">
         <div className="crm-container">
-          <header className="crm-section-head">
-            <h2>CRM Development</h2>
-            <p>With Kevalon Technology</p>
-          </header>
+          <div className="crm-section-label">
+            <i className="bi bi-people-fill" /> CRM Services
+          </div>
 
           <div className="crm-layout">
             <div className="crm-left">

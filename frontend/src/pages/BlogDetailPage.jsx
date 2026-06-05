@@ -148,7 +148,7 @@ export default function BlogDetailPage() {
                   </div>
                   <div>
                     <p className="bdet-author__name">Kevalon Technology</p>
-                    <p className="bdet-author__role">IT Company · Ahmedabad, India</p>
+                    <p className="bdet-author__role">IT Company · India</p>
                   </div>
                 </div>
                 <p className="bdet-author__bio">

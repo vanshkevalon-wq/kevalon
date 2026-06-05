@@ -154,23 +154,6 @@ const tools = [
   { name: "Express.js", kind: "express" },
 ];
 
-const heroBars = [
-  { h: 18, c: "#f0cf42" },
-  { h: 54, c: "#f0cf42" },
-  { h: 32, c: "#d36a69" },
-  { h: 26, c: "#f0cf42" },
-  { h: 48, c: "#16b4b7" },
-  { h: 22, c: "#0f9ec7" },
-  { h: 64, c: "#0f9ec7" },
-  { h: 40, c: "#8c3bb6" },
-  { h: 58, c: "#f0cf42" },
-  { h: 30, c: "#f0cf42" },
-  { h: 72, c: "#f0cf42" },
-  { h: 34, c: "#16b4b7" },
-  { h: 50, c: "#f0cf42" },
-  { h: 18, c: "#16b4b7" },
-];
-
 function ToolIcon({ kind, label }) {
   switch (kind) {
     case "node":
@@ -284,34 +267,44 @@ export default function ApiDevelopmentPage() {
   return (
     <div className="api-page">
       <section className="api-hero">
+        {/* White theme decorations */}
+        <div className="api-hero__orb api-hero__orb--1" aria-hidden="true" />
+        <div className="api-hero__orb api-hero__orb--2" aria-hidden="true" />
+        <div className="api-hero__beam" aria-hidden="true" />
+
+        {/* Animated circuit SVG */}
+        <svg className="api-hero__circuits" viewBox="0 0 1440 700" preserveAspectRatio="none" aria-hidden="true">
+          <path className="api-hero__cl api-hero__cl--1" stroke="rgba(97,187,197,0.15)"
+            d="M 0,80 L 100,80 L 100,140 L 240,140 L 240,80 L 420,80" />
+          <path className="api-hero__cl api-hero__cl--2" stroke="rgba(10,143,182,0.10)"
+            d="M 1440,600 L 1320,600 L 1320,540 L 1140,540 L 1140,600 L 980,600" />
+          <path className="api-hero__cl api-hero__cl--3" stroke="rgba(97,187,197,0.12)"
+            d="M 60,640 L 60,560 L 200,560 L 200,500 L 380,500" />
+          <circle className="api-hero__junc api-hero__junc--a" cx="100" cy="80" r="4" fill="rgba(97,187,197,0.7)" />
+          <circle className="api-hero__junc api-hero__junc--b" cx="240" cy="140" r="4" fill="rgba(97,187,197,0.7)" />
+          <circle className="api-hero__junc api-hero__junc--c" cx="1320" cy="540" r="4" fill="rgba(10,143,182,0.7)" />
+        </svg>
+
         <div className="api-hero__inner">
           <div className="api-hero__layout">
             <div className="api-hero__copy">
-              <div className="api-hero__breadcrumbs">
-                <Link to="/">Home</Link>
-                <span>/</span>
-                <Link to="/services">Services</Link>
-                <span>/</span>
-                <strong>API Development</strong>
-              </div>
-
               <p className="api-hero__eyebrow">API Development</p>
-              <div className="api-hero__badge">Modern API engineering for ambitious products</div>
-              <h1>Enterprise API Development Solutions</h1>
+              <div className="api-hero__badge">
+                <div className="api-hero__badge-dot" />
+                Modern API engineering
+              </div>
+              <h1>API <span className="api-hero__title-accent">Development</span></h1>
               <p className="api-hero__subtitle">
-                Secure, scalable, and high-performance APIs that connect systems, integrate
-                platforms, and power modern digital ecosystems.
+                Secure, scalable, and high-performance APIs that connect systems, integrate platforms, and power modern digital ecosystems.
               </p>
 
               <div className="api-hero__pills" aria-label="API focus areas">
-                {apiPills.map((pill) => (
-                  <span key={pill}>{pill}</span>
-                ))}
+                {apiPills.map((pill) => <span key={pill}>{pill}</span>)}
               </div>
 
               <div className="api-hero__actions">
                 <Link to="/contact" className="api-btn api-btn--primary">
-                  Start a Project
+                  Start a Project <i className="bi bi-arrow-right ms-2" />
                 </Link>
                 <Link to="/services" className="api-btn api-btn--ghost">
                   Explore Services
@@ -356,15 +349,9 @@ export default function ApiDevelopmentPage() {
                   <span>Secure Integrations</span>
                 </div>
               </div>
-
-              <div className="api-hero__bars" aria-hidden="true">
-                {heroBars.map((bar, index) => (
-                  <span key={`${bar.c}-${index}`} style={{ height: `${bar.h}%`, background: bar.c }} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+            </div>{/* end api-hero__visual */}
+          </div>{/* end api-hero__layout */}
+        </div>{/* end api-hero__inner */}
       </section>
 
       <section className="api-content api-content--intro">
@@ -578,21 +565,6 @@ export default function ApiDevelopmentPage() {
             </div>
           </div>
 
-          <div className="api-cta">
-            <div>
-              <h3>Ready to Build Enterprise-Grade APIs?</h3>
-              <p>
-                Let Kevalon Technology help you design and develop secure, scalable, and
-                high-performance APIs that power your digital platforms, streamline operations,
-                and enable seamless system integration.
-              </p>
-            </div>
-
-            <div className="api-cta__actions">
-              <Link to="/contact" className="api-btn api-btn--primary">Get in Touch</Link>
-              <Link to="/services" className="api-btn api-btn--ghost">View Our Services</Link>
-            </div>
-          </div>
         </div>
       </section>
     </div>

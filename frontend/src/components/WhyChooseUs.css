@@ -1,275 +1,649 @@
-/* ── Section ── */
+/* ══════════════════════════════════════════════════════
+   WHY CHOOSE US  —  Modern 2025 Redesign
+   Deep navy bg · teal accents · glassmorphism
+══════════════════════════════════════════════════════ */
+
+/* ── keyframes ── */
+@keyframes wcuFadeUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+@keyframes wcuDotPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.8);opacity:0.4} }
+@keyframes wcuBlob1    { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(70px,-80px) scale(1.12)} 70%{transform:translate(-40px,50px) scale(0.90)} }
+@keyframes wcuBlob2    { 0%,100%{transform:translate(0,0) scale(1)} 45%{transform:translate(-60px,70px) scale(1.10)} 75%{transform:translate(50px,-45px) scale(0.94)} }
+@keyframes wcuBlob3    { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-35px)} }
+@keyframes wcuGridPan  { from{background-position:0 0} to{background-position:48px 48px} }
+@keyframes wcuOrbit    { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
+@keyframes wcuOrbitR   { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(-360deg)} }
+@keyframes wcuParticle {
+  0%   { transform:translateY(0) scale(1); opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:0.6; }
+  100% { transform:translateY(-120px) scale(0.5); opacity:0; }
+}
+@keyframes wcuShimmer  { 0%{background-position:200% center} 100%{background-position:-200% center} }
+@keyframes shimmerAccent {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes wcuPop      { 0%{opacity:0;transform:scale(0.8) translateY(10px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+@keyframes wcuStatIn   { 0%{opacity:0;transform:translateY(24px) scale(0.96)} 100%{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes wcuShine    { 0%{left:-80%;opacity:0} 30%{opacity:0.5} 100%{left:130%;opacity:0} }
+@keyframes wcuRingPulse{ 0%,100%{opacity:0.15;transform:scale(1)} 50%{opacity:0.35;transform:scale(1.06)} }
+@keyframes wcuTabIn    { 0%{opacity:0;transform:translateX(-10px)} 100%{opacity:1;transform:translateX(0)} }
+@keyframes wcuDetailIn { 0%{opacity:0;transform:scale(0.9) translateY(8px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+@keyframes wcuStepIn   { 0%{opacity:0;transform:translateY(20px)} 100%{opacity:1;transform:translateY(0)} }
+@keyframes wcuGlow     { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+/* ════════════════════════════════════════════
+   SECTION — clean white/light background
+════════════════════════════════════════════ */
 .wcu-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(1,72,103,0.18) 0%, rgba(0,207,255,0.14) 100%);
-  padding: 80px 0;
-  font-family: 'Inter', sans-serif;
+  background: #f4fbfc !important;
+  padding: 96px 1.5rem 100px;
+  font-family: 'Inter','Nunito Sans',sans-serif;
+  isolation: isolate;
 }
 
-/* Decorative blobs */
+/* Animated dot grid */
+.wcu-bg-grid {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(97,187,197,0.18) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: wcuGridPan 12s linear infinite;
+  opacity: 0.50;
+}
+
+/* diagonal lines */
+.wcu-section::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(97,187,197,0.04) 0px,
+    rgba(97,187,197,0.04) 1px,
+    transparent 1px,
+    transparent 22px
+  );
+}
+
+/* Blobs */
 .wcu-blob {
+  position: absolute; border-radius: 50%;
+  pointer-events: none; z-index: 1; filter: blur(100px);
+}
+.wcu-blob--1 { width:800px;height:800px; top:-250px;left:-180px; background:radial-gradient(circle,rgba(97,187,197,0.14) 0%,transparent 65%); animation:wcuBlob1 22s ease-in-out infinite; }
+.wcu-blob--2 { width:650px;height:650px; bottom:-180px;right:-150px; background:radial-gradient(circle,rgba(3,70,101,0.08) 0%,transparent 65%); animation:wcuBlob2 26s ease-in-out infinite; }
+.wcu-blob--3 { width:500px;height:300px; top:50%;left:50%; transform:translate(-50%,-50%); background:radial-gradient(ellipse,rgba(10,143,182,0.07) 0%,transparent 70%); animation:wcuBlob3 18s ease-in-out infinite; }
+
+/* Floating particles */
+.wcu-particles { position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
+.wcu-particle {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
-}
-.wcu-blob--1 {
-  width: 420px; height: 420px;
-  top: -80px; left: -80px;
-  background: radial-gradient(circle, rgba(1,72,103,0.35) 0%, transparent 70%);
-}
-.wcu-blob--2 {
-  width: 500px; height: 500px;
-  bottom: -120px; right: -100px;
-  background: radial-gradient(circle, rgba(97,187,197,0.3) 0%, transparent 70%);
+  width: calc(2px + (var(--pi) * 0.5px));
+  height: calc(2px + (var(--pi) * 0.5px));
+  background: rgba(97,187,197,0.55);
+  box-shadow: 0 0 4px rgba(97,187,197,0.35);
+  left: calc((var(--pi) * 5.2%) + 2%);
+  bottom: 5%;
+  animation: wcuParticle calc(4s + (var(--pi) * 0.4s)) ease-in calc(var(--pi) * 0.3s) infinite;
 }
 
-.wcu-container {
-  position: relative;
-  z-index: 1;
-  padding-left: 2rem !important;
-  padding-right: 2rem !important;
+/* ════════════════════════════════════════════
+   INNER WRAPPER
+════════════════════════════════════════════ */
+.wcu-inner {
+  position: relative; z-index: 10;
+  max-width: 1240px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 80px;
 }
 
-/* ── Header ── */
-.wcu-header {
-  text-align: center;
-  margin-bottom: 40px;
-  max-width: 780px;
-  margin-left: auto;
-  margin-right: auto;
+/* ── Shared eyebrow ── */
+.wcu-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: #034665;
+  background: rgba(97,187,197,0.10);
+  border: 1.5px solid rgba(97,187,197,0.30);
+  border-radius: 999px; padding: 6px 16px;
+  width: fit-content;
+}
+.wcu-eyebrow__dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #61BBC5; flex-shrink: 0;
+  animation: wcuDotPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(97,187,197,0.5);
 }
 
-.wcu-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(1,72,103,0.18);
-  border-radius: 999px;
-  padding: 5px 16px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #014964;
-  backdrop-filter: blur(6px);
-  margin-bottom: 10px;
-}
-.wcu-badge__dot {
-  width: 7px; height: 7px;
-  background: #014964;
-  border-radius: 50%;
-  flex-shrink: 0;
+/* ════════════════════════════════════════════
+   WHY CHOOSE US — NEW CARD GRID
+════════════════════════════════════════════ */
+.wcu-why-v2 {
+  display: flex; flex-direction: column; gap: 48px;
+  animation: wcuFadeUp 0.7s ease both;
 }
 
-.wcu-title {
-  background: linear-gradient(138deg, #61BBC5 -5%, #034665 80%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  font-weight: 700;
-  margin: 0 0 8px;
-  line-height: 1.2;
+.wcu-why-v2__head {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; text-align: center; max-width: 680px; margin: 0 auto;
 }
 
-.wcu-subtitle {
-  font-size: 0.92rem;
-  color: #2a4a5a;
-  margin: 0;
-  font-weight: 500;
+.wcu-why-v2__title {
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  font-weight: 800; color: #0d3d5a !important;
+  -webkit-text-fill-color: #0d3d5a !important;
+  line-height: 1.12; letter-spacing: -0.04em; margin: 0;
+}
+.wcu-why-v2__title-grad {
+  background: linear-gradient(135deg, #f97316 0%, #f59e0b 40%, #ef4444 80%, #f97316 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  animation: shimmerAccent 4s linear infinite;
+}
+.wcu-why-v2__sub {
+  font-size: 1rem; color: #5a7a8a !important;
+  -webkit-text-fill-color: #5a7a8a !important;
+  line-height: 1.75; margin: 0;
 }
 
-/* ── Main card ── */
-.wcu-card {
-  background: rgba(246,252,253,0.85);
-  border: 1px solid rgba(255,255,255,0.85);
-  border-radius: 24px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 16px 48px rgba(3,70,101,0.10);
+/* ── Feature cards grid ── */
+.wcu-feat-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  overflow: hidden;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* ── Left column ── */
-.wcu-left {
-  padding: 48px 40px;
-  border-right: 1px solid rgba(3,70,101,0.08);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.wcu-card__title {
-  background: linear-gradient(138deg, #61BBC5 -5%, #034665 80%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 14px;
-  line-height: 1.25;
-}
-
-.wcu-card__desc {
-  font-size: 0.92rem;
-  color: #3a5a6a;
-  line-height: 1.75;
-  margin: 0 0 24px;
-}
-
-/* Reasons list */
-.wcu-reasons {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.wcu-reason {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.wcu-reason__icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: linear-gradient(137deg, #61BBC5, #034665);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-.wcu-reason__text {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #1a3a4a;
-}
-
-/* ── Right column ── */
-.wcu-right {
-  padding: 48px 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-.wcu-stats__heading {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #345B69;
-  margin: 0;
-  padding-bottom: 10px;
-  border-bottom: 2px solid;
-  border-image: linear-gradient(90deg, #61BBC5, #034665) 1;
-  width: fit-content;
+.wcu-feat-card {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid rgba(97,187,197,0.16);
+  border-radius: 22px;
+  padding: 28px 26px 26px;
+  box-shadow: 0 4px 20px rgba(3,70,101,0.06);
+  overflow: hidden;
+  transition: transform 0.32s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.32s ease,
+              border-color 0.32s ease;
+  cursor: default;
+  animation: wcuFadeUp 0.5s ease calc(var(--fi) * 0.08s) both;
+}
+.wcu-feat-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--fc, #61BBC5);
+  box-shadow: 0 20px 52px rgba(3,70,101,0.12), 0 0 0 1px var(--fc, #61BBC5);
 }
 
-/* 2×2 stats grid */
-.wcu-stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+/* Top colour bar that sweeps on hover */
+.wcu-feat-card__bar {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--fc, #61BBC5), #034665);
+  border-radius: 22px 22px 0 0;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.35s ease;
+}
+.wcu-feat-card:hover .wcu-feat-card__bar { transform: scaleX(1); }
+
+/* Large faded number watermark */
+.wcu-feat-card__watermark {
+  position: absolute;
+  top: 14px; right: 18px;
+  font-size: 3.8rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: var(--fb, rgba(97,187,197,0.12));
+  background: var(--fb, rgba(97,187,197,0.10));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity 0.3s ease;
 }
 
-.wcu-stat {
-  background: radial-gradient(75% 75% at 80% 20%, rgba(27,101,126,0.88) 30%, rgba(1,51,67,0.92) 85%);
+/* Icon box */
+.wcu-feat-card__icon {
+  width: 52px; height: 52px;
   border-radius: 16px;
-  padding: 24px 20px;
+  background: var(--fb, rgba(97,187,197,0.12));
+  border: 1.5px solid var(--fc, rgba(97,187,197,0.30));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem;
+  color: var(--fc, #61BBC5);
+  margin-bottom: 16px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 4px 14px rgba(3,70,101,0.07);
+}
+.wcu-feat-card:hover .wcu-feat-card__icon {
+  transform: scale(1.1) rotate(-6deg);
+  background: var(--fc, #61BBC5);
   color: #fff;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  min-height: 130px;
+}
+
+.wcu-feat-card__title {
+  font-size: 1.05rem; font-weight: 800;
+  color: #0d3d5a; margin: 0 0 8px;
+  letter-spacing: -0.01em; line-height: 1.25;
+}
+.wcu-feat-card__desc {
+  font-size: 0.86rem; color: #5a7a8a;
+  line-height: 1.65; margin: 0;
+}
+
+/* Corner glow */
+.wcu-feat-card__glow {
+  position: absolute; bottom: -40px; right: -40px;
+  width: 130px; height: 130px; border-radius: 50%;
+  background: radial-gradient(circle, var(--fb, rgba(97,187,197,0.12)) 0%, transparent 70%);
+  pointer-events: none;
+  transition: transform 0.4s ease;
+}
+.wcu-feat-card:hover .wcu-feat-card__glow {
+  transform: scale(1.4) translate(-10px, -10px);
+}
+
+/* ════════════════════════════════════════════
+   STATS — glassmorphism dark cards
+════════════════════════════════════════════ */
+.wcu-stats {
+  display: flex; flex-direction: column; gap: 40px;
+}
+.wcu-stats__head {
+  display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
+}
+.wcu-stats__title {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 800; color: #0d3d5a !important;
+  -webkit-text-fill-color: #0d3d5a !important;
+  margin: 0; letter-spacing: -0.03em;
+}
+
+.wcu-stats__grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
+}
+
+.wcu-stat-card {
+  position: relative;
+  border-radius: 24px;
+  padding: 36px 20px 28px;
+  background: #ffffff;
+  border: 1.5px solid #e4eff5;
+  box-shadow: 0 4px 20px rgba(3,70,101,0.07);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center; gap: 6px;
+  cursor: default;
+  animation: wcuStatIn 0.5s ease calc(var(--si) * 0.1s) both;
+  transition: transform 0.30s cubic-bezier(0.22,1,0.36,1), box-shadow 0.30s, border-color 0.30s;
+}
+.wcu-stat-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgba(97,187,197,0.50);
+  box-shadow: 0 24px 56px rgba(3,70,101,0.14), 0 0 24px rgba(97,187,197,0.10);
+}
+
+/* Glow blob inside card */
+.wcu-stat-card__glow {
+  position: absolute; width:160px; height:160px;
+  border-radius: 50%; top:-60px; right:-40px;
+  background: radial-gradient(circle, rgba(97,187,197,0.12) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+  animation: wcuGlow 3s ease-in-out calc(var(--si) * 0.5s) infinite;
+}
+
+/* Shine sweep */
+.wcu-stat-card__shine {
+  position: absolute; top:0; bottom:0;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, rgba(97,187,197,0.06), transparent);
+  left: -80px;
+  animation: wcuShine 5s ease calc(var(--si) * 0.8s + 1s) infinite;
+  pointer-events: none;
+}
+
+.wcu-stat-card > *:not(.wcu-stat-card__glow):not(.wcu-stat-card__shine) {
+  position: relative; z-index: 1;
+}
+
+.wcu-stat-card__icon {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: rgba(97,187,197,0.10);
+  border: 1.5px solid rgba(97,187,197,0.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: #61BBC5; margin-bottom: 10px;
+  transition: background 0.3s, transform 0.3s;
+}
+.wcu-stat-card:hover .wcu-stat-card__icon {
+  background: rgba(97,187,197,0.18);
+  transform: rotate(-8deg) scale(1.12);
+}
+
+.wcu-stat-card__num {
+  font-size: clamp(2.6rem, 4vw, 3.4rem);
+  font-weight: 900; line-height: 1; letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #61BBC5, #034665);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.wcu-stat-card__suf { font-size: 0.65em; font-weight: 800; vertical-align: super; margin-left: 2px; }
+.wcu-stat-card__label { font-size: 0.88rem; font-weight: 700; color: #0d3d5a; line-height: 1.25; }
+.wcu-stat-card__sub   { font-size: 0.72rem; color: #7a9aaa; font-style: italic; }
+
+/* ════════════════════════════════════════════
+   PROCESS — Vertical Roadmap
+════════════════════════════════════════════ */
+.wcu-process {
+  display: flex; flex-direction: column; gap: 52px;
+}
+.wcu-process__head {
+  display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+}
+.wcu-process__title {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 800; color: #0d3d5a !important;
+  -webkit-text-fill-color: #0d3d5a !important;
+  line-height: 1.2; letter-spacing: -0.03em; margin: 0;
+}
+.wcu-process__grad {
+  background: linear-gradient(135deg, #f97316 0%, #f59e0b 40%, #ef4444 80%, #f97316 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  animation: shimmerAccent 4s linear infinite;
+}
+.wcu-process__sub {
+  font-size: 0.95rem; color: #5a7a8a !important;
+  -webkit-text-fill-color: #5a7a8a !important;
+  line-height: 1.7; margin: 0;
+}
+
+/* ── Roadmap container ── */
+.wcu-roadmap {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.wcu-stat:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px rgba(3,70,101,0.28);
+/* ── Vertical spine ── */
+.wcu-roadmap__spine {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  bottom: 24px;
+  width: 3px;
+  transform: translateX(-50%);
+  background: rgba(97,187,197,0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  z-index: 0;
+}
+.wcu-roadmap__spine-fill {
+  width: 100%;
+  background: linear-gradient(180deg, #61BBC5 0%, #0a8fb6 50%, #034665 100%);
+  border-radius: 999px;
+  animation: spineGrow 2s ease-out 0.4s both;
+}
+@keyframes spineGrow {
+  from { height: 0; }
+  to   { height: 100%; }
 }
 
-.wcu-stat__icon-wrap {
-  font-size: 1.3rem;
-  opacity: 0.85;
-  margin-bottom: 8px;
+/* ── Each step row ── */
+.wcu-rm-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr;
+  align-items: center;
+  gap: 0;
+  min-height: 120px;
+  z-index: 1;
+  animation: wcuStepIn 0.55s ease calc(var(--si) * 0.12s) both;
 }
 
-.wcu-stat__number {
-  font-size: 1.7rem;
-  font-weight: 800;
+/* left steps: card on left, empty on right */
+.wcu-rm-step--left  .wcu-rm-card      { grid-column: 1; grid-row: 1; justify-self: end; }
+.wcu-rm-step--left  .wcu-rm-dot       { grid-column: 2; grid-row: 1; }
+.wcu-rm-step--left  .wcu-rm-connector { grid-column: 2; grid-row: 1; }
+.wcu-rm-step--left  .wcu-rm-card      { margin-right: 28px; }
+
+/* right steps: empty on left, card on right */
+.wcu-rm-step--right .wcu-rm-card      { grid-column: 3; grid-row: 1; justify-self: start; }
+.wcu-rm-step--right .wcu-rm-dot       { grid-column: 2; grid-row: 1; }
+.wcu-rm-step--right .wcu-rm-connector { grid-column: 2; grid-row: 1; }
+.wcu-rm-step--right .wcu-rm-card      { margin-left: 28px; }
+
+/* ── Card ── */
+.wcu-rm-card {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid rgba(97,187,197,0.18);
+  border-radius: 20px;
+  padding: 22px 24px 20px;
+  box-shadow: 0 6px 24px rgba(3,70,101,0.07);
+  overflow: hidden;
+  max-width: 380px;
+  width: 100%;
+  transition: transform 0.30s cubic-bezier(0.22,1,0.36,1),
+              box-shadow 0.30s ease,
+              border-color 0.30s ease;
+}
+.wcu-rm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 48px rgba(3,70,101,0.12);
+  border-color: var(--sc, #61BBC5);
+}
+
+/* left accent bar */
+.wcu-rm-card__accent {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--sc, #61BBC5), #034665);
+  border-radius: 20px 0 0 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.wcu-rm-card:hover .wcu-rm-card__accent { opacity: 1; }
+
+.wcu-rm-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.wcu-rm-card__icon-wrap {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--sc, #61BBC5) 0%, #034665 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: #fff;
+  box-shadow: 0 6px 16px rgba(97,187,197,0.30);
+  transition: transform 0.28s ease;
+  flex-shrink: 0;
+}
+.wcu-rm-card:hover .wcu-rm-card__icon-wrap {
+  transform: scale(1.1) rotate(-6deg);
+}
+
+.wcu-rm-card__num {
+  font-size: 2.4rem;
+  font-weight: 900;
   line-height: 1;
-  margin-bottom: 4px;
+  letter-spacing: -0.06em;
+  background: linear-gradient(135deg, rgba(97,187,197,0.25) 0%, rgba(3,70,101,0.15) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.wcu-stat__label {
-  font-size: 0.82rem;
-  font-weight: 700;
-  margin-bottom: 3px;
+.wcu-rm-card__title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0d3d5a;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
 }
-
-.wcu-stat__sub {
-  font-size: 0.72rem;
-  opacity: 0.72;
+.wcu-rm-card__desc {
+  font-size: 0.84rem;
+  color: #5a7a8a;
+  line-height: 1.65;
+  margin: 0 0 12px;
 }
-
-.wcu-footer-note {
-  font-size: 0.82rem;
-  color: #3a5a6a;
-  line-height: 1.55;
-  margin: 0;
-  padding: 10px 14px;
+.wcu-rm-card__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
   background: rgba(97,187,197,0.08);
-  border-left: 3px solid #61BBC5;
-  border-radius: 0 8px 8px 0;
+  border: 1px solid rgba(97,187,197,0.22);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sc, #61BBC5);
 }
 
-/* ── Responsive ── */
-@media (max-width: 900px) {
-  .wcu-card {
-    grid-template-columns: 1fr;
-  }
-  .wcu-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(3,70,101,0.08);
-    padding: 36px 28px;
-  }
-  .wcu-right {
-    padding: 36px 28px;
-  }
+/* ── Centre dot ── */
+.wcu-rm-dot {
+  position: relative;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+  justify-self: center;
+  align-self: center;
+}
+.wcu-rm-dot__inner {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sc, #61BBC5), #034665);
+  box-shadow: 0 0 0 4px rgba(255,255,255,1), 0 0 0 6px var(--sc, #61BBC5), 0 4px 14px rgba(3,70,101,0.25);
+  transition: transform 0.3s ease;
+}
+.wcu-rm-step:hover .wcu-rm-dot__inner {
+  transform: scale(1.25);
+}
+.wcu-rm-dot__ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--sc, #61BBC5);
+  opacity: 0;
+  animation: dotRingPulse 2.5s ease-in-out calc(var(--si) * 0.4s) infinite;
+}
+@keyframes dotRingPulse {
+  0%   { opacity: 0.8; transform: scale(0.6); }
+  100% { opacity: 0;   transform: scale(1.6); }
 }
 
-@media (max-width: 576px) {
-  .wcu-section {
-    padding: 56px 0;
+/* ── Connector line (dot → card) ── */
+.wcu-rm-connector {
+  display: none; /* handled by card margin */
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .wcu-why { gap: 40px; }
+  .wcu-orbit { width: 340px; height: 340px; }
+  .wcu-orbit__ring--1 { width: 270px; height: 270px; }
+  .wcu-orbit__ring--2 { width: 320px; height: 320px; }
+  .wcu-orbit__ring--3 { width: 170px; height: 170px; }
+  .wcu-orbit__center  { width: 155px; height: 155px; }
+  .wcu-orbit__node {
+    transform:
+      translate(-50%,-50%)
+      rotate(var(--angle))
+      translateX(135px)
+      rotate(calc(-1 * var(--angle)));
   }
-  .wcu-left,
-  .wcu-right {
-    padding: 28px 20px;
-  }
-  .wcu-stats-grid {
+  .wcu-stats__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .wcu-section  { padding: 52px 1rem 60px; }
+  .wcu-inner    { gap: 52px; }
+
+  .wcu-why        { grid-template-columns: 1fr; gap: 28px; }
+  .wcu-why__right { display: none; }
+  .wcu-why__left  { gap: 18px; }
+  .wcu-why__title { font-size: clamp(1.7rem, 5vw, 2.2rem); }
+  .wcu-why__lead  { font-size: 0.92rem; }
+
+  .wcu-tabs {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
-  .wcu-stat {
-    min-height: 110px;
-    padding: 18px 14px;
+  .wcu-tab         { padding: 10px 12px; font-size: 0.82rem; border-radius: 10px; }
+  .wcu-tab--active { transform: none !important; }
+  .wcu-tab:hover   { transform: none; }
+
+  .wcu-stats__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .wcu-stat-card   { padding: 24px 16px 20px; border-radius: 18px; }
+
+  /* Roadmap collapses to single column */
+  .wcu-roadmap { max-width: 480px; }
+  .wcu-roadmap__spine { left: 24px; }
+  .wcu-rm-step {
+    grid-template-columns: 48px 1fr;
+    grid-template-rows: auto;
+    align-items: start;
+    min-height: auto;
+    padding-bottom: 24px;
   }
-  .wcu-title {
-    font-size: 1.5rem;
+  .wcu-rm-step--left  .wcu-rm-card,
+  .wcu-rm-step--right .wcu-rm-card {
+    grid-column: 2; grid-row: 1;
+    margin: 0 0 0 12px;
+    justify-self: stretch;
+    max-width: none;
   }
+  .wcu-rm-step--left  .wcu-rm-dot,
+  .wcu-rm-step--right .wcu-rm-dot {
+    grid-column: 1; grid-row: 1;
+    justify-self: center;
+  }
+}
+
+@media (max-width: 540px) {
+  .wcu-section  { padding: 44px 0.875rem 52px; }
+  .wcu-inner    { gap: 44px; }
+
+  .wcu-eyebrow  { font-size: 0.68rem; padding: 5px 12px; }
+
+  .wcu-why__title { font-size: clamp(1.5rem, 6vw, 1.9rem); letter-spacing: -0.02em; }
+  .wcu-why__lead  { font-size: 0.88rem; }
+
+  .wcu-tabs { grid-template-columns: 1fr; gap: 7px; }
+  .wcu-tab  { padding: 10px 14px; font-size: 0.82rem; }
+
+  .wcu-stats__title    { font-size: 1.3rem; }
+  .wcu-stats__grid     { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .wcu-stat-card       { padding: 20px 12px 16px; border-radius: 16px; gap: 4px; }
+  .wcu-stat-card__icon { width: 36px; height: 36px; font-size: 0.88rem; margin-bottom: 6px; }
+  .wcu-stat-card__num  { font-size: 2rem; }
+  .wcu-stat-card__label{ font-size: 0.78rem; }
+  .wcu-stat-card__sub  { font-size: 0.65rem; }
+
+  .wcu-process__title { font-size: 1.25rem; }
+  .wcu-process__sub   { font-size: 0.85rem; }
+  .wcu-rm-card        { padding: 16px 18px; }
+  .wcu-rm-card__title { font-size: 0.95rem; }
+  .wcu-rm-card__desc  { font-size: 0.80rem; }
+  .wcu-rm-card__num   { font-size: 2rem; }
+  .wcu-rm-dot         { width: 44px; height: 44px; }
+  .wcu-rm-dot__inner  { width: 16px; height: 16px; }
+}
+
+@media (max-width: 380px) {
+  .wcu-section  { padding: 36px 0.75rem 44px; }
+  .wcu-why__title { font-size: 1.4rem; }
+  .wcu-stats__grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .wcu-stat-card__num { font-size: 1.8rem; }
 }

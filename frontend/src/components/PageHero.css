@@ -1,14 +1,171 @@
 /* ═══════════════════════════════════════════════
-   PAGE HERO  –  shared banner used on every page
+   PAGE HERO  –  shared banner (dark hero theme)
 ═══════════════════════════════════════════════ */
+
+@keyframes phGlowPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.5; }
+  50%       { transform: scale(1.14); opacity: 0.8; }
+}
+@keyframes shimmerAccent {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+@keyframes heroDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
 
 .page-hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(1, 72, 103, 0.08) 0%, rgba(0, 207, 255, 0.06) 100%);
-  padding: 80px 1rem 64px;
+  background: linear-gradient(135deg, #010f1a 0%, #012236 50%, #013150 100%);
+  padding: 130px 1rem 80px;
   text-align: center;
   font-family: 'Inter', sans-serif;
+  color: #fff;
+}
+
+/* ── dot grid overlay ── */
+.page-hero__dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(97, 187, 197, 0.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ── decorative glowing blobs ── */
+.page-hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: phGlowPulse 10s ease-in-out infinite;
+}
+.page-hero__blob--tl {
+  width: 480px;
+  height: 480px;
+  top: -150px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(97, 187, 197, 0.16) 0%, transparent 70%);
+}
+.page-hero__blob--br {
+  width: 420px;
+  height: 420px;
+  bottom: -110px;
+  right: 15%;
+  background: radial-gradient(circle, rgba(3, 70, 101, 0.4) 0%, transparent 70%);
+  animation-delay: 4s;
+}
+
+/* ── inner content ── */
+.page-hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* badge pill */
+.page-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(97, 187, 197, 0.28);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #a8dde6;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  margin-bottom: 18px;
+}
+.page-hero__badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #61BBC5;
+  animation: heroDotPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* heading */
+.page-hero__title {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #f0f8ff;
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.page-hero__title span {
+  background: linear-gradient(135deg, #f97316 0%, #f59e0b 40%, #ef4444 80%, #f97316 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerAccent 4s linear infinite;
+}
+
+/* subtitle */
+.page-hero__subtitle {
+  font-size: 1rem;
+  color: #a8c8d8;
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0 auto 28px;
+}
+
+/* breadcrumb */
+.page-hero__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #7aabb8;
+}
+.page-hero__breadcrumb a {
+  color: #61BBC5;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+.page-hero__breadcrumb a:hover {
+  color: #a8dde6;
+  text-decoration: underline;
+}
+.page-hero__breadcrumb-sep {
+  opacity: 0.55;
+  font-size: 1.1rem;
+}
+
+/* divider line below hero */
+.page-hero__divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #61BBC5 30%, #034665 70%, transparent 100%);
+}
+
+/* ── responsive ── */
+@media (max-width: 768px) {
+  .page-hero {
+    padding: 110px 1rem 60px;
+  }
+  .page-hero__title {
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+  }
 }
 
 /* ── decorative blobs ── */
@@ -87,19 +244,22 @@
   font-size: clamp(2.2rem, 4vw, 3.4rem);
   font-weight: 800;
   line-height: 1.1;
-  color: #0d2f3f;
+  color: #FFFFFF;
   margin: 0 0 16px;
 }
 .page-hero__title span {
-  background: linear-gradient(137.68deg, #61BBC5 0.13%, #034665 100%);
+  background: linear-gradient(135deg, #f97316 0%, #f59e0b 40%, #ef4444 80%, #f97316 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerAccent 4s linear infinite;
 }
 
 /* subtitle */
 .page-hero__subtitle {
   font-size: 1rem;
-  color: #3a5a6a;
+  color: #3b9ac9;
   line-height: 1.75;
   max-width: 560px;
   margin: 0 auto 28px;
@@ -112,10 +272,10 @@
   gap: 6px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #64748b;
+  color: #FFFFFF;
 }
 .page-hero__breadcrumb a {
-  color: #034665;
+  color: #FFFFFF;
   text-decoration: none;
 }
 .page-hero__breadcrumb a:hover {
@@ -142,5 +302,22 @@
   }
   .page-hero__title {
     font-size: clamp(1.8rem, 6vw, 2.4rem);
+  }
+}
+
+/* ── Extra mobile fix ── */
+@media (max-width: 480px) {
+  .page-hero {
+    padding: 100px 1rem 48px;
+  }
+  .page-hero__title {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+  .page-hero__subtitle {
+    font-size: 0.9rem;
+  }
+  .page-hero__breadcrumb {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }

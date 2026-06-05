@@ -4,11 +4,11 @@ import { apiRequest, API_BASE_URL } from '../utils/api';
 import './AdminDashboardPage.css';
 
 const tabs = [
-  { key: 'overview', label: 'Overview', short: 'OV' },
-  { key: 'applications', label: 'Applications', short: 'AP' },
-  { key: 'contacts', label: 'Contacts', short: 'CT' },
-  { key: 'pages', label: 'Pages / Content', short: 'PG' },
-  { key: 'positions', label: 'Positions', short: 'PS' },
+  { key: 'overview',        label: 'Overview',          short: 'OV' },
+  { key: 'applications',    label: 'Applications',       short: 'AP' },
+  { key: 'contacts',        label: 'Contacts',           short: 'CT' },
+  { key: 'positions',       label: 'Positions',          short: 'PS' },
+  { key: 'portfolio-leads', label: 'Portfolio Leads',    short: 'PL' },
 ];
 
 const blankPositionForm = {
@@ -30,6 +30,7 @@ export default function AdminDashboardPage() {
   const navigate = useNavigate();
   const [authToken, setAuthToken] = useState(() => localStorage.getItem('kevalon-admin-token') || '');
   const [authUser, setAuthUser] = useState(null);
+  const [currentDate, setCurrentDate] = useState(() => new Date());
   const [activeTab, setActiveTab] = useState('overview');
   const [searchQuery, setSearchQuery] = useState('');
   const [applicationStatusFilter, setApplicationStatusFilter] = useState('all');
@@ -44,6 +45,8 @@ export default function AdminDashboardPage() {
   const [positions, setPositions] = useState([]);
   const [positionForm, setPositionForm] = useState(blankPositionForm);
   const [positionStatus, setPositionStatus] = useState({ type: 'idle', message: '' });
+  const [portfolioLeads, setPortfolioLeads] = useState([]);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [dashboardRange, setDashboardRange] = useState('This Month');
 
@@ -51,6 +54,23 @@ export default function AdminDashboardPage() {
     () => ({ Authorization: `Bearer ${authToken}` }),
     [authToken],
   );
+
+  const locale = typeof navigator !== 'undefined' ? navigator.language : undefined;
+  const dashboardDate = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat(locale, {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+
+    return formatter.format(currentDate);
+  }, [currentDate, locale]);
+
+  const dashboardWeekday = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat(locale, { weekday: 'long' });
+    return formatter.format(currentDate);
+  }, [currentDate, locale]);
 
   const dashboardSummary = useMemo(() => {
     return [
@@ -209,13 +229,14 @@ export default function AdminDashboardPage() {
     setDataStatus({ type: 'loading', message: 'Loading dashboard...' });
 
     try {
-      const [meResponse, dashboardResponse, applicationsResponse, contactsResponse, pagesResponse, positionsResponse] = await Promise.all([
+      const [meResponse, dashboardResponse, applicationsResponse, contactsResponse, pagesResponse, positionsResponse, portfolioLeadsResponse] = await Promise.all([
         apiRequest('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } }),
         apiRequest('/api/admin/dashboard', { headers: { Authorization: `Bearer ${token}` } }),
         apiRequest('/api/applications/admin', { headers: { Authorization: `Bearer ${token}` } }),
         apiRequest('/api/contact/admin', { headers: { Authorization: `Bearer ${token}` } }),
         apiRequest('/api/pages/admin/list', { headers: { Authorization: `Bearer ${token}` } }),
         apiRequest('/api/positions/admin', { headers: { Authorization: `Bearer ${token}` } }),
+        apiRequest('/api/portfolio-leads/admin', { headers: { Authorization: `Bearer ${token}` } }),
       ]);
 
       setAuthUser(meResponse.user);
@@ -224,6 +245,7 @@ export default function AdminDashboardPage() {
       setContacts(contactsResponse.data);
       setPages(pagesResponse.data);
       setPositions(positionsResponse.data);
+      setPortfolioLeads(portfolioLeadsResponse.data);
       setDataStatus({ type: 'success', message: 'Dashboard loaded.' });
     } catch (error) {
       if (error.message === 'Invalid or expired token' || error.message === 'Missing bearer token') {
@@ -242,6 +264,14 @@ export default function AdminDashboardPage() {
       loadDashboard(authToken);
     }
   }, [authToken]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCurrentDate(new Date());
+    }, 60 * 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('kevalon-admin-token');
@@ -389,13 +419,11 @@ export default function AdminDashboardPage() {
 
       <aside className={`admin-sidebar ${isSidebarOpen ? 'is-open' : ''}`}>
         <div className="admin-sidebar__brand">
-          <div className="admin-sidebar__logo">
-            <span>◇</span>
-          </div>
-          <div>
-            <h1 className="admin-title admin-title--small">KEVALON</h1>
-            <p className="admin-copy admin-copy--muted">TECHNOLOGY</p>
-          </div>
+          <img
+            src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/9Pyj6mPiWW/p4s798c4_expires_30_days.png"
+            alt="Kevalon Technology"
+            className="admin-sidebar__logo-img"
+          />
         </div>
 
         <div className="admin-sidebar__section-label">MAIN</div>
@@ -419,11 +447,11 @@ export default function AdminDashboardPage() {
         <div className="admin-sidebar__section-label admin-sidebar__section-label--account">ACCOUNT</div>
 
         <nav className="admin-tabs admin-tabs--account">
-          <button type="button" className="admin-tab" onClick={() => navigate('/admin/profile')}>
+          <button type="button" className={`admin-tab ${activeTab === 'profile' ? 'is-active' : ''}`} onClick={() => { setActiveTab('profile'); setIsSidebarOpen(false); }}>
             <span className="admin-tab__icon" aria-hidden="true">PR</span>
             Profile
           </button>
-          <button type="button" className="admin-tab" onClick={() => navigate('/admin/login')}>
+          <button type="button" className={`admin-tab ${activeTab === 'settings' ? 'is-active' : ''}`} onClick={() => { setActiveTab('settings'); setIsSidebarOpen(false); }}>
             <span className="admin-tab__icon" aria-hidden="true">ST</span>
             Settings
           </button>
@@ -447,105 +475,200 @@ export default function AdminDashboardPage() {
 
       <section className="admin-content">
         <div className="admin-mobile-topbar">
-          <button
-            type="button"
-            className="admin-hamburger"
-            aria-label="Open section menu"
-            onClick={() => setIsSidebarOpen(true)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-          <p className="admin-mobile-topbar__title">Admin Menu</p>
-        </div>
-
-        <header className="admin-header admin-header--hero">
-          <div>
-            <p className="admin-kicker">Welcome back, Admin! 👋</p>
-            <h2>Here&apos;s what&apos;s happening with your platform today.</h2>
+          <div className="admin-mobile-topbar__left">
+            <button
+              type="button"
+              className="admin-hamburger"
+              aria-label="Open section menu"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+            <p className="admin-mobile-topbar__title">Admin Menu</p>
           </div>
-          <div className="admin-header__meta">
-            <div className="admin-header__date">
-              <strong>31 May 2026</strong>
-              <span>Saturday</span>
-            </div>
-            <button type="button" className="admin-icon-button" onClick={() => loadDashboard()} aria-label="Refresh dashboard">
-              ⟳
+
+          <div className="admin-mobile-topbar__meta">
+            <button type="button" className="admin-mobile-date" onClick={() => setActiveTab('overview')}>
+              <strong>{dashboardWeekday}</strong>
+              <span>{dashboardDate}</span>
             </button>
-            <button type="button" className="admin-icon-button" aria-label="Notifications">
-              ◌
-            </button>
-            <button type="button" className="admin-profile-pill" onClick={() => navigate('/admin/profile')} aria-label="Open profile page">
-              <span className="admin-profile-pill__avatar">A</span>
-              <span className="admin-profile-pill__text">
+            <button type="button" className="admin-mobile-profile" onClick={() => setActiveTab('profile')} aria-label="Open profile page">
+              <span className="admin-mobile-profile__avatar">A</span>
+              <span className="admin-mobile-profile__text">
                 <strong>Admin</strong>
                 <small>{authUser?.email || 'admin@example.com'}</small>
               </span>
             </button>
           </div>
-        </header>
+        </div>
 
-        <section className="admin-toolbar admin-toolbar--compact">
-          <div className="admin-toolbar__filters admin-toolbar__filters--compact">
-            <label className="admin-toolbar__search">
-              <span>Search</span>
-              <div className="admin-search-field">
-                <span className="admin-search-field__icon" aria-hidden="true">⌕</span>
-                <input
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  type="search"
-                  placeholder="Search name, email, role, or content"
-                  aria-label="Search dashboard records"
-                />
-                {searchQuery ? (
-                  <button
-                    type="button"
-                    className="admin-search-field__clear"
-                    onClick={() => setSearchQuery('')}
-                    aria-label="Clear search"
-                  >
-                    Clear
-                  </button>
-                ) : null}
-              </div>
-            </label>
-
-            <label>
-              <span>Period</span>
-              <select value={dashboardRange} onChange={(event) => setDashboardRange(event.target.value)}>
-                <option>This Month</option>
-                <option>This Week</option>
-                <option>Today</option>
-              </select>
-            </label>
-          </div>
-          <div className="admin-toolbar__meta">
-            <p className="admin-toolbar__hint">
-              {searchQuery
-                ? `${filteredApplications.length} applications, ${filteredContacts.length} contacts, ${filteredPages.length} pages matched “${searchQuery.trim()}”.`
-                : 'Search across applications, contacts, and content to narrow the overview.'}
-            </p>
-          </div>
-        </section>
-
-        {dataStatus.message ? <p className={`admin-status admin-status--${dataStatus.type}`}>{dataStatus.message}</p> : null}
-
-        <section className="admin-stats admin-stats--cards">
-          {dashboardSummary.map((item) => (
-            <article key={item.label} className={`admin-stat-card admin-stat-card--${item.tone}`}>
+        {activeTab !== 'profile' && activeTab !== 'settings' ? (
+          <>
+            <header className="admin-header admin-header--hero">
               <div>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-                <p>{item.change}</p>
+                <h2>👋 Welcome back, Admin! 👋</h2>
+                <p className="admin-kicker" style={{textTransform:'none',letterSpacing:'normal',fontSize:'0.9rem',fontWeight:400,color:'var(--content-muted)',marginTop:'4px'}}>Here's what's happening with your platform today.</p>
               </div>
-              <div className={`admin-stat-card__icon admin-stat-card__icon--${item.tone}`}>
-                {item.icon}
+              <div className="admin-header__meta">
+                <div className="admin-header__date-pill">
+                  <i className="bi bi-calendar3" style={{fontSize:'0.85rem'}} />
+                  <strong>{dashboardDate}</strong>
+                </div>
+                <button type="button" className="admin-icon-button admin-icon-button--bell" onClick={() => setNotifOpen(o => !o)} aria-label="Notifications">
+                  <i className="bi bi-bell" />
+                  <span className="admin-bell-dot" />
+                </button>
+
+                {/* ── Notification panel ── */}
+                {notifOpen && (
+                  <div className="notif-panel" role="dialog" aria-label="Notifications">
+                    <div className="notif-panel__backdrop" onClick={() => setNotifOpen(false)} />
+                    <div className="notif-panel__card">
+                      <div className="notif-panel__header">
+                        <h4>Notifications</h4>
+                        <button className="notif-panel__close" onClick={() => setNotifOpen(false)} aria-label="Close">
+                          <i className="bi bi-x-lg" />
+                        </button>
+                      </div>
+
+                      <div className="notif-panel__list">
+                        {applications.slice(0, 3).map((app, i) => (
+                          <div key={app._id || i} className="notif-item notif-item--blue">
+                            <div className="notif-item__icon"><i className="bi bi-person-fill-add" /></div>
+                            <div className="notif-item__body">
+                              <p className="notif-item__title">New application from <strong>{app.firstName} {app.lastName}</strong></p>
+                              <span className="notif-item__meta">{app.role} · {new Date(app.createdAt).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                        ))}
+                        {contacts.slice(0, 2).map((c, i) => (
+                          <div key={c._id || i} className="notif-item notif-item--purple">
+                            <div className="notif-item__icon"><i className="bi bi-envelope-fill" /></div>
+                            <div className="notif-item__body">
+                              <p className="notif-item__title">New message from <strong>{c.fullName || c.email}</strong></p>
+                              <span className="notif-item__meta">Contact · {new Date(c.createdAt).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                        ))}
+                        {portfolioLeads.slice(0, 2).map((l, i) => (
+                          <div key={l._id || i} className="notif-item notif-item--green">
+                            <div className="notif-item__icon"><i className="bi bi-eye-fill" /></div>
+                            <div className="notif-item__body">
+                              <p className="notif-item__title">Preview request for <strong>{l.projectTitle}</strong></p>
+                              <span className="notif-item__meta">{l.email || l.phone} · {new Date(l.createdAt).toLocaleDateString()}</span>
+                            </div>
+                          </div>
+                        ))}
+                        {applications.length === 0 && contacts.length === 0 && portfolioLeads.length === 0 && (
+                          <div className="notif-panel__empty">
+                            <i className="bi bi-bell-slash" />
+                            <p>No notifications yet</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="notif-panel__footer">
+                        <button className="notif-panel__mark-read" onClick={() => setNotifOpen(false)}>
+                          Mark all as read
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <button type="button" className="admin-profile-pill" onClick={() => setActiveTab('profile')} aria-label="Open profile page">
+                  <span className="admin-profile-pill__avatar">A</span>
+                  <span className="admin-profile-pill__text">
+                    <strong>Admin</strong>
+                  </span>
+                  <i className="bi bi-chevron-down" style={{fontSize:'0.7rem',color:'var(--content-muted)'}} />
+                </button>
               </div>
-            </article>
-          ))}
-        </section>
+            </header>
+
+            <section className="admin-toolbar admin-toolbar--compact">
+              <div className="admin-toolbar__filters admin-toolbar__filters--compact">
+                <label className="admin-toolbar__search">
+                  <span>Search</span>
+                  <div className="admin-search-field">
+                    <span className="admin-search-field__icon" aria-hidden="true">⌕</span>
+                    <input
+                      value={searchQuery}
+                      onChange={(event) => setSearchQuery(event.target.value)}
+                      type="search"
+                      placeholder="Search name, email, role, or content"
+                      aria-label="Search dashboard records"
+                    />
+                    {searchQuery ? (
+                      <button
+                        type="button"
+                        className="admin-search-field__clear"
+                        onClick={() => setSearchQuery('')}
+                        aria-label="Clear search"
+                      >
+                        Clear
+                      </button>
+                    ) : null}
+                  </div>
+                </label>
+
+                <label>
+                  <span>Period</span>
+                  <select value={dashboardRange} onChange={(event) => setDashboardRange(event.target.value)}>
+                    <option>This Month</option>
+                    <option>This Week</option>
+                    <option>Today</option>
+                  </select>
+                </label>
+              </div>
+              <div className="admin-toolbar__meta">
+                <p className="admin-toolbar__hint">
+                  {searchQuery
+                    ? `${filteredApplications.length} applications, ${filteredContacts.length} contacts, ${filteredPages.length} pages matched “${searchQuery.trim()}”.`
+                    : 'Search across applications, contacts, and content to narrow the overview.'}
+                </p>
+              </div>
+            </section>
+
+            {dataStatus.message ? <p className={`admin-status admin-status--${dataStatus.type}`}>{dataStatus.message}</p> : null}
+
+            <section className="admin-stats admin-stats--cards">
+              {dashboardSummary.map((item) => {
+                const sparkPoints = item.tone === 'blue'   ? '0,28 15,22 30,25 45,15 60,18 80,8'
+                                  : item.tone === 'purple' ? '0,26 15,20 30,24 45,12 60,16 80,6'
+                                  : item.tone === 'green'  ? '0,24 15,18 30,22 45,10 60,14 80,4'
+                                  :                          '0,22 15,16 30,20 45,8 60,12 80,2';
+                const sparkColor  = item.tone === 'blue'   ? '#6366f1'
+                                  : item.tone === 'purple' ? '#a855f7'
+                                  : item.tone === 'green'  ? '#22c55e'
+                                  :                          '#f97316';
+                return (
+                  <article key={item.label} className={`admin-stat-card admin-stat-card--${item.tone}`}>
+                    <div className={`admin-stat-card__icon admin-stat-card__icon--${item.tone}`}>
+                      {item.icon}
+                    </div>
+                    <div className="admin-stat-card__body">
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                      <p>↑ {item.change}</p>
+                    </div>
+                    <svg className="admin-stat-sparkline" viewBox="0 0 80 32" preserveAspectRatio="none">
+                      <polyline
+                        points={sparkPoints}
+                        fill="none"
+                        stroke={sparkColor}
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </article>
+                );
+              })}
+            </section>
+          </>
+        ) : null}
 
         {activeTab === 'overview' ? (
           <div className="admin-overview-grid">
@@ -577,27 +700,25 @@ export default function AdminDashboardPage() {
                   <svg viewBox="0 0 640 240" preserveAspectRatio="none" role="img" aria-label="Applications trend chart">
                     <defs>
                       <linearGradient id="lineGradient" x1="0" x2="1" y1="0" y2="0">
-                        <stop offset="0%" stopColor="#42c2ff" />
-                        <stop offset="100%" stopColor="#4ce3d5" />
+                        <stop offset="0%" stopColor="#7c5cfc" />
+                        <stop offset="100%" stopColor="#a78bfa" />
                       </linearGradient>
                       <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="rgba(66, 194, 255, 0.48)" />
-                        <stop offset="100%" stopColor="rgba(66, 194, 255, 0.02)" />
+                        <stop offset="0%" stopColor="rgba(124,92,252,0.18)" />
+                        <stop offset="100%" stopColor="rgba(124,92,252,0.01)" />
                       </linearGradient>
                     </defs>
                     <path d="M0 190 C30 170, 45 150, 70 160 S120 200, 145 170 S185 120, 220 130 S270 170, 310 145 S360 120, 395 138 S450 160, 495 118 S560 92, 640 70 L640 240 L0 240 Z" fill="url(#areaGradient)" />
-                    <path d="M0 190 C30 170, 45 150, 70 160 S120 200, 145 170 S185 120, 220 130 S270 170, 310 145 S360 120, 395 138 S450 160, 495 118 S560 92, 640 70" fill="none" stroke="url(#lineGradient)" strokeWidth="4" strokeLinecap="round" />
-                    {[0, 70, 145, 220, 310, 395, 495, 560, 640].map((x) => (
-                      <circle key={x} cx={x} cy={x < 640 ? [190,160,170,130,145,138,118,92,70][[0,70,145,220,310,395,495,560,640].indexOf(x)] : 70} r="4" fill="#58e5f0" />
+                    <path d="M0 190 C30 170, 45 150, 70 160 S120 200, 145 170 S185 120, 220 130 S270 170, 310 145 S360 120, 395 138 S450 160, 495 118 S560 92, 640 70" fill="none" stroke="url(#lineGradient)" strokeWidth="3" strokeLinecap="round" />
+                    {[[0,190],[70,160],[145,170],[220,130],[310,145],[395,138],[495,118],[560,92],[640,70]].map(([x,y],i) => (
+                      <circle key={i} cx={x} cy={y} r="4" fill="#7c5cfc" stroke="#fff" strokeWidth="2" />
                     ))}
+                    <text x="310" y="118" textAnchor="middle" fontSize="12" fontWeight="700" fill="#1a1f36">28</text>
                   </svg>
                 </div>
                 <div className="admin-chart__labels">
-                  <span>May 1</span>
-                  <span>May 8</span>
-                  <span>May 15</span>
-                  <span>May 22</span>
-                  <span>May 29</span>
+                  <span>May</span><span>May</span><span>May</span><span>May</span><span>May</span>
+                  <span>June</span><span>June</span><span>June</span><span>June</span><span>June</span>
                 </div>
               </div>
             </section>
@@ -617,8 +738,8 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="admin-person-row__meta">
                       <span className="admin-person-row__role">{application.role}</span>
-                      <span className={`admin-badge admin-badge--${application.status === 'rejected' ? 'danger' : application.status === 'submitted' ? 'muted' : 'success'}`}>
-                        {application.status || 'submitted'}
+                      <span className={`admin-badge admin-badge--${application.status === 'rejected' ? 'danger' : 'submitted-green'}`}>
+                        {application.status || 'Submitted'}
                       </span>
                     </div>
                   </article>
@@ -651,24 +772,48 @@ export default function AdminDashboardPage() {
 
             <section className="admin-panel admin-panel--actions">
               <div className="admin-panel__header">
-                <h3>Quick Actions</h3>
+                <h3>⚡ Quick Actions</h3>
               </div>
-              <div className="admin-actions-grid">
+              <div className="admin-actions-grid admin-actions-grid--5">
                 <button type="button" className="admin-action-card" onClick={() => setActiveTab('applications')}>
-                  <span className="admin-action-card__icon admin-action-card__icon--blue">+</span>
-                  <strong>Add Application</strong>
+                  <span className="admin-action-card__icon admin-action-card__icon--blue"><i className="bi bi-plus-circle-fill" /></span>
+                  <div className="admin-action-card__text">
+                    <strong>Add New Application</strong>
+                    <small>Create a new application</small>
+                  </div>
+                  <i className="bi bi-chevron-right admin-action-card__arrow" />
                 </button>
                 <button type="button" className="admin-action-card" onClick={() => setActiveTab('contacts')}>
-                  <span className="admin-action-card__icon admin-action-card__icon--purple">◔</span>
-                  <strong>Add Contact</strong>
+                  <span className="admin-action-card__icon admin-action-card__icon--purple"><i className="bi bi-people-fill" /></span>
+                  <div className="admin-action-card__text">
+                    <strong>Manage Contacts</strong>
+                    <small>View and manage contacts</small>
+                  </div>
+                  <i className="bi bi-chevron-right admin-action-card__arrow" />
                 </button>
                 <button type="button" className="admin-action-card" onClick={() => setActiveTab('pages')}>
-                  <span className="admin-action-card__icon admin-action-card__icon--green">▣</span>
-                  <strong>Create Page</strong>
+                  <span className="admin-action-card__icon admin-action-card__icon--green"><i className="bi bi-file-earmark-text-fill" /></span>
+                  <div className="admin-action-card__text">
+                    <strong>Manage Pages</strong>
+                    <small>Edit and organize pages</small>
+                  </div>
+                  <i className="bi bi-chevron-right admin-action-card__arrow" />
                 </button>
                 <button type="button" className="admin-action-card" onClick={() => setActiveTab('positions')}>
-                  <span className="admin-action-card__icon admin-action-card__icon--orange">▤</span>
-                  <strong>Add Position</strong>
+                  <span className="admin-action-card__icon admin-action-card__icon--orange"><i className="bi bi-briefcase-fill" /></span>
+                  <div className="admin-action-card__text">
+                    <strong>Manage Positions</strong>
+                    <small>Update job positions</small>
+                  </div>
+                  <i className="bi bi-chevron-right admin-action-card__arrow" />
+                </button>
+                <button type="button" className="admin-action-card" onClick={() => setActiveTab('overview')}>
+                  <span className="admin-action-card__icon admin-action-card__icon--red"><i className="bi bi-graph-up-arrow" /></span>
+                  <div className="admin-action-card__text">
+                    <strong>View Reports</strong>
+                    <small>Analytics and reports</small>
+                  </div>
+                  <i className="bi bi-chevron-right admin-action-card__arrow" />
                 </button>
               </div>
             </section>
@@ -1003,6 +1148,135 @@ export default function AdminDashboardPage() {
             </section>
           </section>
         ) : null}
+
+        {activeTab === 'portfolio-leads' ? (
+          <section className="admin-panel">
+            <div className="admin-panel__header">
+              <h3>Portfolio Leads</h3>
+              <span className="admin-badge admin-badge--muted">{portfolioLeads.length} total</span>
+            </div>
+            {portfolioLeads.length === 0 ? (
+              <p className="admin-copy">No leads yet. They appear here when visitors request a live preview.</p>
+            ) : (
+              <div className="admin-table-wrap">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Project</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {portfolioLeads.map((lead, idx) => (
+                      <tr key={lead._id}>
+                        <td>{idx + 1}</td>
+                        <td><strong>{lead.projectTitle}</strong></td>
+                        <td>{lead.email || '—'}</td>
+                        <td>{lead.phone || '—'}</td>
+                        <td>
+                          <select
+                            value={lead.status}
+                            onChange={async (e) => {
+                              await apiRequest(`/api/portfolio-leads/admin/${lead._id}/status`, {
+                                method: 'PATCH',
+                                headers: authHeaders,
+                                body: JSON.stringify({ status: e.target.value }),
+                              });
+                              await loadDashboard();
+                            }}
+                            className={`admin-status-select admin-status-select--${lead.status}`}
+                          >
+                            <option value="new">New</option>
+                            <option value="contacted">Contacted</option>
+                            <option value="closed">Closed</option>
+                          </select>
+                        </td>
+                        <td>{new Date(lead.createdAt).toLocaleDateString()}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="admin-button admin-button--danger-sm"
+                            onClick={async () => {
+                              if (!window.confirm('Delete this lead?')) return;
+                              await apiRequest(`/api/portfolio-leads/admin/${lead._id}`, {
+                                method: 'DELETE',
+                                headers: authHeaders,
+                              });
+                              await loadDashboard();
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
+        ) : null}
+
+        {activeTab === 'profile' ? (
+          <section className="admin-profile-grid-layout">
+            <div className="admin-panel__header" style={{ gridColumn: '1 / -1' }}>
+              <h3>Logged-in Admin Profile</h3>
+            </div>
+            <article className="admin-panel admin-profile-summary">
+              <div className="admin-profile-summary__avatar" style={{
+                width: '64px', height: '64px', borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'linear-gradient(135deg, #42c2ff, #7d57ff)', color: 'white', fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '16px'
+              }}>
+                {(authUser?.email || 'A').charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <p className="admin-kicker">Authenticated account</p>
+                <h2>{authUser?.email || 'admin@example.com'}</h2>
+                <p className="admin-copy">Role: {authUser?.role || 'admin'}</p>
+              </div>
+            </article>
+
+            <article className="admin-panel admin-profile-details" style={{ marginTop: '16px' }}>
+              <div className="admin-panel__header">
+                <h3>Account Details</h3>
+                <span>Live session</span>
+              </div>
+
+              <div className="admin-profile-details__grid" style={{ display: 'grid', gap: '16px', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', marginTop: '16px' }}>
+                <div>
+                  <span style={{ display: 'block', color: 'var(--admin-muted)', fontSize: '0.82rem', textTransform: 'uppercase' }}>Email</span>
+                  <strong style={{ display: 'block', marginTop: '8px' }}>{authUser?.email || 'admin@example.com'}</strong>
+                </div>
+                <div>
+                  <span style={{ display: 'block', color: 'var(--admin-muted)', fontSize: '0.82rem', textTransform: 'uppercase' }}>Role</span>
+                  <strong style={{ display: 'block', marginTop: '8px' }}>{authUser?.role || 'admin'}</strong>
+                </div>
+                <div>
+                  <span style={{ display: 'block', color: 'var(--admin-muted)', fontSize: '0.82rem', textTransform: 'uppercase' }}>Account ID</span>
+                  <strong style={{ display: 'block', marginTop: '8px' }}>{authUser?.accountId || authUser?.id || authUser?._id || 'Not available'}</strong>
+                </div>
+                <div>
+                  <span style={{ display: 'block', color: 'var(--admin-muted)', fontSize: '0.82rem', textTransform: 'uppercase' }}>Session</span>
+                  <strong style={{ display: 'block', marginTop: '8px' }}>Active</strong>
+                </div>
+              </div>
+            </article>
+          </section>
+        ) : null}
+
+        {activeTab === 'settings' ? (
+          <section className="admin-panel">
+            <div className="admin-panel__header">
+              <h3>Settings</h3>
+            </div>
+            <p className="admin-copy">Platform settings and configuration will appear here.</p>
+          </section>
+        ) : null}
+
       </section>
     </main>
   );

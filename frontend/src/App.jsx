@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import SplashScreen from "./components/SplashScreen";
 import Layout from "./Layout";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
@@ -24,8 +26,10 @@ import BlogDetailPage from "./pages/BlogDetailPage";
 import CareersPage from "./pages/CareersPage";
 import InternshipTrainingPage from "./pages/InternshipTrainingPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsOfUsePage from "./pages/TermsOfUsePage";
+import SitemapPage from "./pages/SitemapPage";
 import ScrollToTop from "./components/ScrollToTop";
-import Cursor from "./components/Cursor";
 
 function AdminRouteGate() {
   const token = localStorage.getItem('kevalon-admin-token');
@@ -33,9 +37,11 @@ function AdminRouteGate() {
 }
 
 function App() {
+  const [splashDone, setSplashDone] = useState(false);
+
   return (
     <>
-      <Cursor />
+      {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -60,6 +66,9 @@ function App() {
           <Route path="blog/:id" element={<BlogDetailPage />} />
           <Route path="careers" element={<CareersPage />} />
           <Route path="services/internship-training" element={<InternshipTrainingPage />} />
+          <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
+          <Route path="terms-of-use"   element={<TermsOfUsePage />} />
+          <Route path="sitemap"        element={<SitemapPage />} />
         </Route>
         <Route path="/admin" element={<AdminRouteGate />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />

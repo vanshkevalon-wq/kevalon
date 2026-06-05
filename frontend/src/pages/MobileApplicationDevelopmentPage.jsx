@@ -96,8 +96,8 @@ function AppIcon({ kind }) {
   if (kind === 'apple') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M14.9 3.2c-.6.7-1.5 1.2-2.4 1.1-.1-.9.3-1.9.8-2.6.6-.8 1.5-1.3 2.5-1.4.2 1-.2 1.9-.9 2.9Z" fill="currentColor"/>
-        <path d="M19.1 14.8c-.5 1.2-.8 1.8-1.5 2.8-1 .8-1.8 1.7-3.2 1.7-1.1 0-1.5-.6-2.8-.6s-1.7.6-2.9.6c-1.4 0-2.4-1-3.3-2-2.2-2.8-2.5-8.4-0.6-11 1-1.4 2.6-2.3 4.2-2.3 1.2 0 2.3.8 2.9.8.7 0 2-.9 3.5-.8.6 0 2.4.2 3.5 1.8-.1.1-2.1 1.2-2.1 4 0 3.3 2.8 4.5 2.3 7Z" fill="currentColor"/>
+        <path d="M14.9 3.2c-.6.7-1.5 1.2-2.4 1.1-.1-.9.3-1.9.8-2.6.6-.8 1.5-1.3 2.5-1.4.2 1-.2 1.9-.9 2.9Z" fill="currentColor" />
+        <path d="M19.1 14.8c-.5 1.2-.8 1.8-1.5 2.8-1 .8-1.8 1.7-3.2 1.7-1.1 0-1.5-.6-2.8-.6s-1.7.6-2.9.6c-1.4 0-2.4-1-3.3-2-2.2-2.8-2.5-8.4-0.6-11 1-1.4 2.6-2.3 4.2-2.3 1.2 0 2.3.8 2.9.8.7 0 2-.9 3.5-.8.6 0 2.4.2 3.5 1.8-.1.1-2.1 1.2-2.1 4 0 3.3 2.8 4.5 2.3 7Z" fill="currentColor" />
       </svg>
     );
   }
@@ -105,12 +105,12 @@ function AppIcon({ kind }) {
   if (kind === 'android') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7.7 7.1 6.5 5.1M16.3 7.1l1.2-2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-        <path d="M8 8.2c0-1.6 1.8-2.8 4-2.8s4 1.2 4 2.8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-        <rect x="6.1" y="8.6" width="11.8" height="9.2" rx="2.2" fill="currentColor"/>
-        <circle cx="10" cy="12" r="0.7" fill="#fff"/>
-        <circle cx="14" cy="12" r="0.7" fill="#fff"/>
-        <path d="M10 15.4h4" stroke="#fff" strokeWidth="1.2" strokeLinecap="round"/>
+        <path d="M7.7 7.1 6.5 5.1M16.3 7.1l1.2-2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M8 8.2c0-1.6 1.8-2.8 4-2.8s4 1.2 4 2.8" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        <rect x="6.1" y="8.6" width="11.8" height="9.2" rx="2.2" fill="currentColor" />
+        <circle cx="10" cy="12" r="0.7" fill="#fff" />
+        <circle cx="14" cy="12" r="0.7" fill="#fff" />
+        <path d="M10 15.4h4" stroke="#fff" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     );
   }
@@ -118,10 +118,10 @@ function AppIcon({ kind }) {
   if (kind === 'react') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <ellipse cx="12" cy="12" rx="8.3" ry="3.1" fill="none" stroke="currentColor" strokeWidth="1.5"/>
-        <ellipse cx="12" cy="12" rx="8.3" ry="3.1" fill="none" stroke="currentColor" strokeWidth="1.5" transform="rotate(60 12 12)"/>
-        <ellipse cx="12" cy="12" rx="8.3" ry="3.1" fill="none" stroke="currentColor" strokeWidth="1.5" transform="rotate(120 12 12)"/>
-        <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+        <ellipse cx="12" cy="12" rx="8.3" ry="3.1" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <ellipse cx="12" cy="12" rx="8.3" ry="3.1" fill="none" stroke="currentColor" strokeWidth="1.5" transform="rotate(60 12 12)" />
+        <ellipse cx="12" cy="12" rx="8.3" ry="3.1" fill="none" stroke="currentColor" strokeWidth="1.5" transform="rotate(120 12 12)" />
+        <circle cx="12" cy="12" r="1.6" fill="currentColor" />
       </svg>
     );
   }
@@ -129,8 +129,8 @@ function AppIcon({ kind }) {
   if (kind === 'flutter') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M5.3 13.8 13.8 5.3h4.6l-8.2 8.2 4.2 4.2h-4.6l-4.5-4.1Z" fill="currentColor" opacity="0.95"/>
-        <path d="M10.1 13.2 13.6 9.7 19 15.1 15.5 18.6 10.1 13.2Z" fill="currentColor"/>
+        <path d="M5.3 13.8 13.8 5.3h4.6l-8.2 8.2 4.2 4.2h-4.6l-4.5-4.1Z" fill="currentColor" opacity="0.95" />
+        <path d="M10.1 13.2 13.6 9.7 19 15.1 15.5 18.6 10.1 13.2Z" fill="currentColor" />
       </svg>
     );
   }
@@ -138,67 +138,35 @@ function AppIcon({ kind }) {
   return <span className="mad-badge-text">{kind.toUpperCase()}</span>;
 }
 
+/* Official tech icon URLs from devicons CDN */
+const TECH_ICON_URLS = {
+  react:    'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg',
+  flutter:  'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg',
+  android:  'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg',
+  apple:    'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apple/apple-original.svg',
+  js:       'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg',
+  ts:       'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg',
+  node:     'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg',
+  firebase: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-original.svg',
+  aws:      'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg',
+  docker:   'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg',
+};
+
 function TechIcon({ kind, name }) {
-  switch (kind) {
-    case 'react':
-      return <AppIcon kind="react" />;
-    case 'flutter':
-      return <AppIcon kind="flutter" />;
-    case 'android':
-      return <AppIcon kind="android" />;
-    case 'apple':
-      return <AppIcon kind="apple" />;
-    case 'js':
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="2.2" fill="#f7df1e" />
-          <path d="M10.2 16.9c.5.9 1.1 1.4 2.3 1.4 1 0 1.6-.5 1.6-1.3 0-.9-.6-1.2-1.7-1.7l-.6-.3c-1.7-.8-2.8-1.8-2.8-3.9 0-1.9 1.4-3.3 3.6-3.3 1.6 0 2.8.6 3.7 2.2l-2 1.3c-.5-.9-1-1.2-1.7-1.2s-1.1.5-1.1 1.2c0 .8.5 1.1 1.5 1.6l.6.3c2 1 3.1 1.9 3.1 4.1 0 2.3-1.8 3.5-4.2 3.5-2.3 0-3.8-1.1-4.5-2.6l2.2-1.3Z" fill="#1d1d1d"/>
-        </svg>
-      );
-    case 'ts':
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="3" y="3" width="18" height="18" rx="2.2" fill="#3178c6" />
-          <path d="M7.2 8.2h9.6v1.8h-3.5v7h-2.5v-7H7.2V8.2Z" fill="#fff"/>
-          <path d="M16.4 15.8c.5.7 1.2 1 2 1 .8 0 1.3-.4 1.3-1 0-.7-.5-1-1.6-1.4l-.5-.2c-1.5-.6-2.5-1.4-2.5-3 0-1.7 1.3-2.9 3.4-2.9 1.4 0 2.4.5 3.1 1.5l-1.5 1c-.4-.5-.9-.8-1.6-.8-.6 0-1 .3-1 .9 0 .6.4.9 1.3 1.2l.6.2c1.7.7 2.6 1.4 2.6 3.1 0 1.8-1.5 3-3.8 3-1.8 0-3-.6-3.7-1.6l1.4-1Z" fill="#fff" opacity="0.92"/>
-        </svg>
-      );
-    case 'node':
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2.8 18.7 6.7v7.8L12 18.4 5.3 14.5V6.7L12 2.8Z" fill="#3c873a"/>
-          <path d="M8.1 8.2h2.3l1.7 2.7 1.7-2.7h2.2l-2.9 4.4v2.5h-2.1v-2.5L8.1 8.2Z" fill="#fff"/>
-          <path d="M6.9 10.1h1.3l3.8 5.4h-1.5l-.8-1.2H8.9l-.8 1.2H6.6l2.4-3.5-2.1-1.9Z" fill="#fff" opacity="0.88"/>
-        </svg>
-      );
-    case 'firebase':
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2.5 7.2 12 12 21.5 16.8 12 12 2.5Z" fill="#ffca28"/>
-          <path d="M12 2.5 10.2 9.4 12 11.5l1.8-2.1L12 2.5Z" fill="#ffa000"/>
-          <path d="M7.2 12 12 21.5 9.4 13.7 7.2 12Z" fill="#f57c00"/>
-          <path d="M16.8 12 12 21.5 14.6 13.7 16.8 12Z" fill="#ff9100"/>
-        </svg>
-      );
-    case 'aws':
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.8 14.6c2.5-1.6 5.4-2.5 8.7-2.5 2.1 0 4 .3 5.8.8" fill="none" stroke="#232f3e" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M16.7 16.9c.7.4 1.4.6 2.3.6.7 0 1.4-.2 1.8-.5" fill="none" stroke="#ff9900" strokeWidth="1.7" strokeLinecap="round"/>
-          <text x="4.3" y="12.5" fill="#232f3e" fontSize="7.6" fontWeight="700" fontFamily="Arial, sans-serif">aws</text>
-        </svg>
-      );
-    case 'docker':
-      return (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.4 13.2h2.3v-2.1H4.4v2.1Zm2.5 0h2.3v-2.1H6.9v2.1Zm2.5 0h2.3v-2.1H9.4v2.1Zm2.5 0h2.3v-2.1h-2.3v2.1Zm2.5 0h2.3v-2.1h-2.3v2.1Z" fill="#2496ed"/>
-          <path d="M8.2 7.2h5.3l2 1.9v2.2h-7.3V7.2Z" fill="#2496ed" opacity="0.9"/>
-          <path d="M4.8 13.5c0 2.8 1.8 4.8 5.8 4.8 4.4 0 7.2-2.4 7.2-5.8 0-.4 0-.8-.1-1-1.7 0-2.9-.5-3.8-1.3-.8-.8-1.2-1.8-1.2-3H8.4c-.1 1.3-.7 2.2-1.7 2.8-.8.5-1.8.8-2.9.8H4c.3.7.5 1.5.8 2.1Z" fill="#2496ed" opacity="0.96"/>
-        </svg>
-      );
-    default:
-      return <span className="mad-badge-text">{name}</span>;
+  const url = TECH_ICON_URLS[kind];
+  if (url) {
+    return (
+      <img
+        src={url}
+        alt={name}
+        width="40"
+        height="40"
+        style={{ objectFit: 'contain', display: 'block' }}
+        loading="lazy"
+      />
+    );
   }
+  return <span className="mad-badge-text">{name}</span>;
 }
 
 export default function MobileApplicationDevelopmentPage() {
@@ -213,49 +181,177 @@ export default function MobileApplicationDevelopmentPage() {
         <div className="mad-hero__orb mad-hero__orb--2" aria-hidden="true" />
 
         <div className="mad-hero__inner">
-          <div className="mad-hero__breadcrumb">
-            <Link to="/">Home</Link>
-            <i className="bi bi-chevron-right" />
-            <Link to="/services">Services</Link>
-            <i className="bi bi-chevron-right" />
-            <span>Mobile Application Development</span>
-          </div>
-
           <div className="mad-hero__badge">
             <span className="mad-hero__badge-dot" />
             Mobile App Development
           </div>
 
           <h1 className="mad-hero__title">
-            Know More About Mobile Application Development
+            Mobile Application<br />
+            <span className="mad-hero__title-accent">Development</span>
           </h1>
 
           <p className="mad-hero__subtitle">
-            Build powerful, scalable mobile applications for iOS and Android platforms.
+            We build powerful, user-friendly mobile applications for Android and iOS platforms that drive engagement and deliver real business value.
           </p>
 
           <div className="mad-hero__actions">
             <Link to="/contact" className="mad-btn mad-btn--primary">
               Start Your Project <i className="bi bi-arrow-right ms-2" />
             </Link>
-            <a href="#enterprise-mobile-apps" className="mad-btn mad-btn--ghost">
-              Enterprise Solutions
-            </a>
+            <Link to="/portfolio" className="mad-btn mad-btn--ghost">
+              View Our Work
+            </Link>
+          </div>
+
+          {/* stat chips */}
+          <div className="mad-hero__stats">
+            {[
+              { icon: 'bi-file-earmark-check', val: '50+', label: 'Projects Delivered' },
+              { icon: 'bi-people', val: '3+', label: 'Years Experience' },
+              { icon: 'bi-star-fill', val: '100%', label: 'Client Satisfaction' },
+            ].map((s) => (
+              <div key={s.label} className="mad-stat-chip">
+                <i className={`bi ${s.icon}`} />
+                <span className="mad-stat-chip__val">{s.val}</span>
+                <span className="mad-stat-chip__lbl">{s.label}</span>
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="mad-hero__visual" aria-hidden="true">
-          <div className="mad-signal-bars">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
+          <div className="mad-phones-wrap">
+
+            {/* iOS badge */}
+            <div className="mad-platform-badge mad-platform-badge--ios">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" /></svg>
+              <div><span>iOS</span><small>Development</small></div>
+            </div>
+
+            {/* Android badge */}
+            <div className="mad-platform-badge mad-platform-badge--android">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#3DDC84"><path d="M17.523 15.341c-.384 0-.697-.311-.697-.697s.313-.697.697-.697.697.311.697.697-.313.697-.697.697zm-11.046 0c-.384 0-.697-.311-.697-.697s.313-.697.697-.697.697.311.697.697-.313.697-.697.697zm11.46-6.681l1.379-2.388c.076-.132.03-.3-.102-.376-.132-.077-.3-.03-.376.102l-1.395 2.415C15.979 7.737 14.068 7.2 12 7.2s-3.979.537-5.443 1.213L5.162 5.998c-.076-.132-.244-.179-.376-.102-.132.076-.178.244-.102.376l1.379 2.388C3.961 9.847 2.4 12.024 2.4 14.4h19.2c0-2.376-1.561-4.553-3.663-5.74z" /></svg>
+              <div><span>Android</span><small>Development</small></div>
+            </div>
+
+            {/* Flutter badge */}
+            <div className="mad-platform-badge mad-platform-badge--flutter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#54C5F8"><path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.37zm.013 9.372l-7.419 7.966 7.419 7.966H21.7l-7.393-7.966L21.7 9.372h-7.373z" /></svg>
+              <div><span>Flutter</span><small>Development</small></div>
+            </div>
+
+            {/* Back phone — Analytics */}
+            <div className="mad-phone mad-phone--back">
+              <div className="mad-phone__screen">
+                <div className="mad-phone__notch" />
+                <div className="mad-phone__content">
+                  <div className="mad-phone__back-header">
+                    <span className="mad-phone__back-title">Statistics</span>
+                    <span className="mad-phone__back-week">This Week ›</span>
+                  </div>
+                  {/* Line chart area */}
+                  <div className="mad-phone__linechart">
+                    <svg viewBox="0 0 180 60" preserveAspectRatio="none" className="mad-phone__linechart-svg">
+                      <defs>
+                        <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#61BBC5" stopOpacity="0.35" />
+                          <stop offset="100%" stopColor="#61BBC5" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M0,50 C20,45 30,15 50,20 C70,25 80,35 100,18 C120,5 140,30 160,12 L160,60 L0,60 Z" fill="url(#chartFill)" />
+                      <path d="M0,50 C20,45 30,15 50,20 C70,25 80,35 100,18 C120,5 140,30 160,12" fill="none" stroke="#61BBC5" strokeWidth="2" strokeLinecap="round" />
+                      <circle cx="160" cy="12" r="3.5" fill="#61BBC5" />
+                      {/* peak label */}
+                      <rect x="138" y="2" width="32" height="13" rx="4" fill="#61BBC5" />
+                      <text x="154" y="12" textAnchor="middle" fill="#fff" fontSize="7" fontWeight="700">$4,880</text>
+                    </svg>
+                    <div className="mad-phone__linechart-days">
+                      {['Mon','Tue','Wed','Thu','Fri','Sat'].map(d => <span key={d}>{d}</span>)}
+                    </div>
+                  </div>
+                  {/* Data rows */}
+                  <div className="mad-phone__back-section">Categories</div>
+                  {[
+                    { label: 'UI/UX Design',  val: '$1,250', bar: 52 },
+                    { label: 'Development',   val: '$2,420', bar: 78 },
+                    { label: 'Marketing',     val: '$980',   bar: 38 },
+                    { label: 'Others',        val: '$830',   bar: 30 },
+                  ].map((r) => (
+                    <div key={r.label} className="mad-phone__back-row">
+                      <span className="mad-phone__back-row-label">{r.label}</span>
+                      <div className="mad-phone__back-row-bar">
+                        <div className="mad-phone__back-row-fill" style={{ width: `${r.bar}%` }} />
+                      </div>
+                      <span className="mad-phone__back-row-val">{r.val}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Front phone — Dashboard */}
+            <div className="mad-phone mad-phone--front">
+              <div className="mad-phone__screen">
+                <div className="mad-phone__notch" />
+                <div className="mad-phone__content">
+                  {/* Header row */}
+                  <div className="mad-phone__topbar">
+                    <div>
+                      <div className="mad-phone__greeting">Hello, Kevin 👋</div>
+                      <div className="mad-phone__subgreeting">Dashboard</div>
+                    </div>
+                    <div className="mad-phone__avatar">K</div>
+                  </div>
+                  {/* Earnings card */}
+                  <div className="mad-phone__earnings-card">
+                    <div className="mad-phone__earnings-label">Total Earnings</div>
+                    <div className="mad-phone__earnings-row">
+                      <span className="mad-phone__earnings-val">$24,680</span>
+                      <div className="mad-phone__earnings-icon">
+                        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+                          <path d="M3 13l4-4 3 3 4-5 3 3" stroke="rgba(255,255,255,0.8)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="mad-phone__earnings-sub">+2.5% from last month</div>
+                  </div>
+                  {/* Transactions */}
+                  <div className="mad-phone__tx-header">
+                    <span>Transactions</span>
+                    <span className="mad-phone__tx-viewall">View all</span>
+                  </div>
+                  {[
+                    { name: 'Google Pay',  amt: '-$120.00',  color: '#4ade80', icon: 'GP' },
+                    { name: 'Apple Store', amt: '-$89.00',   color: '#a78bfa', icon: '🍎' },
+                    { name: 'Dribbble',    amt: '+$250.00',  color: '#f472b6', icon: 'Dr' },
+                    { name: 'Figma',       amt: '-$998.00',  color: '#60a5fa', icon: 'Fi' },
+                  ].map((tx) => (
+                    <div key={tx.name} className="mad-phone__tx-row">
+                      <div className="mad-phone__tx-icon" style={{ background: tx.color + '22', color: tx.color }}>
+                        {tx.icon}
+                      </div>
+                      <div className="mad-phone__tx-info">
+                        <span className="mad-phone__tx-name">{tx.name}</span>
+                        <span className="mad-phone__tx-date">Today</span>
+                      </div>
+                      <span className="mad-phone__tx-amt" style={{ color: tx.amt.startsWith('+') ? '#4ade80' : 'rgba(255,255,255,0.8)' }}>
+                        {tx.amt}
+                      </span>
+                    </div>
+                  ))}
+                  {/* Bottom nav bar */}
+                  <div className="mad-phone__navbar">
+                    <span className="mad-phone__nav-dot mad-phone__nav-dot--active" />
+                    <span className="mad-phone__nav-dot" />
+                    <div className="mad-phone__nav-plus">+</div>
+                    <span className="mad-phone__nav-dot" />
+                    <span className="mad-phone__nav-dot" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -280,7 +376,7 @@ export default function MobileApplicationDevelopmentPage() {
 
               <div className="mad-card mad-card--feature" id="enterprise-mobile-apps">
                 <div className="mad-card__title-row">
-                    <i className="bi bi-shield-check" />
+                  <i className="bi bi-shield-check" />
                   <h3>Enterprise Mobile App Development</h3>
                 </div>
                 <p>

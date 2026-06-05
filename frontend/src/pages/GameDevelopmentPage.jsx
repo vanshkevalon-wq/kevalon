@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./GameDevelopmentPage.css";
 
-import heroMeetImage from "../Images/a56b665d0645c5d0a1447ad8550a1be71e46c184.jpg";
 import aboutMeetImage from "../Images/game-dev-user.jpg.jpg";
 
 const gameSections = [
@@ -195,58 +194,117 @@ export default function GameDevelopmentPage() {
   return (
     <div className="gdp-page">
       <section className="gdp-hero">
-        <div className="gdp-hero__layout">
-          <div className="gdp-hero__copy">
-            <div className="gdp-hero__breadcrumb">
-              <Link to="/">Home</Link>
-              <i className="bi bi-chevron-right" />
-              <Link to="/services">Services</Link>
-              <i className="bi bi-chevron-right" />
-              <span>Game Development</span>
-            </div>
+        {/* Animated bg */}
+        <div className="gdp-hero__grid-bg" aria-hidden="true" />
+        <div className="gdp-hero__orb gdp-hero__orb--1" aria-hidden="true" />
+        <div className="gdp-hero__orb gdp-hero__orb--2" aria-hidden="true" />
+        <div className="gdp-hero__beam" aria-hidden="true" />
 
-            <div className="gdp-hero__badge">
-              <span />
-              Game Development
-            </div>
+        {/* Floating shapes */}
+        <svg className="gdp-hero__shape gdp-hero__shape--1" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,5 95,27 95,73 50,95 5,73 5,27" fill="none" stroke="rgba(97,187,197,1)" strokeWidth="2"/>
+        </svg>
+        <svg className="gdp-hero__shape gdp-hero__shape--2" viewBox="0 0 100 100" aria-hidden="true">
+          <rect x="10" y="10" width="80" height="80" rx="8" fill="none" stroke="rgba(10,143,182,1)" strokeWidth="2"/>
+        </svg>
+        <svg className="gdp-hero__shape gdp-hero__shape--3" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,5 95,95 5,95" fill="none" stroke="rgba(97,187,197,1)" strokeWidth="2"/>
+        </svg>
 
-            <h1>Know More About Game Development</h1>
-            <p>
-              Create engaging and immersive games that captivate players and drive success.
-            </p>
+        {/* Twinkling stars */}
+        <div className="gdp-hero__stars" aria-hidden="true">
+          {[...Array(8)].map((_, i) => <div key={i} className="gdp-hero__star" />)}
+        </div>
 
-            <div className="gdp-hero__actions">
-              <Link to="/contact" className="gdp-btn gdp-btn--primary">
-                Get Started
-              </Link>
-              <Link to="/portfolio" className="gdp-btn gdp-btn--ghost">
-                View Work
-              </Link>
-            </div>
-
-            <div className="gdp-hero__stats" aria-hidden="true">
-              <div>
-                <strong>2D + 3D</strong>
-                <span>Game builds</span>
-              </div>
-              <div>
-                <strong>Unity</strong>
-                <span>& Unreal workflow</span>
-              </div>
-              <div>
-                <strong>Mobile</strong>
-                <span>Web & desktop</span>
-              </div>
-            </div>
+        {/* Left: copy */}
+        <div className="gdp-hero__copy">
+          <div className="gdp-hero__badge">
+            <span />
+            Game Development
           </div>
 
-          <div className="gdp-hero__visual" aria-hidden="true">
-            <div className="gdp-hero__visual-frame">
-              <img src={heroMeetImage} alt="Game development team" />
+          <h1>
+            Game Development<br />
+            <span className="gdp-hero__accent">Services</span>
+          </h1>
+          <p>
+            Create engaging and immersive games that captivate players and drive success across mobile, web, and desktop platforms.
+          </p>
+
+          <div className="gdp-hero__actions">
+            <Link to="/contact" className="gdp-btn gdp-btn--primary">
+              Get Started <i className="bi bi-arrow-right ms-2" />
+            </Link>
+            <Link to="/portfolio" className="gdp-btn gdp-btn--ghost">
+              View Work
+            </Link>
+          </div>
+
+          <div className="gdp-hero__stats">
+            <div><strong>2D + 3D</strong><span>Game builds</span></div>
+            <div><strong>Unity</strong><span>& Unreal workflow</span></div>
+            <div><strong>Mobile</strong><span>Web & desktop</span></div>
+          </div>
+        </div>
+
+        {/* Right: visual card */}
+        <div className="gdp-hero__visual" aria-hidden="true">
+          <div className="gdp-hero__visual-frame">
+            <div className="gdp-visual-card">
+              <div className="gdp-visual-card__header">
+                <div className="gdp-visual-card__dot" />
+                <div className="gdp-visual-card__dot" />
+                <div className="gdp-visual-card__dot" />
+                <span className="gdp-visual-card__title">game-engine.js</span>
+              </div>
+
+              <div className="gdp-visual-stats">
+                <div className="gdp-visual-stat">
+                  <span className="gdp-visual-stat__label">Active Players</span>
+                  <span className="gdp-visual-stat__val">24.8K</span>
+                  <span className="gdp-visual-stat__badge">+12% this week</span>
+                </div>
+                <div className="gdp-visual-stat">
+                  <span className="gdp-visual-stat__label">Game FPS</span>
+                  <span className="gdp-visual-stat__val">60fps</span>
+                  <span className="gdp-visual-stat__badge">Optimized</span>
+                </div>
+                <div className="gdp-visual-stat">
+                  <span className="gdp-visual-stat__label">Platforms</span>
+                  <span className="gdp-visual-stat__val">5+</span>
+                  <span className="gdp-visual-stat__badge">iOS, Android, Web</span>
+                </div>
+                <div className="gdp-visual-stat">
+                  <span className="gdp-visual-stat__label">Rating</span>
+                  <span className="gdp-visual-stat__val">4.9★</span>
+                  <span className="gdp-visual-stat__badge">Store reviews</span>
+                </div>
+              </div>
+
+              <div className="gdp-visual-chart">
+                <span className="gdp-visual-chart__label">Weekly Downloads</span>
+                <div className="gdp-visual-bars">
+                  {[35,55,42,70,58,85,62].map((h, i) => (
+                    <div key={i} className="gdp-visual-bar" style={{ height: `${h}%` }} />
+                  ))}
+                </div>
+              </div>
+
+              <div className="gdp-visual-platforms">
+                {['Unity', 'Unreal', 'Flutter', 'React Native'].map(p => (
+                  <div key={p} className="gdp-visual-platform">
+                    <span>Engine</span>
+                    <span>{p}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="gdp-hero__visual-card">
-              <span>Production Ready</span>
-              <strong>Unity, Unreal, Mobile and Web</strong>
+
+            <div className="gdp-float-badge gdp-float-badge--1">
+              <i className="bi bi-controller" /> 2D & 3D Ready
+            </div>
+            <div className="gdp-float-badge gdp-float-badge--2">
+              <i className="bi bi-phone" /> Cross-Platform
             </div>
           </div>
         </div>
@@ -254,13 +312,12 @@ export default function GameDevelopmentPage() {
 
       <section className="gdp-content">
         <div className="gdp-container">
-          <header className="gdp-section-head">
-            <h2>Game Development</h2>
-            <p>With Kevalon Technology</p>
-          </header>
 
           <div className="gdp-intro">
             <div className="gdp-intro__copy">
+              <div className="gdp-section-label">
+                <i className="bi bi-controller" /> About Game Development
+              </div>
               <p>
                 Game development is the process of creating video games for mobile, web,
                 desktop, and console platforms. It includes game design, programming, art

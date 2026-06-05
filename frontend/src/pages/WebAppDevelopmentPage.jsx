@@ -82,7 +82,7 @@ const processSteps = [
 ];
 
 const capabilities = [
-  { icon: 'bi-check2-circle', label: 'Custom Web Application Development in Ahmedabad' },
+  { icon: 'bi-check2-circle', label: 'Custom Web Application Development' },
   { icon: 'bi-check2-circle', label: 'Enterprise Web Solutions' },
   { icon: 'bi-check2-circle', label: 'SaaS Application Development' },
   { icon: 'bi-check2-circle', label: 'E-commerce Web Development' },
@@ -98,6 +98,12 @@ const WebAppDevelopmentPage = () => {
 
   return (
     <div className="wad-page">
+      {/* ── Global Animated Background ── */}
+      <div className="wad-global-bg" aria-hidden="true">
+        <div className="wad-shape wad-shape-1" />
+        <div className="wad-shape wad-shape-2" />
+        <div className="wad-shape wad-shape-3" />
+      </div>
 
       {/* ══════════════════════════════════════════
           HERO
@@ -110,15 +116,6 @@ const WebAppDevelopmentPage = () => {
         <div className="wad-hero__orb wad-hero__orb--2" aria-hidden="true" />
 
         <div className="wad-hero__inner">
-          {/* breadcrumb */}
-          <div className="wad-hero__breadcrumb">
-            <Link to="/">Home</Link>
-            <i className="bi bi-chevron-right" />
-            <Link to="/services">Services</Link>
-            <i className="bi bi-chevron-right" />
-            <span>Web Application Development</span>
-          </div>
-
           {/* badge */}
           <div className="wad-hero__badge">
             <span className="wad-hero__badge-dot" />
@@ -318,7 +315,6 @@ const WebAppDevelopmentPage = () => {
           <div className="wad-process__grid">
             {processSteps.map((s, i) => (
               <div key={s.step} className="wad-process-card">
-                <div className="wad-process-card__num">{s.step}</div>
                 <div className="wad-process-card__icon">
                   <i className={`bi ${s.icon}`} />
                 </div>

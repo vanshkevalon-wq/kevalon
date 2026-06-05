@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { apiRequest } from "../utils/api";
 import "./ApplyNowPage.css";
 
 const roles = [
@@ -50,21 +49,11 @@ export default function ApplyNowPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: "loading", message: "" });
-    try {
-      const payload = new FormData();
-      Object.entries(formData).forEach(([k, v]) => payload.append(k, v));
-      if (resumeFile) payload.append("resume", resumeFile);
-
-      await apiRequest("/api/applications", { method: "POST", body: payload });
-
-      setStatus({ type: "success", message: "Application submitted! We'll review and get back to you soon." });
-      setFormData({ firstName: "", lastName: "", email: "", phone: "", linkedInProfile: "", portfolioUrl: "", role: "" });
-      setResumeFile(null);
-      setResumeFileName("");
-      e.target.reset();
-    } catch (err) {
-      setStatus({ type: "error", message: err.message || "Could not submit. Please try again." });
-    }
+    setStatus({ type: "success", message: "Application captured in static mode. We\'ll review and get back to you soon." });
+    setFormData({ firstName: "", lastName: "", email: "", phone: "", linkedInProfile: "", portfolioUrl: "", role: "" });
+    setResumeFile(null);
+    setResumeFileName("");
+    e.target.reset();
   };
 
   const field = (id, label, name, type, placeholder, required = false, icon = "bi-pencil") => (

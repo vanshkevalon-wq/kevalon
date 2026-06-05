@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { apiRequest } from '../utils/api';
+import { useState } from 'react';
 import './CareersPage.css';
+import { positions as staticPositions } from '../data/positionsData';
 
 /* ─── Static data ─────────────────────────────────────── */
 const values = [
@@ -34,18 +34,8 @@ function ApplyModal({ position, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: 'loading', msg: '' });
-    try {
-      const payload = new FormData();
-      Object.entries(form).forEach(([k, v]) => payload.append(k, v));
-      payload.append('role', position.title);
-      payload.append('positionId', position._id || '');
-      if (resume) payload.append('resume', resume);
-      await apiRequest('/api/applications', { method: 'POST', body: payload });
-      setStatus({ type: 'success', msg: 'Application submitted! We\'ll be in touch soon.' });
-      setTimeout(onClose, 2500);
-    } catch (err) {
-      setStatus({ type: 'error', msg: err.message || 'Could not submit. Please try again.' });
-    }
+    setStatus({ type: 'success', msg: 'Application captured in static mode. We\'ll be in touch soon.' });
+    setTimeout(onClose, 1800);
   };
 
   const field = (id, label, name, type, placeholder, required = false, icon = 'bi-pencil') => (
@@ -137,17 +127,10 @@ function ApplyModal({ position, onClose }) {
 
 /* ─── Main Page ───────────────────────────────────────── */
 export default function CareersPage() {
-  const [positions,     setPositions]     = useState([]);
-  const [loading,       setLoading]       = useState(true);
   const [activeFilter,  setFilter]        = useState(ALL_CATEGORIES);
   const [applyPosition, setApplyPosition] = useState(null);
 
-  useEffect(() => {
-    apiRequest('/api/positions')
-      .then(res => setPositions(res.data || []))
-      .catch(() => setPositions([]))
-      .finally(() => setLoading(false));
-  }, []);
+  const positions = staticPositions;
 
   const categories = [ALL_CATEGORIES, ...Array.from(new Set(positions.map(p => p.category)))];
   const filtered   = activeFilter === ALL_CATEGORIES ? positions : positions.filter(p => p.category === activeFilter);
@@ -161,6 +144,11 @@ export default function CareersPage() {
         <div className="car-hero__orb car-hero__orb--2" aria-hidden="true" />
         <div className="car-hero__dots"                 aria-hidden="true" />
         <div className="car-hero__inner">
+          <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', fontSize:'0.82rem', fontWeight:600, color:'rgba(255,255,255,0.5)', marginBottom:'20px' }}>
+            <a href="/" style={{ color:'#61BBC5', textDecoration:'none' }}>Home</a>
+            <span>›</span>
+            <span style={{ color:'#fff' }}>Careers</span>
+          </div>
           <h1 className="car-hero__title">
             Build Your Career With<br />
             <span>Kevalon Technology</span>
@@ -226,11 +214,7 @@ export default function CareersPage() {
             ))}
           </div>
 
-          {loading ? (
-            <div className="car-loading">
-              <span className="car-spinner" /> Loading positions…
-            </div>
-          ) : filtered.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="car-empty">
               <i className="bi bi-briefcase" />
               <p>No open positions in this category right now.</p>
@@ -238,7 +222,7 @@ export default function CareersPage() {
           ) : (
             <div className="car-positions__grid">
               {filtered.map(pos => (
-                <div key={pos._id} className="car-pos-card">
+                <div key={pos.id} className="car-pos-card">
                   <div className="car-pos-card__head">
                     <span className={`car-pos-badge ${pos.type === 'Intern' ? 'car-pos-badge--intern' : 'car-pos-badge--full'}`}>{pos.type}</span>
                     <span className="car-pos-cat">{pos.category}</span>

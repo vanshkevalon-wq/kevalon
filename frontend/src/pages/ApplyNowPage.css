@@ -5,7 +5,7 @@
 .ap-page {
   position: relative;
   min-height: 100vh;
-  padding: 5rem 1.5rem 6rem;
+  padding: 8rem 1.5rem 6rem;
   background: #f8fafc;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
@@ -48,20 +48,21 @@
 /* ── Grid ── */
 .ap-grid {
   display: grid;
-  grid-template-columns: 400px 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* ══════════════════════════════════════════════
    LEFT PANEL
 ══════════════════════════════════════════════ */
 .ap-left {
-  position: sticky;
-  top: 100px;
+  position: relative;
+  height: 100%;
 }
 
 .ap-left__inner {
+  height: 100%;
   background: linear-gradient(145deg, #011e2e 0%, #013a52 60%, #014867 100%);
   border-radius: 2rem;
   padding: 2.75rem 2.25rem;
@@ -69,6 +70,8 @@
   overflow: hidden;
   position: relative;
   box-shadow: 0 30px 80px rgba(1,72,103,0.3);
+  display: flex;
+  flex-direction: column;
 }
 .ap-left__inner::before {
   content: '';
@@ -231,7 +234,7 @@
 .ap-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.1rem;
 }
 
 .ap-form__row {
@@ -271,16 +274,17 @@
 .ap-field__wrap input,
 .ap-field__wrap select {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.6rem;
+  padding: 0.52rem 1rem 0.52rem 2.6rem;
   border: 1.5px solid rgba(148,163,184,0.35);
-  border-radius: 12px;
+  border-radius: 10px;
   background: #f8fafc;
   color: #0f172a;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-family: 'Inter', sans-serif;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   appearance: none;
+  box-sizing: border-box;
 }
 .ap-field__wrap input::placeholder { color: #94a3b8; }
 .ap-field__wrap input:focus,

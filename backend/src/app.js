@@ -6,6 +6,7 @@ const applicationRoutes = require('./routes/applicationRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const pageRoutes = require('./routes/pageRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const portfolioLeadRoutes = require('./routes/portfolioLeadRoutes');
 const positionRoutes = require('./routes/positionRoutes');
 
 function createApp() {
@@ -51,6 +52,7 @@ function createApp() {
   app.use('/api/pages', pageRoutes);
   app.use('/api/admin', adminRoutes);
   app.use('/api/positions', positionRoutes);
+  app.use('/api/portfolio-leads', portfolioLeadRoutes);
 
   app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });

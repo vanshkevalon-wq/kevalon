@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { apiRequest } from '../utils/api';
 import './Contact.css';
 
 const contactInfo = [
@@ -18,7 +17,7 @@ const contactInfo = [
   {
     icon: 'bi-geo-alt-fill',
     label: 'Visit Us',
-    value: 'Ahmedabad, Gujarat, India',
+    value: 'India',
     sub: 'Available for in-person meetings',
   },
 ];
@@ -38,21 +37,9 @@ const Contact = ({ showMap = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: 'loading', message: '' });
-    try {
-      await apiRequest('/api/contact', {
-        method: 'POST',
-        body: JSON.stringify({
-          fullName: `${formData.firstName} ${formData.lastName}`.trim(),
-          email: formData.email,
-          message: formData.message,
-        }),
-      });
-      setStatus({ type: 'success', message: 'Message sent! We\'ll be in touch soon.' });
-      setFormData({ firstName: '', lastName: '', email: '', phone: '', service: '', message: '' });
-      e.target.reset();
-    } catch (err) {
-      setStatus({ type: 'error', message: err.message || 'Could not send message. Please try again.' });
-    }
+    setStatus({ type: 'success', message: 'Message captured in static mode. We\'ll be in touch soon.' });
+    setFormData({ firstName: '', lastName: '', email: '', phone: '', service: '', message: '' });
+    e.target.reset();
   };
 
   return (
@@ -98,19 +85,7 @@ const Contact = ({ showMap = false }) => {
                 ))}
               </div>
 
-              {/* social row */}
-              <div className="ct-socials">
-                {[
-                  { icon: 'bi-linkedin',  href: '#' },
-                  { icon: 'bi-twitter-x', href: '#' },
-                  { icon: 'bi-instagram', href: '#' },
-                  { icon: 'bi-github',    href: '#' },
-                ].map((s) => (
-                  <a key={s.icon} href={s.href} className="ct-social-btn" aria-label={s.icon}>
-                    <i className={`bi ${s.icon}`} />
-                  </a>
-                ))}
-              </div>
+              {/* social row removed */}
             </div>
           </div>
 
@@ -247,25 +222,10 @@ const Contact = ({ showMap = false }) => {
                   <span className="ct-badge__dot" />
                   Find Us
                 </div>
-                <h3 className="ct-map-title">Our Location</h3>
+                <h2 className="ct-map-title">Our Location</h2>
                 <p className="ct-map-sub">
-                  We're based in Ahmedabad, Gujarat — the heart of India's tech and startup ecosystem.
-                  Drop by or reach us online anytime.
+                  Come meet us in person — we're based in Gujarat, India.
                 </p>
-              </div>
-              <div className="ct-map-header__chips">
-                <div className="ct-map-chip">
-                  <i className="bi bi-geo-alt-fill" />
-                  <span>Ahmedabad, Gujarat 380001</span>
-                </div>
-                <div className="ct-map-chip">
-                  <i className="bi bi-clock-fill" />
-                  <span>Mon – Sat · 9 AM – 7 PM IST</span>
-                </div>
-                <div className="ct-map-chip">
-                  <i className="bi bi-telephone-fill" />
-                  <span>+91 98765 43210</span>
-                </div>
               </div>
             </div>
 
@@ -292,7 +252,7 @@ const Contact = ({ showMap = false }) => {
                 </div>
                 <div>
                   <p className="ct-map-card__name">Kevalon Technology</p>
-                  <p className="ct-map-card__addr">Ahmedabad, Gujarat, India</p>
+                  <p className="ct-map-card__addr">Gujarat, India</p>
                 </div>
                 <a
                   href="https://maps.google.com/?q=Ahmedabad,Gujarat,India"

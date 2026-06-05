@@ -1,7 +1,36 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Global heading font ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+/* ── Global body font — forces Playfair Display everywhere ── */
+body {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+/* Override all explicit font-family rules across all components */
+p, span, a, li, td, th, label, input, select, textarea,
+button, div, section, article, nav, header, footer,
+strong, em, small, cite, blockquote {
+  font-family: 'Playfair Display', Georgia, serif !important;
+}
+
+/* Preserve monospace for code blocks */
+code, pre, .wad-code-window__body, .wad-code-window__tab,
+[class*="monospace"] {
+  font-family: 'Courier New', monospace !important;
+}
+
+/* Preserve Bootstrap Icons */
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  font-family: "bootstrap-icons" !important;
+}
 
 /* Protect Bootstrap Icons from Tailwind preflight font reset */
 [class^="bi-"]::before,
@@ -19,4 +48,33 @@
 
 body {
   margin: 0px;
+}
+
+/* Utility: subtle large circular bubbles for light-blue sections */
+.light-bubble-bg {
+  position: relative;
+  overflow: hidden;
+}
+.light-bubble-bg::before,
+.light-bubble-bg::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at 40% 40%, rgba(97,187,197,0.16), rgba(161,220,229,0.06) 45%, transparent 60%);
+  opacity: 1;
+  filter: blur(6px);
+  z-index: 0;
+}
+.light-bubble-bg::before {
+  width: 260px;
+  height: 260px;
+  left: -6%;
+  top: 18%;
+}
+.light-bubble-bg::after {
+  width: 320px;
+  height: 320px;
+  right: -6%;
+  bottom: 6%;
 }

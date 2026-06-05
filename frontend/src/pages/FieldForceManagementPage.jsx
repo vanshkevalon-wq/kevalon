@@ -247,23 +247,26 @@ export default function FieldForceManagementPage() {
   return (
     <div className="field-page">
       <section className="field-hero">
+        {/* White-theme decorations */}
+        <div className="field-hero__orb field-hero__orb--1" aria-hidden="true" />
+        <div className="field-hero__orb field-hero__orb--2" aria-hidden="true" />
+        <div className="field-hero__beam" aria-hidden="true" />
+
         <div className="field-hero__inner">
           <div className="field-hero__layout">
             <div className="field-hero__copy">
-              <div className="field-hero__breadcrumbs">
-                <Link to="/">Home</Link>
-                <span>/</span>
-                <Link to="/services">Services</Link>
-                <span>/</span>
-                <strong>Field Force Management</strong>
-              </div>
-
               <p className="field-hero__eyebrow">Field Force Management</p>
-              <div className="field-hero__badge">Modern mobile-first field operations</div>
-              <h1>Know More About Field Force Management</h1>
+              <div className="field-hero__badge">
+                <div className="field-hero__badge-dot" />
+                Mobile-first field operations
+              </div>
+              <h1>
+                Field Force<br />
+                <span className="field-hero__title-accent">Management</span>
+              </h1>
               <p className="field-hero__subtitle">
-                Manage and monitor your on-field teams effectively with real-time tracking,
-                analytics, and operational visibility.
+                Manage and monitor your on-field teams with real-time tracking,
+                analytics, and complete operational visibility.
               </p>
 
               <div className="field-hero__pills" aria-label="Field force highlights">
@@ -273,8 +276,12 @@ export default function FieldForceManagementPage() {
               </div>
 
               <div className="field-hero__actions">
-                <Link to="/contact" className="field-btn field-btn--primary">Get in Touch</Link>
-                <Link to="/services" className="field-btn field-btn--ghost">Explore Services</Link>
+                <Link to="/contact" className="field-btn field-btn--primary">
+                  Get in Touch <i className="bi bi-arrow-right ms-2" />
+                </Link>
+                <Link to="/services" className="field-btn field-btn--ghost">
+                  Explore Services
+                </Link>
               </div>
 
               <div className="field-hero__metrics" aria-label="Field force metrics">
@@ -323,12 +330,12 @@ export default function FieldForceManagementPage() {
                     <strong>Actionable performance reports</strong>
                   </div>
                 </div>
-              </div>
 
-              <div className="field-hero__bars" aria-hidden="true">
-                {heroBars.map((bar, index) => (
-                  <span key={`${bar.c}-${index}`} style={{ height: `${bar.h}%`, background: bar.c }} />
-                ))}
+                <div className="field-hero__bars" aria-hidden="true">
+                  {heroBars.map((bar, index) => (
+                    <span key={`${bar.c}-${index}`} style={{ height: `${bar.h}%`, background: bar.c }} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -337,9 +344,8 @@ export default function FieldForceManagementPage() {
 
       <section className="field-content">
         <div className="field-container">
-          <div className="field-section-title">
-            <h2>Field Force Management</h2>
-            <h3>With Kevalon Technology</h3>
+          <div className="field-section-label">
+            <i className="bi bi-geo-alt" /> Our Services
           </div>
 
           <div className="field-grid field-grid--intro">

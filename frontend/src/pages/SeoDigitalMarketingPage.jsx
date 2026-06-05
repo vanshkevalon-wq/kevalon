@@ -43,25 +43,98 @@ export default function SeoDigitalMarketingPage() {
   return (
     <div className="seo-page">
       <section className="seo-hero">
+        {/* White theme decorations */}
+        <div className="seo-hero__orb seo-hero__orb--1" aria-hidden="true" />
+        <div className="seo-hero__orb seo-hero__orb--2" aria-hidden="true" />
+        <div className="seo-hero__beam" aria-hidden="true" />
+
         <div className="seo-hero__inner">
-          <div className="seo-hero__crumbs">
-            <Link to="/">Home</Link>
-            <span>/</span>
-            <Link to="/services">Services</Link>
-            <span>/</span>
-            <strong>SEO & Digital Marketing</strong>
+          {/* Left: copy */}
+          <div className="seo-hero__copy">
+            <div className="seo-hero__badge">
+              <div className="seo-hero__badge-dot" />
+              SEO &amp; Digital Marketing
+            </div>
+            <h1>
+              SEO &amp; Digital<br />
+              <span className="seo-hero__title-accent">Marketing</span>
+            </h1>
+            <p>
+              Grow your visibility, traffic, and revenue with data-driven SEO and marketing strategies built for real results.
+            </p>
+            <div className="seo-hero__actions">
+              <Link to="/contact" className="seo-btn seo-btn--primary">
+                Get Started <i className="bi bi-arrow-right ms-2" />
+              </Link>
+              <Link to="/portfolio" className="seo-btn seo-btn--ghost">
+                View Work
+              </Link>
+            </div>
+            <div className="seo-hero__stats">
+              <div className="seo-stat-chip"><strong>Top 10</strong><span>Google rankings</span></div>
+              <div className="seo-stat-chip"><strong>3x</strong><span>Organic traffic growth</span></div>
+              <div className="seo-stat-chip"><strong>ROI</strong><span>Focused campaigns</span></div>
+            </div>
           </div>
-          <h1>SEO & Digital Marketing Services</h1>
-          <p>
-            Grow your visibility, traffic, and revenue with data-driven SEO and marketing strategies.
-          </p>
+
+          {/* Right: visual */}
+          <div className="seo-hero__visual" aria-hidden="true">
+            <div style={{ position:'relative', width:'min(440px,100%)' }}>
+              <div className="seo-visual-card">
+                <div className="seo-visual-top">
+                  <div>
+                    <span>SEO Dashboard</span>
+                    <strong>Performance overview</strong>
+                  </div>
+                  <i className="bi bi-graph-up-arrow" />
+                </div>
+
+                <div className="seo-visual-metrics">
+                  {[
+                    { label:'Organic Traffic', val:'48.2K', delta:'+24%' },
+                    { label:'Rankings', val:'Top 5', delta:'+12' },
+                    { label:'Conversions', val:'3.8%', delta:'+0.6%' },
+                  ].map(m => (
+                    <div key={m.label} className="seo-visual-metric">
+                      <span>{m.label}</span>
+                      <strong>{m.val}</strong>
+                      <small>{m.delta}</small>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="seo-visual-chart">
+                  <span>Weekly Organic Sessions</span>
+                  <div className="seo-visual-bars">
+                    {[35,48,52,68,62,80,74].map((h,i) => (
+                      <div key={i} className="seo-visual-bar" style={{ height:`${h}%` }} />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="seo-visual-keywords">
+                  {['SEO Audit','Keyword Research','On-Page','Link Building','Google Ads','Analytics'].map((kw,i) => (
+                    <span key={kw} className={i < 3 ? 'active' : ''}>{kw}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="seo-float-badge seo-float-badge--1">
+                <i className="bi bi-search" /> #1 Rankings
+              </div>
+              <div className="seo-float-badge seo-float-badge--2">
+                <i className="bi bi-graph-up" /> +3x Traffic
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <section className="seo-content">
         <div className="seo-content__head">
-          <h2>Web SEO & Digital Marketing Services Development</h2>
-          <h3>Grow Your Business Online with Kevalon Technology</h3>
+          <div className="seo-section-label">
+            <i className="bi bi-graph-up-arrow" /> Our Services
+          </div>
         </div>
 
         <div className="seo-grid seo-grid--intro">

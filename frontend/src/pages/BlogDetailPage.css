@@ -93,8 +93,8 @@
 .bdet-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.75rem;
+  gap: 8px;
+  font-size: 1rem;
   color: rgba(255,255,255,0.45);
 }
 .bdet-breadcrumb a { color: rgba(255,255,255,0.55); text-decoration: none; }

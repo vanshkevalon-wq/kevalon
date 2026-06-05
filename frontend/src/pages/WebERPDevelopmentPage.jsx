@@ -212,25 +212,27 @@ function ToolIcon({ kind, label }) {
 
 export default function WebERPDevelopmentPage() {
   return (
-    <div className="erp-page">
+    <div className="erp-page light-bubble-bg">
       <section className="erp-hero">
+        {/* White-theme decorations */}
+        <div className="erp-hero__orb erp-hero__orb--1" aria-hidden="true" />
+        <div className="erp-hero__orb erp-hero__orb--2" aria-hidden="true" />
+
         <div className="erp-hero__inner">
           <div className="erp-hero__grid">
             <div className="erp-hero__copy">
-              <div className="erp-hero__breadcrumb">
-                <Link to="/">Home</Link>
-                <i className="bi bi-chevron-right" />
-                <Link to="/services">Services</Link>
-                <i className="bi bi-chevron-right" />
-                <span>Web ERP Development</span>
+              <div className="erp-hero__eyebrow">
+                <div className="erp-hero__badge-dot" />
+                Web ERP Development
               </div>
-
-              <div className="erp-hero__eyebrow">Web ERP Development</div>
-              <h1>Know More About Web ERP Development</h1>
+              <h1>
+                Web ERP<br />
+                <span className="erp-hero__title-accent">Development</span>
+              </h1>
               <p>Build powerful, integrated ERP solutions to streamline finance, operations, inventory, and business workflows.</p>
 
               <div className="erp-hero__actions">
-                <Link to="#erp-modules" className="erp-btn erp-btn--primary">Explore ERP Modules</Link>
+                <Link to="#erp-modules" className="erp-btn erp-btn--primary">Explore ERP Modules <i className="bi bi-arrow-right ms-2" /></Link>
                 <Link to="/contact" className="erp-btn erp-btn--ghost">Talk to Us</Link>
               </div>
 
@@ -284,10 +286,9 @@ export default function WebERPDevelopmentPage() {
 
       <section className="erp-content">
         <div className="erp-container">
-          <header className="erp-section-head">
-            <h2>Web ERP Development</h2>
-            <p>With Kevalon Technology</p>
-          </header>
+          <div className="erp-section-label">
+            <i className="bi bi-kanban" /> ERP Modules
+          </div>
 
           <div className="erp-layout" id="erp-modules">
             <div className="erp-left">

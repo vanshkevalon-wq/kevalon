@@ -239,28 +239,28 @@ export default function ECommerceDevelopmentPage() {
   return (
     <div className="ece-page">
       <section className="ece-hero">
+        {/* White-theme hero decorations */}
+        <div className="ece-hero__orb ece-hero__orb--1" aria-hidden="true" />
+        <div className="ece-hero__orb ece-hero__orb--2" aria-hidden="true" />
+        <div className="ece-hero__beam" aria-hidden="true" />
+
         <div className="ece-hero__inner">
           <div className="ece-hero__grid">
             <div className="ece-hero__content">
-              <div className="ece-hero__breadcrumb">
-                <Link to="/">Home</Link>
-                <i className="bi bi-chevron-right" />
-                <Link to="/services">Services</Link>
-                <i className="bi bi-chevron-right" />
-                <span>E-Commerce Development</span>
-              </div>
-
               <div className="ece-hero__badge">
                 <span />
                 E-Commerce Development
               </div>
 
-              <h1>Know More About E-Commerce Development</h1>
-              <p>Build powerful online stores that drive sales and grow your business.</p>
+              <h1>
+                E-Commerce<br />
+                <span className="ece-hero__title-accent">Development</span>
+              </h1>
+              <p>Build powerful online stores that drive sales and grow your business globally.</p>
 
               <div className="ece-hero__actions">
                 <Link to="/contact" className="ece-btn ece-btn--primary">
-                  Get Started
+                  Get Started <i className="bi bi-arrow-right ms-2" />
                 </Link>
                 <Link to="/portfolio" className="ece-btn ece-btn--ghost">
                   View Work
@@ -364,10 +364,11 @@ export default function ECommerceDevelopmentPage() {
 
       <section className="ece-content">
         <div className="ece-container">
-          <header className="ece-section-head">
-            <h2>E-Commerce Development</h2>
-            <p>With Kevalon Technology</p>
-          </header>
+          <div className="ece-section-head">
+            <div className="ece-section-label">
+              <i className="bi bi-cart3" /> Our Services
+            </div>
+          </div>
 
           <div className="ece-main-grid">
             <div className="ece-left-col">

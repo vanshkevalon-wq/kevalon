@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import internshipTeamImage from '../Images/game-dev-user.jpg.jpg';
 import './InternshipTrainingPage.css';
 
@@ -15,74 +15,98 @@ function FeatureItem({ children }) {
 export default function InternshipTrainingPage() {
   return (
     <div className="it-page">
+      {/* ══ HERO ══ */}
       <section className="it-hero">
-        <Container>
-          <div className="it-hero__panel">
-            <div className="it-hero__copy">
-              <p className="it-hero__eyebrow">Internship / Training Program</p>
-              <h1 className="it-hero__title">Know More About Internship / Training</h1>
-              <p className="it-hero__sub">
-                Hands-on IT training and internships to kickstart your career in technology. Learn through live projects,
-                guided mentorship, and industry-ready implementation.
-              </p>
+        {/* White-theme decorations */}
+        <div className="it-hero__orb it-hero__orb--1" aria-hidden="true" />
+        <div className="it-hero__orb it-hero__orb--2" aria-hidden="true" />
+        <div className="it-hero__beam" aria-hidden="true" />
 
-              <div className="it-hero__chips" aria-label="Program highlights">
-                <span>Live Projects</span>
-                <span>Expert Mentors</span>
-                <span>Certification</span>
-                <span>Career Support</span>
-              </div>
+        {/* Rising particles */}
+        <div className="it-hero__particles" aria-hidden="true">
+          {[...Array(6)].map((_,i) => <div key={i} className="it-hero__particle" />)}
+        </div>
 
-              <div className="it-hero__stats-row">
-                <div className="it-hero__stat-card">
-                  <strong>3-6 Months</strong>
-                  <span>Practical training duration</span>
-                </div>
-                <div className="it-hero__stat-card">
-                  <strong>100%</strong>
-                  <span>Real project exposure</span>
-                </div>
-                <div className="it-hero__stat-card it-hero__stat-card--accent">
-                  <strong>Career Focused</strong>
-                  <span>Built for industry readiness</span>
-                </div>
-              </div>
+        {/* ── Left: Copy ── */}
+        <div className="it-hero__copy">
+          <div className="it-hero__eyebrow">
+            <div className="it-hero__badge-dot" />
+            Internship / Training Program
+          </div>
 
-              <div className="it-hero__actions">
-                <Button className="it-hero__primary-btn" href="/apply-now">
-                  Apply Now
-                </Button>
-                <Button variant="outline-light" className="it-hero__secondary-btn" href="#positions">
-                  View Programs
-                </Button>
-              </div>
+          <h1 className="it-hero__title">
+            Internship &amp;<br />
+            <span className="it-hero__title-accent">Training</span>
+          </h1>
+
+          <p className="it-hero__sub">
+            Hands-on IT training and internships to kickstart your career in technology. Learn through live projects,
+            guided mentorship, and industry-ready implementation.
+          </p>
+
+          <div className="it-hero__chips" aria-label="Program highlights">
+            <span>Live Projects</span>
+            <span>Expert Mentors</span>
+            <span>Certification</span>
+            <span>Career Support</span>
+          </div>
+
+          <div className="it-hero__stats-row">
+            <div className="it-hero__stat-card">
+              <strong>3-6 Months</strong>
+              <span>Practical training</span>
             </div>
-
-            <div className="it-hero__visual" aria-hidden="true">
-              <div className="it-hero__image-card">
-                <img src={internshipTeamImage} alt="Internship and training team" />
-              </div>
-              <div className="it-hero__floating it-hero__floating--top">
-                <span className="it-hero__floating-label">Hands-on Learning</span>
-                <strong>Real projects, not just theory</strong>
-              </div>
-              <div className="it-hero__floating it-hero__floating--bottom">
-                <span className="it-hero__floating-label">Career Outcome</span>
-                <strong>Certification + support + portfolio</strong>
-              </div>
+            <div className="it-hero__stat-card">
+              <strong>100%</strong>
+              <span>Real project exposure</span>
+            </div>
+            <div className="it-hero__stat-card it-hero__stat-card--accent">
+              <strong>Career Focused</strong>
+              <span>Industry readiness</span>
             </div>
           </div>
-        </Container>
+
+          <div className="it-hero__actions">
+            <Link to="/apply-now" className="it-hero__primary-btn">
+              Apply Now <i className="bi bi-arrow-right ms-2" />
+            </Link>
+            <a href="#positions" className="it-hero__secondary-btn">
+              View Programs
+            </a>
+          </div>
+        </div>
+
+        {/* ── Right: Visual ── */}
+        <div className="it-hero__visual" aria-hidden="true">
+          <div className="it-hero__glow it-hero__glow--one" />
+          <div className="it-hero__glow it-hero__glow--two" />
+
+          <div className="it-hero__image-card">
+            <img src={internshipTeamImage} alt="Internship and training team" />
+          </div>
+
+          <div className="it-hero__floating it-hero__floating--top">
+            <span className="it-hero__floating-label">Hands-on Learning</span>
+            <strong>Real projects, not just theory</strong>
+          </div>
+          <div className="it-hero__floating it-hero__floating--bottom">
+            <span className="it-hero__floating-label">Career Outcome</span>
+            <strong>Certification + support + portfolio</strong>
+          </div>
+        </div>
       </section>
 
+      {/* ══ CONTENT ══ */}
       <section className="it-content py-5">
-        <Container>
+        <div style={{ maxWidth:'1180px', margin:'0 auto', padding:'0 1.5rem' }}>
           <div className="it-grid">
             <main className="it-main">
               <div className="it-intro">
+                <div className="it-section-label">
+                  <i className="bi bi-mortarboard" /> Our Programs
+                </div>
                 <p className="it-intro__text">
-                  Explore our internship and training tracks below. The section above is the main introduction, and this
-                  area focuses on the specific programs, side benefits, and certification support.
+                  Explore our internship and training tracks below. Each program is designed with hands-on, industry-focused learning to prepare you for real IT careers.
                 </p>
 
                 <article className="it-card-large it-training-card" id="positions">
@@ -92,8 +116,8 @@ export default function InternshipTrainingPage() {
                   </div>
                   <div className="it-card-body two-col">
                     <ul>
-                      <li>Learn to design, develop, and deploy high-performance mobile apps.</li>
-                      <li>Focus on real-world app development and scalable architecture.</li>
+                      <li>Design, develop, and deploy high-performance mobile apps.</li>
+                      <li>Real-world app development and scalable architecture.</li>
                       <li>React Native and Flutter for mobile app creation.</li>
                     </ul>
                     <ul>
@@ -147,60 +171,44 @@ export default function InternshipTrainingPage() {
             <aside className="it-side">
               <div className="it-side-card">
                 <div className="it-side-body">
-                  <h4>Internship & Training Program</h4>
+                  <h4>Internship &amp; Training Program</h4>
                   <p>
                     At Kevalon Technology, we offer structured internship and training programs that combine theoretical
-                    knowledge with practical application. Our programs are designed to help you build confidence,
-                    skills, and industry-ready experience.
+                    knowledge with practical application to build confidence, skills, and industry-ready experience.
                   </p>
-
                   <p>
-                    We focus on skill development, real project exposure, teamwork, and problem-solving abilities so
-                    learners are ready for real IT careers, not just certificates.
+                    We focus on skill development, real project exposure, teamwork, and problem-solving so learners are
+                    ready for real IT careers, not just certificates.
                   </p>
 
                   <div className="it-features-grid">
-                    <div className="it-feature">
-                      <div className="it-feature-icon">✓</div>
-                      <div>
-                        <strong>Live Projects</strong>
-                        <p className="small">Practical learning approach</p>
+                    {[
+                      { icon:'✓', title:'Live Projects', sub:'Practical learning approach' },
+                      { icon:'✓', title:'Expert Mentors', sub:'Industry professionals' },
+                      { icon:'✓', title:'Career Support', sub:'Guidance & referrals' },
+                      { icon:'✓', title:'Certification', sub:'Verified credentials' },
+                    ].map(f => (
+                      <div key={f.title} className="it-feature">
+                        <div className="it-feature-icon">{f.icon}</div>
+                        <div>
+                          <strong>{f.title}</strong>
+                          <p className="small">{f.sub}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="it-feature">
-                      <div className="it-feature-icon">✓</div>
-                      <div>
-                        <strong>Expert Mentors</strong>
-                        <p className="small">Industry professionals</p>
-                      </div>
-                    </div>
-                    <div className="it-feature">
-                      <div className="it-feature-icon">✓</div>
-                      <div>
-                        <strong>Career Support</strong>
-                        <p className="small">Career guidance & referrals</p>
-                      </div>
-                    </div>
-                    <div className="it-feature">
-                      <div className="it-feature-icon">✓</div>
-                      <div>
-                        <strong>Certification</strong>
-                        <p className="small">Verified training credentials</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   <div className="it-side-note">
-                    Trusted by students • Career-focused training • Industry aligned program
+                    Trusted by students • Career-focused • Industry aligned
                   </div>
 
                   <div className="it-side-cta">
-                    <Button className="it-apply-btn" href="/apply-now">
+                    <Link to="/apply-now" className="it-apply-btn">
                       Start Your Journey
-                    </Button>
-                    <Button variant="outline-primary" className="it-contact-btn" href="/contact">
+                    </Link>
+                    <Link to="/contact" className="it-contact-btn">
                       Contact Us
-                    </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -210,37 +218,36 @@ export default function InternshipTrainingPage() {
           <section className="it-bottom-banner">
             <div className="it-bottom-banner__content">
               <div className="it-bottom-banner__copy">
-                <h3>Certification & Support</h3>
+                <h3>Certification &amp; Support</h3>
                 <p>
                   Earn industry-recognized certifications and receive continuous career support designed to guide you
-                  from learning to employment. Our structured certification and mentorship model ensures long-term
-                  professional growth, confidence, and career stability.
+                  from learning to employment with long-term professional growth and career stability.
                 </p>
               </div>
 
               <div className="it-bottom-banner__lists">
                 <div className="it-bottom-banner__list">
                   <FeatureItem>Industry-recognized completion certificates</FeatureItem>
-                  <FeatureItem>Resume building & professional profiling</FeatureItem>
+                  <FeatureItem>Resume building &amp; professional profiling</FeatureItem>
                   <FeatureItem>Job placement assistance</FeatureItem>
                   <FeatureItem>Continuous learning support</FeatureItem>
                 </div>
                 <div className="it-bottom-banner__list">
                   <FeatureItem>Interview preparation sessions</FeatureItem>
-                  <FeatureItem>Community & alumni network access</FeatureItem>
+                  <FeatureItem>Community &amp; alumni network access</FeatureItem>
                   <FeatureItem>Lifetime access to resources</FeatureItem>
                   <FeatureItem>Hands-on project guidance</FeatureItem>
                 </div>
               </div>
 
-              <div className="it-bottom-banner__cta">
-                <Button className="it-banner-btn" href="/apply-now">
-                  Start Your Journey
-                </Button>
-              </div>
+              {/* <div className="it-bottom-banner__cta">
+                <Link to="/apply-now" className="it-banner-btn">
+                  Start Your Journey <i className="bi bi-arrow-right ms-2" />
+                </Link>
+              </div> */}
             </div>
           </section>
-        </Container>
+        </div>
       </section>
     </div>
   );
