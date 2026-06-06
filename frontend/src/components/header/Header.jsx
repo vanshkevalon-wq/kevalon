@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import logo from "../../Images/Logo.png";
 import internshipTrainingImage from "../../Images/c0ff1c6069579eccf787d1ce2948712b02b542ea.jpg";
 import crmPreviewImage from "../../Images/fa88305e0eb98cb1d11865dba2fbfda76e2af9ae.jpg";
 
@@ -157,7 +158,7 @@ export default function Header() {
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-2.5 shrink-0 cursor-pointer">
             <img
-              src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/9Pyj6mPiWW/p4s798c4_expires_30_days.png"
+              src={logo}
               alt="Kevalon Technology Logo"
               className="h-[clamp(42px,6vw,58px)] w-auto object-contain"
             />
@@ -405,7 +406,7 @@ export default function Header() {
         {/* ── Header row: logo + close button ── */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-[rgba(13,61,90,0.08)]" style={{ flexShrink: 0 }}>
           <img
-            src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/9Pyj6mPiWW/p4s798c4_expires_30_days.png"
+            src={logo}
             alt="logo"
             style={{ height: '40px', width: 'auto', objectFit: 'contain' }}
           />

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import logo from '../Images/Logo.png';
 import './SplashScreen.css';
 
 export default function SplashScreen({ onDone }) {
@@ -71,7 +72,7 @@ export default function SplashScreen({ onDone }) {
             
             <div className="splash__logo-wrap">
               <img
-                src="https://storage.googleapis.com/tagjs-prod.appspot.com/v1/9Pyj6mPiWW/p4s798c4_expires_30_days.png"
+                src={logo}
                 alt="Kevalon Technology"
                 className="splash__logo"
               />
