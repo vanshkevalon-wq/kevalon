@@ -209,8 +209,8 @@ function ApplyModal({ position, onClose }) {
           )}
 
           <button type="submit"
-            className="inline-flex items-center justify-center gap-[0.6rem] w-full py-[0.95rem] border-none rounded-[10px] text-white text-[0.92rem] font-bold cursor-pointer shadow-[0_6px_20px_rgba(1,72,103,0.22)] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
-            style={{ background: 'linear-gradient(138deg,#61BBC5,#034665)' }}
+            className="inline-flex items-center justify-center gap-[0.6rem] w-full py-[0.95rem] border-none rounded-full text-white text-[0.92rem] font-bold cursor-pointer shadow-[0_6px_20px_rgba(1,72,103,0.22)] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            style={{ background: 'linear-gradient(138deg,#61BBC5,#034665)', borderRadius: '9999px' }}
             disabled={status.type === 'loading'}>
             {status.type === 'loading'
               ? <><span className="inline-block w-4 h-4 border-2 border-[rgba(255,255,255,0.35)] border-t-white rounded-full animate-spin" /> Submitting…</>
@@ -290,10 +290,10 @@ export default function CareersPage() {
           </div>
 
           {/* right — card */}
-          <div className="relative hidden md:block" style={{ animation: hero.visible ? 'cr-right 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both' : 'none' }}>
-            <div className="relative" style={{ height: 380 }}>
-              <div className="absolute top-0 left-0 right-0 z-10 bg-white rounded-3xl p-[30px_28px] transition-all duration-[350ms] hover:-translate-y-1.5 hover:shadow-[0_24px_56px_rgba(3,70,101,0.14)]"
-                style={{ border:'1.5px solid rgba(97,187,197,0.18)', boxShadow:'0 12px 40px rgba(3,70,101,0.10)' }}>
+          <div className="relative" style={{ animation: hero.visible ? 'cr-right 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both' : 'none' }}>
+            <div className="relative" style={{ height: 'clamp(300px,55vw,420px)', overflow: 'visible', padding: '16px 36px 24px 16px' }}>
+              <div className="absolute z-10 bg-white rounded-3xl p-[30px_28px] transition-all duration-[350ms] hover:-translate-y-1.5 hover:shadow-[0_24px_56px_rgba(3,70,101,0.14)]"
+                style={{ top: 16, left: 16, right: 36, border:'1.5px solid rgba(97,187,197,0.18)', boxShadow:'0 12px 40px rgba(3,70,101,0.10)' }}>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-11 h-11 rounded-[13px] flex items-center justify-center text-white text-[1.1rem]"
                     style={{ background:'linear-gradient(138deg,#61BBC5,#034665)', boxShadow:'0 6px 18px rgba(97,187,197,0.35)' }}>
@@ -314,7 +314,7 @@ export default function CareersPage() {
                 { cls:'top-[-10px] right-[20px]',   anim:'cr-float-c 4.5s ease-in-out 0.5s infinite', icon:'bi-mortarboard-fill', label:'Mentorship' },
               ].map((chip) => (
                 <div key={chip.label}
-                  className={`absolute z-[4] inline-flex items-center gap-1.5 rounded-full font-extrabold text-[#034665] whitespace-nowrap ${chip.cls}`}
+                  className={`absolute z-[20] hidden sm:inline-flex items-center gap-1.5 rounded-full font-extrabold text-[#034665] whitespace-nowrap ${chip.cls}`}
                   style={{ background:'#fff', border:'1.5px solid rgba(97,187,197,0.28)', boxShadow:'0 6px 22px rgba(3,70,101,0.12)', padding:'9px 16px', fontSize:'0.78rem', animation:chip.anim }}>
                   <i className={`bi ${chip.icon} text-[#61BBC5] text-[0.9rem]`} />
                   {chip.label}
@@ -520,8 +520,8 @@ export default function CareersPage() {
                   )}
 
                   <button
-                    className="inline-flex items-center gap-1.5 text-white font-bold rounded-full mt-auto self-start transition-all duration-200 hover:-translate-y-0.5 border-none cursor-pointer"
-                    style={{ fontSize:'0.82rem', padding:'8px 20px', background:'linear-gradient(138deg,#61BBC5,#034665)', boxShadow:'0 4px 14px rgba(1,72,103,0.2)' }}
+                    className="inline-flex items-center gap-1.5 text-white font-bold mt-auto self-start transition-all duration-200 hover:-translate-y-0.5 border-none cursor-pointer"
+                    style={{ fontSize:'0.82rem', padding:'8px 20px', borderRadius:'9999px', background:'linear-gradient(138deg,#61BBC5,#034665)', boxShadow:'0 4px 14px rgba(1,72,103,0.2)', outline:'none' }}
                     onClick={() => setApplyPosition(pos)}>
                     Apply Now <i className="bi bi-arrow-right" />
                   </button>
@@ -578,8 +578,8 @@ export default function CareersPage() {
 
                 <div className="flex gap-3 flex-col sm:flex-row flex-wrap">
                   <button
-                    className="inline-flex items-center justify-center gap-2 bg-white font-bold rounded-full border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 w-full sm:w-auto"
-                    style={{ fontSize:'0.92rem', padding:'13px 30px', color:'#034665', boxShadow:'0 6px 20px rgba(0,0,0,0.15)' }}
+                    className="inline-flex items-center justify-center gap-2 bg-white font-bold border-none cursor-pointer transition-all duration-200 hover:-translate-y-0.5 w-full sm:w-auto"
+                    style={{ fontSize:'0.92rem', padding:'13px 30px', borderRadius:'9999px', color:'#034665', boxShadow:'0 6px 20px rgba(0,0,0,0.15)', outline:'none' }}
                     onClick={() => setApplyPosition({ title:'Internship / Training', type:'Intern', location:'Ahmedabad', exp:'3–6 months' })}>
                     Apply Now <i className="bi bi-arrow-right" />
                   </button>

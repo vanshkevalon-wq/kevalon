@@ -51,94 +51,153 @@ function Eyebrow({ label }) {
   );
 }
 
-/* ── Mobile feature carousel ── */
+/* ── Mobile circle carousel ── */
 function FeatureCarousel() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef(null);
+  const touchStartX = useRef(null);
 
   const next = () => setActive(p => (p + 1) % features.length);
   const prev = () => setActive(p => (p - 1 + features.length) % features.length);
 
   useEffect(() => {
     if (paused) return;
-    timerRef.current = setInterval(next, 3000);
+    timerRef.current = setInterval(next, 2800);
     return () => clearInterval(timerRef.current);
   }, [paused, active]);
 
-  const f = features[active];
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    setPaused(true);
+  };
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current !== null) {
+      const diff = touchStartX.current - e.changedTouches[0].clientX;
+      if (diff > 40) next();
+      else if (diff < -40) prev();
+    }
+    touchStartX.current = null;
+    setPaused(false);
+  };
 
   return (
     <div
       className="sm:hidden select-none"
-      onTouchStart={() => setPaused(true)}
-      onTouchEnd={() => setPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
-      {/* card */}
-      <div
-        className="relative bg-white border-[1.5px] border-[rgba(97,187,197,0.16)] rounded-[18px] p-5 overflow-hidden mx-1"
-        style={{ boxShadow: '0 8px 32px rgba(3,70,101,0.10)', minHeight: 200 }}
-        key={active}
-      >
-        {/* top accent bar */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[3px] rounded-t-[18px]"
-          style={{ background: `linear-gradient(90deg,${f.color},#034665)` }}
-        />
-        {/* icon */}
-        <div
-          className="w-11 h-11 rounded-[14px] flex items-center justify-center text-[1.15rem] mb-3"
-          style={{ background: f.bg, border: `1.5px solid ${f.color}50`, color: f.color, boxShadow: '0 4px 14px rgba(3,70,101,0.07)' }}
-        >
-          <i className={`bi ${f.icon}`} />
-        </div>
-        <h4 className="text-[0.95rem] font-extrabold text-[#0d3d5a] m-0 mb-1.5 tracking-[-0.01em] leading-[1.25]">
-          {f.title}
-        </h4>
-        <p className="text-[0.80rem] text-[#5a7a8a] leading-[1.65] m-0 mb-3">{f.desc}</p>
-        {/* corner glow */}
-        <div
-          className="absolute bottom-[-40px] right-[-40px] w-[130px] h-[130px] rounded-full pointer-events-none"
-          style={{ background: `radial-gradient(circle,${f.bg} 0%,transparent 70%)` }}
-        />
-      </div>
+      {/* ── all circles row (center-active) ── */}
+      <div className="relative flex items-center justify-center gap-4 py-6 px-4">
 
-      {/* dots + arrows */}
-      <div className="flex items-center justify-center gap-3 mt-4">
-        <button
-          onClick={prev}
-          className="w-7 h-7 rounded-full flex items-center justify-center border border-[rgba(97,187,197,0.35)] text-[#61BBC5] bg-white text-[0.75rem] active:scale-90 transition-transform"
-          aria-label="Previous"
-        >
-          <i className="bi bi-chevron-left" />
-        </button>
-
-        <div className="flex gap-1.5">
-          {features.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              aria-label={`Go to card ${i + 1}`}
-              className="transition-all duration-300 rounded-full"
+        {/* side ghost circles */}
+        {[
+          (active - 1 + features.length) % features.length,
+          active,
+          (active + 1) % features.length,
+        ].map((fi, pos) => {
+          const f = features[fi];
+          const isCenter = pos === 1;
+          return (
+            <div
+              key={`${fi}-${pos}`}
+              onClick={() => { if (pos === 0) prev(); else if (pos === 2) next(); }}
+              className="flex-shrink-0 rounded-full flex flex-col items-center justify-center text-center transition-all duration-500"
               style={{
-                width: i === active ? 20 : 8,
-                height: 8,
-                background: i === active
-                  ? 'linear-gradient(90deg,#61BBC5,#034665)'
-                  : 'rgba(97,187,197,0.25)',
+                width:  isCenter ? 200 : 110,
+                height: isCenter ? 200 : 110,
+                background: isCenter
+                  ? `radial-gradient(circle at 35% 30%, ${f.color}30 0%, transparent 65%), radial-gradient(circle at 65% 70%, #034665 0%, #0d3d5a 100%)`
+                  : 'rgba(245,250,252,1)',
+                border: isCenter
+                  ? `2.5px solid ${f.color}`
+                  : '1.5px solid rgba(97,187,197,0.20)',
+                boxShadow: isCenter
+                  ? `0 0 0 6px ${f.color}18, 0 16px 48px ${f.color}35, 0 4px 20px rgba(3,70,101,0.25)`
+                  : '0 2px 10px rgba(3,70,101,0.07)',
+                opacity: isCenter ? 1 : 0.55,
+                cursor: isCenter ? 'default' : 'pointer',
+                padding: isCenter ? '0 18px' : '0 10px',
+                transform: isCenter ? 'scale(1)' : 'scale(0.88)',
               }}
-            />
-          ))}
-        </div>
+            >
+              {/* icon */}
+              <div
+                style={{
+                  width:  isCenter ? 52 : 32,
+                  height: isCenter ? 52 : 32,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                  background: isCenter ? 'rgba(255,255,255,0.15)' : `${f.color}15`,
+                  border: `1.5px solid ${isCenter ? 'rgba(255,255,255,0.3)' : f.color + '55'}`,
+                  marginBottom: isCenter ? 10 : 6,
+                  fontSize: isCenter ? '1.25rem' : '0.8rem',
+                  color: isCenter ? '#ffffff' : f.color,
+                }}
+              >
+                <i className={`bi ${f.icon}`} />
+              </div>
 
-        <button
-          onClick={next}
-          className="w-7 h-7 rounded-full flex items-center justify-center border border-[rgba(97,187,197,0.35)] text-[#61BBC5] bg-white text-[0.75rem] active:scale-90 transition-transform"
-          aria-label="Next"
-        >
-          <i className="bi bi-chevron-right" />
-        </button>
+              {/* title */}
+              <span
+                style={{
+                  fontFamily: "'Inter',sans-serif",
+                  fontWeight: 800,
+                  fontSize: isCenter ? '0.82rem' : '0.58rem',
+                  color: isCenter ? '#fff' : '#0d3d5a',
+                  lineHeight: 1.2,
+                  letterSpacing: '-0.01em',
+                  marginBottom: isCenter ? 6 : 0,
+                }}
+              >
+                {f.title}
+              </span>
+
+              {/* desc — only on center */}
+              {isCenter && (
+                <span
+                  style={{
+                    fontFamily: "'Inter',sans-serif",
+                    fontSize: '0.65rem',
+                    color: 'rgba(200,230,235,0.85)',
+                    lineHeight: 1.55,
+                    textAlign: 'center',
+                  }}
+                >
+                  {f.desc}
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
+
+      {/* ── progress arc indicator ── */}
+      <div className="flex items-center justify-center gap-2 mt-1">
+        {features.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            aria-label={`Go to ${features[i].title}`}
+            className="transition-all duration-300 rounded-full"
+            style={{
+              width:  i === active ? 24 : 7,
+              height: 7,
+              background: i === active
+                ? `linear-gradient(90deg,${features[i].color},#034665)`
+                : 'rgba(97,187,197,0.22)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* swipe hint */}
+      <p className="text-center text-[0.58rem] text-[rgba(97,187,197,0.45)] tracking-[0.12em] uppercase mt-3 mb-0">
+        Swipe to explore
+      </p>
     </div>
   );
 }

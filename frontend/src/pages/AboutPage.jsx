@@ -112,7 +112,7 @@ export default function AboutPage() {
           </div>
 
           {/* right — animated card stack */}
-          <div className={`relative max-[960px]:order-first ${hero.visible ? 'animate-[ab-right_0.8s_cubic-bezier(0.22,1,0.36,1)_0.1s_both]' : ''}`}>
+          <div className={`relative ${hero.visible ? 'animate-[ab-right_0.8s_cubic-bezier(0.22,1,0.36,1)_0.1s_both]' : ''}`}>
             <div className="relative h-[380px] max-[960px]:h-[320px]">
 
               {/* top card */}

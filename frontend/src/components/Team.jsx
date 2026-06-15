@@ -200,12 +200,14 @@ export default function Team() {
               aria-label={TEAM[idx].name}
               title={TEAM[idx].name}
               onClick={() => { go(idx, idx > active ? 1 : -1); resetAuto(); }}
-              className="absolute rounded-full overflow-hidden border-[2.5px] border-white p-0 cursor-pointer transition-all duration-[280ms] hover:scale-[1.18] hover:border-[#61BBC5] hover:shadow-[0_8px_24px_rgba(97,187,197,0.35)]"
+              className="absolute rounded-full overflow-hidden border-0 p-0 cursor-pointer transition-all duration-[280ms] hover:scale-[1.18]"
               style={{
-                width:     "clamp(40px,11vw,56px)",
-                height:    "clamp(40px,11vw,56px)",
-                zIndex:    5,
-                boxShadow: "0 4px 16px rgba(3,70,101,0.14)",
+                width:      "clamp(40px,11vw,56px)",
+                height:     "clamp(40px,11vw,56px)",
+                zIndex:     5,
+                background: "transparent",
+                border:     "none",
+                boxShadow:  "none",
                 animation: `${ORBIT_ANIM[pos]} ${ORBIT_DUR[pos]} ease-in-out ${ORBIT_DELAY[pos]} infinite`,
                 ...ORBIT_STYLE[pos],
               }}
@@ -213,12 +215,12 @@ export default function Team() {
               <img
                 src={TEAM[idx].image}
                 alt={TEAM[idx].name}
-                className="w-full h-full object-cover object-top block"
+                className="w-full h-full object-cover object-top block rounded-full"
                 onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
               />
               {/* fallback initials */}
               <div
-                className="w-full h-full hidden items-center justify-center text-[0.7rem] font-extrabold text-white"
+                className="w-full h-full hidden items-center justify-center text-[0.7rem] font-extrabold text-white rounded-full"
                 style={{ background: "linear-gradient(135deg,#61BBC5,#034665)" }}
               >
                 {TEAM[idx].initials}

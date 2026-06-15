@@ -128,6 +128,8 @@
 @keyframes sp-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 @keyframes sp-ring-rotate { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(360deg)} }
 @keyframes sp-ring-rotate-reverse { from{transform:translate(-50%,-50%) rotate(0deg)} to{transform:translate(-50%,-50%) rotate(-360deg)} }
+@keyframes sp-ring-rotate-centered { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes sp-ring-rotate-reverse-centered { from{transform:rotate(0deg)} to{transform:rotate(-360deg)} }
 @keyframes sp-stroke-dash { 0%{stroke-dashoffset:880;opacity:0} 20%{opacity:1} 100%{stroke-dashoffset:0;opacity:1} }
 @keyframes sp-brand-in { 0%{opacity:0;transform:translateY(20px);letter-spacing:0.6em} 100%{opacity:1;transform:translateY(0);letter-spacing:0.2em} }
 @keyframes sp-shimmer { 0%{left:-80%} 100%{left:120%} }
@@ -308,6 +310,18 @@ a:focus {
   font-style: normal; font-weight: normal !important;
   font-variant: normal; text-transform: none;
   line-height: 1; -webkit-font-smoothing: antialiased;
+}
+
+/* ── Force Bootstrap Icons font in circle carousel ── */
+.kv-circle-icon::before {
+  font-family: "bootstrap-icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  line-height: 1 !important;
+  -webkit-font-smoothing: antialiased !important;
+  display: block !important;
 }
 
 /* Swiper inside modal */

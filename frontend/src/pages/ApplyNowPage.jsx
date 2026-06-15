@@ -259,7 +259,8 @@ export default function ApplyNowPage() {
 
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2.5 w-full py-4 border-none rounded-xl bg-gradient-to-br from-teal to-navy text-white text-[0.95rem] font-bold cursor-pointer transition-all duration-200 shadow-[0_8px_24px_rgba(1,72,103,0.25)] mt-1 hover:not-disabled:-translate-y-0.5 hover:not-disabled:shadow-[0_14px_36px_rgba(1,72,103,0.35)] disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="inline-flex items-center justify-center gap-2.5 w-full py-4 border-none rounded-full bg-gradient-to-br from-teal to-navy text-white text-[0.95rem] font-bold cursor-pointer transition-all duration-200 shadow-[0_8px_24px_rgba(1,72,103,0.25)] mt-1 hover:not-disabled:-translate-y-0.5 hover:not-disabled:shadow-[0_14px_36px_rgba(1,72,103,0.35)] disabled:opacity-70 disabled:cursor-not-allowed"
+                  style={{ borderRadius: '9999px' }}
                   disabled={status.type === "loading"}
                 >
                   {status.type === "loading"
