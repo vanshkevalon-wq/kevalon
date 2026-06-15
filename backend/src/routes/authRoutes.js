@@ -74,4 +74,41 @@ router.get('/me', requireAuth, async (req, res, next) => {
   }
 });
 
+router.patch('/change-password', requireAuth, async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Current password and new password are required' });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'New password must be at least 8 characters' });
+    }
+
+    const user = await AdminUser.findById(req.user.sub);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Admin user not found' });
+    }
+
+    const passwordMatches = await bcrypt.compare(String(currentPassword), user.passwordHash);
+
+    if (!passwordMatches) {
+      return res.status(401).json({ message: 'Current password is incorrect' });
+    }
+
+    if (currentPassword === newPassword) {
+      return res.status(400).json({ message: 'New password must be different from the current password' });
+    }
+
+    user.passwordHash = await bcrypt.hash(String(newPassword), 12);
+    await user.save();
+
+    return res.json({ message: 'Password changed successfully' });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;

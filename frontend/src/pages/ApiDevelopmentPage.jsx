@@ -1,572 +1,857 @@
-import React from "react";
+﻿import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import "./ApiDevelopmentPage.css";
+import { FaPlug, FaShieldAlt, FaRocket, FaCode, FaServer, FaAws } from "react-icons/fa";
+import {
+  SiGraphql, SiNodedotjs, SiPostgresql, SiMongodb,
+  SiRedis, SiSwagger, SiPostman, SiDocker,
+} from "react-icons/si";
 
-import aboutImage from "../Images/game-dev-user.jpg.jpg";
+/* ─── shared token ──────────────────────────────────────── */
+const DS = { fontSize: "0.9rem", color: "#4a5568", lineHeight: 1.78, marginBottom: "0.75rem" };
 
-const introParagraphs = [
-  "API (Application Programming Interface) development is the process of creating interfaces that allow different software applications to communicate with each other. APIs enable seamless data exchange, integration, and functionality between systems, making them essential for modern web and mobile applications.",
-  "At Kevalon Technology, we specialize in developing secure, scalable, and high-performance APIs that power your applications. Our expert developers create robust API solutions using the latest technologies and best practices to ensure reliability, security, and optimal performance.",
-];
-
-const restfulBulletsLeft = [
-  "Standard HTTP methods (GET, POST, PUT, PATCH, DELETE)",
-  "JSON-based structured data exchange",
-  "Stateless and scalable system architecture",
-  "Clean, consistent and intuitive endpoint design",
-  "Version control and backward compatibility",
-];
-
-const restfulBulletsRight = [
-  "Enterprise-level authentication & authorization (JWT, OAuth2, API Keys)",
-  "Secure data transmission with encryption (HTTPS, TLS)",
-  "Comprehensive API documentation (Swagger, OpenAPI)",
-  "High-performance caching & optimization",
-  "Monitoring, logging & analytics integration",
-];
-
-const graphqlBulletsLeft = [
-  "Flexible and precise data querying",
-  "Single unified endpoint architecture",
-  "Reduced network overhead and optimized payloads",
-  "Strong typing with schema-driven development",
-  "Built-in introspection and developer tooling",
-];
-
-const graphqlBulletsRight = [
-  "Real-time subscriptions and live data updates",
-  "Microservices and distributed systems support",
-  "Enterprise authentication & authorization",
-  "Performance optimization and caching layers",
-  "Secure API gateway integration",
-];
-
-const securityBulletsLeft = [
-  "JWT (JSON Web Tokens) authentication",
-  "OAuth 2.0 / OAuth 1.0 secure authorization",
-  "API key management & access control",
-  "Role-based access control (RBAC)",
-  "Secure session and token life-cycle management",
-];
-
-const securityBulletsRight = [
-  "Rate limiting, throttling & abuse prevention",
-  "HTTPS / SSL / TLS encryption",
-  "Input validation, sanitization & data protection",
-  "API firewall & gateway security layers",
-  "Logging, monitoring & threat detection",
-];
-
-const featureBulletsLeft = [
-  "RESTful and GraphQL API development",
-  "Comprehensive API documentation (Swagger / OpenAPI)",
-  "API versioning and migration strategies",
-  "Microservices and modular architecture support",
-  "Real-time data synchronization and streaming",
-];
-
-const featureBulletsRight = [
-  "Secure third-party API integrations",
-  "Webhook architecture and event-driven systems",
-  "API testing, monitoring, and analytics",
-  "Performance optimization, caching, and load balancing",
-  "Centralized error handling, logging, and observability",
-];
-
-const serviceList = [
-  {
-    title: "Custom API Development",
-    desc: "Business-specific, scalable, secure APIs tailored to enterprise workflows and digital platforms.",
-  },
-  {
-    title: "API Integration",
-    desc: "Seamless integration with web apps, mobile apps, cloud platforms, IoT systems, and third-party services.",
-  },
-  {
-    title: "Secure API Architecture",
-    desc: "Authentication, authorization, encryption, and access control built for enterprise-grade security layers.",
-  },
-  {
-    title: "API Documentation",
-    desc: "Developer-friendly documentation for easy onboarding, integration, and long-term maintainability.",
-  },
-  {
-    title: "API Testing & Monitoring",
-    desc: "Performance testing, load testing, monitoring, and real-time performance analytics.",
-  },
-  {
-    title: "Microservices & Cloud APIs",
-    desc: "Cloud-native, microservices-based APIs for high scalability and enterprise deployment.",
-  },
-];
-
-const apiPills = ["REST APIs", "GraphQL", "Microservices", "Secure integrations"];
-
-const heroFeatureCards = [
-  {
-    value: "99.9%",
-    label: "reliability focus",
-    note: "Built for uptime, monitoring, and scale",
-  },
-  {
-    value: "Secure",
-    label: "by default",
-    note: "Authentication, access control, and encryption baked in",
-  },
-  {
-    value: "Fast",
-    label: "delivery cycles",
-    note: "Modern APIs delivered with clean contracts and speed",
-  },
-];
-
-const apiStats = [
-  { value: "24/7", label: "availability mindset", note: "Always-on systems and support flows" },
-  { value: "99.9%", label: "reliability focus", note: "Built for stability, monitoring, and scale" },
-  { value: "Fast", label: "delivery cycles", note: "Modern APIs shipped with clear contracts" },
-];
-
-const apiHighlights = [
-  {
-    title: "Clean architecture",
-    text: "Readable endpoints, predictable contracts, and maintainable service boundaries.",
-  },
-  {
-    title: "Production ready",
-    text: "Security, monitoring, and performance considerations built into the delivery flow.",
-  },
-  {
-    title: "Business aligned",
-    text: "API designs that support operations, integrations, and long-term product growth.",
-  },
-];
-
-const tools = [
-  { name: "Node.js", kind: "node" },
-  { name: "GraphQL", kind: "graphql" },
-  { name: "PostgreSQL", kind: "postgres" },
-  { name: "MongoDB", kind: "mongodb" },
-  { name: "Redis", kind: "redis" },
-  { name: "Swagger", kind: "swagger" },
-  { name: "Postman", kind: "postman" },
-  { name: "AWS", kind: "aws" },
-  { name: "Docker", kind: "docker" },
-  { name: "Express.js", kind: "express" },
-];
-
-function ToolIcon({ kind, label }) {
-  switch (kind) {
-    case "node":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M32 7 50 17v20L32 57 14 37V17z" fill="#4f9d45" />
-          <path d="M24 24h5v16h-5zM31 24h5l4 9v-9h5v16h-5l-4-9v9h-5z" fill="#fff" />
-        </svg>
-      );
-    case "graphql":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <g fill="none" stroke="#e535ab" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M16 22 32 12l16 10-3 20-13 10-13-10z" />
-            <path d="M16 22h32" />
-            <path d="M23 19 32 52" />
-            <path d="M41 19 32 52" />
-            <path d="M13 25 32 12 51 25" />
-          </g>
-          <circle cx="32" cy="12" r="2.6" fill="#e535ab" />
-          <circle cx="32" cy="52" r="2.6" fill="#e535ab" />
-          <circle cx="16" cy="22" r="2.6" fill="#e535ab" />
-          <circle cx="48" cy="22" r="2.6" fill="#e535ab" />
-        </svg>
-      );
-    case "postgres":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M41 9c8 0 14 6 14 14 0 7-3 13-8 17l2 8-8-4c-3 1-6 2-9 2-11 0-20-8-20-19S22 9 32 9c3 0 6 1 9 2 0 0 0 0 0-2z" fill="#336791" />
-          <path d="M24 24c0-5 4-9 9-9s9 4 9 9-4 9-9 9-9-4-9-9z" fill="#fff" opacity="0.92" />
-          <path d="M32 18c-3 2-4 4-4 7 0 4 3 7 7 7 1 0 2 0 3-1-3-1-5-4-5-7 0-2 0-4-1-6z" fill="#336791" opacity="0.8" />
-        </svg>
-      );
-    case "mongodb":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M32 6c7 8 12 16 12 25 0 13-5 19-12 27-7-8-12-14-12-27 0-9 5-17 12-25z" fill="#6cac48" />
-          <path d="M32 18v28" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
-          <path d="M29 32c3-3 4-6 3-10 4 5 4 10 0 16-1-3-2-4-3-6z" fill="#fff" opacity="0.9" />
-        </svg>
-      );
-    case "redis":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M12 18 31 10l21 8-21 8-19-8z" fill="#dc382d" />
-          <path d="m12 26 19 8 21-8v18l-21 8-19-8z" fill="#c92b23" />
-          <path d="m12 18 19 8v18l-19-8z" fill="#ef4b3f" />
-          <path d="m31 26 21-8v18l-21 8z" fill="#f05d50" />
-        </svg>
-      );
-    case "swagger":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M32 8 48 16v18L32 56 16 34V16z" fill="#85ea2d" />
-          <path d="M24 28c3-4 13-5 17-1 3 3 3 7-1 10-3 3-8 4-11 6-4 2-6 5-2 8 4 3 12 2 15-1" fill="none" stroke="#fff" strokeWidth="3.1" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      );
-    case "postman":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <circle cx="32" cy="32" r="22" fill="#ff6c37" />
-          <path d="M25 39 39 25l4 14-14 4z" fill="#fff" opacity="0.95" />
-          <path d="M29 20c5-1 10 1 13 5" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" opacity="0.95" />
-        </svg>
-      );
-    case "aws":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <text x="32" y="34" textAnchor="middle" fontSize="18" fontWeight="700" fill="#232f3e" fontFamily="Arial, sans-serif">aws</text>
-          <path d="M16 42c11-8 23-8 32-4" fill="none" stroke="#ff9900" strokeWidth="3" strokeLinecap="round" />
-          <path d="M41 42c2 1 5 2 7 2 2 0 4-1 5-2" fill="none" stroke="#ff9900" strokeWidth="3" strokeLinecap="round" />
-        </svg>
-      );
-    case "docker":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M14 30h8v-7h8v7h8v-7h8v7c4 0 8 2 10 5-1 5-4 11-10 15H20c-4 0-8-2-10-5 0-7 2-11 4-15z" fill="#2496ed" />
-          <path d="M13 36c3 3 7 4 12 4h21c4 0 6-1 8-2-1 5-4 9-8 12H20c-4 0-8-2-10-5 0-4 1-7 3-9z" fill="#0d77c7" />
-          <rect x="18" y="26" width="6" height="4" rx="1" fill="#fff" />
-          <rect x="27" y="26" width="6" height="4" rx="1" fill="#fff" />
-        </svg>
-      );
-    case "express":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <rect x="10" y="10" width="44" height="44" rx="4" fill="#111111" />
-          <path d="M18 24h28M18 32h28M18 40h28" stroke="#fff" strokeWidth="2.7" strokeLinecap="round" opacity="0.86" />
-          <path d="M22 18h20" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" opacity="0.72" />
-          <path d="M24 46h16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" opacity="0.72" />
-        </svg>
-      );
-    default:
-      return <span>{label}</span>;
-  }
-}
-
-function BulletList({ items }) {
+/* ─── helpers ───────────────────────────────────────────── */
+function Pill({ icon, label }) {
   return (
-    <ul className="api-bullets">
-      {items.map((item) => (
-        <li key={item}>
-          <i className="bi bi-check-lg" aria-hidden="true" />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-export default function ApiDevelopmentPage() {
-  return (
-    <div className="api-page">
-      <section className="api-hero">
-        {/* White theme decorations */}
-        <div className="api-hero__orb api-hero__orb--1" aria-hidden="true" />
-        <div className="api-hero__orb api-hero__orb--2" aria-hidden="true" />
-        <div className="api-hero__beam" aria-hidden="true" />
-
-        {/* Animated circuit SVG */}
-        <svg className="api-hero__circuits" viewBox="0 0 1440 700" preserveAspectRatio="none" aria-hidden="true">
-          <path className="api-hero__cl api-hero__cl--1" stroke="rgba(97,187,197,0.15)"
-            d="M 0,80 L 100,80 L 100,140 L 240,140 L 240,80 L 420,80" />
-          <path className="api-hero__cl api-hero__cl--2" stroke="rgba(10,143,182,0.10)"
-            d="M 1440,600 L 1320,600 L 1320,540 L 1140,540 L 1140,600 L 980,600" />
-          <path className="api-hero__cl api-hero__cl--3" stroke="rgba(97,187,197,0.12)"
-            d="M 60,640 L 60,560 L 200,560 L 200,500 L 380,500" />
-          <circle className="api-hero__junc api-hero__junc--a" cx="100" cy="80" r="4" fill="rgba(97,187,197,0.7)" />
-          <circle className="api-hero__junc api-hero__junc--b" cx="240" cy="140" r="4" fill="rgba(97,187,197,0.7)" />
-          <circle className="api-hero__junc api-hero__junc--c" cx="1320" cy="540" r="4" fill="rgba(10,143,182,0.7)" />
-        </svg>
-
-        <div className="api-hero__inner">
-          <div className="api-hero__layout">
-            <div className="api-hero__copy">
-              <p className="api-hero__eyebrow">API Development</p>
-              <div className="api-hero__badge">
-                <div className="api-hero__badge-dot" />
-                Modern API engineering
-              </div>
-              <h1>API <span className="api-hero__title-accent">Development</span></h1>
-              <p className="api-hero__subtitle">
-                Secure, scalable, and high-performance APIs that connect systems, integrate platforms, and power modern digital ecosystems.
-              </p>
-
-              <div className="api-hero__pills" aria-label="API focus areas">
-                {apiPills.map((pill) => <span key={pill}>{pill}</span>)}
-              </div>
-
-              <div className="api-hero__actions">
-                <Link to="/contact" className="api-btn api-btn--primary">
-                  Start a Project <i className="bi bi-arrow-right ms-2" />
-                </Link>
-                <Link to="/services" className="api-btn api-btn--ghost">
-                  Explore Services
-                </Link>
-              </div>
-
-              <div className="api-hero__metrics" aria-label="API delivery highlights">
-                {heroFeatureCards.map((card) => (
-                  <article key={card.label} className="api-hero__metric-card">
-                    <strong>{card.value}</strong>
-                    <span>{card.label}</span>
-                    <p>{card.note}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-
-            <div className="api-hero__visual" aria-hidden="true">
-              <div className="api-hero__orbit api-hero__orbit--one" />
-              <div className="api-hero__orbit api-hero__orbit--two" />
-
-              <div className="api-hero__panel">
-                <div className="api-hero__panel-head">
-                  <span className="api-hero__panel-label">API Stack</span>
-                  <strong>Enterprise-ready architecture</strong>
-                </div>
-
-                <div className="api-hero__diagram">
-                  <div className="api-hero__node api-hero__node--primary">API</div>
-                  <div className="api-hero__node api-hero__node--accent">Auth</div>
-                  <div className="api-hero__node api-hero__node--accent">Data</div>
-                  <div className="api-hero__node api-hero__node--accent">Cloud</div>
-                  <div className="api-hero__connector api-hero__connector--one" />
-                  <div className="api-hero__connector api-hero__connector--two" />
-                  <div className="api-hero__connector api-hero__connector--three" />
-                </div>
-
-                <div className="api-hero__stack-list">
-                  <span>REST</span>
-                  <span>GraphQL</span>
-                  <span>Microservices</span>
-                  <span>Secure Integrations</span>
-                </div>
-              </div>
-            </div>{/* end api-hero__visual */}
-          </div>{/* end api-hero__layout */}
-        </div>{/* end api-hero__inner */}
-      </section>
-
-      <section className="api-content api-content--intro">
-        <div className="api-container">
-          <div className="api-intro">
-            <div className="api-intro__copy api-card api-card--intro">
-              <p className="api-kicker">Enterprise API Design</p>
-              <div className="api-section-title api-section-title--left">
-                <h2>API Development</h2>
-                <h3>With Kevalon Technology</h3>
-              </div>
-
-              <p className="api-intro__lede">
-                We design APIs that look polished, integrate smoothly, and stay dependable as your
-                platform grows.
-              </p>
-
-              <div className="api-pill-row" aria-label="API focus areas">
-                {apiPills.map((pill) => (
-                  <span key={pill}>{pill}</span>
-                ))}
-              </div>
-
-              <div className="api-intro__stats" aria-label="API delivery highlights">
-                {apiStats.map((stat) => (
-                  <article key={stat.label} className="api-intro__stat-card">
-                    <strong>{stat.value}</strong>
-                    <span>{stat.label}</span>
-                    <p>{stat.note}</p>
-                  </article>
-                ))}
-              </div>
-
-              <div className="api-intro__body">
-                {introParagraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-              </div>
-
-              <div className="api-intro__actions">
-                <Link to="/contact" className="api-btn api-btn--primary">
-                  Start a Project
-                </Link>
-                <Link to="/services" className="api-btn api-btn--ghost">
-                  Explore Services
-                </Link>
-              </div>
-            </div>
-
-            <aside className="api-intro__visual api-card api-card--visual">
-              <div className="api-visual__glow" aria-hidden="true" />
-              <div className="api-visual__badge">
-                <span>Modern API Stack</span>
-                <strong>Secure by design</strong>
-              </div>
-              <div className="api-visual__frame">
-                <img src={aboutImage} alt="API development team planning a solution" />
-              </div>
-
-              <div className="api-visual__chips" aria-hidden="true">
-                <span>REST</span>
-                <span>GraphQL</span>
-                <span>Auth</span>
-              </div>
-
-              <div className="api-visual__highlights">
-                {apiHighlights.map((highlight) => (
-                  <article key={highlight.title} className="api-visual__highlight">
-                    <strong>{highlight.title}</strong>
-                    <p>{highlight.text}</p>
-                  </article>
-                ))}
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <section className="api-content">
-        <div className="api-container">
-          <div className="api-grid api-grid--two">
-            <article className="api-card api-card--soft">
-              <h4>RESTful API Development</h4>
-              <p>
-                At Kevalon Technology, we build enterprise-grade RESTful APIs that serve as the
-                foundation of modern digital platforms. REST (Representational State Transfer)
-                APIs enable seamless communication between systems using standardized HTTP
-                protocols, making them highly scalable, reliable, and platform-independent.
-              </p>
-              <p>
-                Our REST APIs are designed with a strong focus on performance, security,
-                scalability, and long-term maintainability. We follow industry best practices to
-                ensure clean architecture, intuitive endpoints, and developer-friendly integration
-                across web, mobile, cloud, and enterprise systems.
-              </p>
-
-              <div className="api-bullet-columns">
-                <BulletList items={restfulBulletsLeft} />
-                <BulletList items={restfulBulletsRight} />
-              </div>
-            </article>
-
-            <article className="api-card api-card--image">
-              <h4>About API Development</h4>
-              <p>
-                At Kevalon Technology, we specialize in building secure, scalable, and high-
-                performance APIs that act as the backbone of modern digital systems. Our APIs
-                enable seamless communication between web applications, mobile apps, cloud
-                platforms, IoT systems, and third-party services.
-              </p>
-              <p>
-                We design APIs using industry-standard architectures such as RESTful APIs,
-                GraphQL, and microservices-based systems, ensuring reliability, speed, and
-                long-term scalability for growing businesses.
-              </p>
-            </article>
-          </div>
-
-          <div className="api-grid api-grid--two api-grid--stacked">
-            <article className="api-card api-card--white">
-              <h4>GraphQL API Development</h4>
-              <p>
-                At Kevalon Technology, we design and develop high-performance GraphQL APIs that
-                provide a modern, flexible, and efficient data layer for digital platforms.
-                GraphQL enables clients to fetch exactly the data they need in a single request,
-                eliminating over-fetching and under-fetching while optimizing performance.
-              </p>
-              <p>
-                Our GraphQL architectures are built for scalability, real-time performance,
-                enterprise security, and system interoperability, making them ideal for complex
-                applications, microservices ecosystems, and large-scale platforms.
-              </p>
-
-              <div className="api-bullet-columns">
-                <BulletList items={graphqlBulletsLeft} />
-                <BulletList items={graphqlBulletsRight} />
-              </div>
-            </article>
-
-            <article className="api-card api-card--service">
-              <h4>Our API Services</h4>
-              <div className="api-services-list">
-                {serviceList.map((service) => (
-                  <div key={service.title} className="api-service-item">
-                    <i className="bi bi-check-lg" aria-hidden="true" />
-                    <div>
-                      <strong>{service.title}</strong>
-                      <p>{service.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </article>
-          </div>
-
-          <div className="api-grid api-grid--two api-grid--features">
-            <article className="api-card api-card--soft">
-              <h4>API Security & Authentication</h4>
-              <p>
-                At Kevalon Technology, security is not an add-on - it is built into the
-                foundation of every API we develop. We implement enterprise-grade security
-                architectures to protect digital platforms, sensitive data, and system
-                integrations from modern cyber threats.
-              </p>
-              <p>
-                Our security frameworks ensure secure access control, data confidentiality,
-                compliance readiness, and operational reliability across all API environments -
-                cloud, enterprise, and distributed systems.
-              </p>
-
-              <div className="api-bullet-columns">
-                <BulletList items={securityBulletsLeft} />
-                <BulletList items={securityBulletsRight} />
-              </div>
-            </article>
-
-            <article className="api-card api-card--feature-list">
-              <h4>Key Features & Capabilities</h4>
-              <p>
-                At Kevalon Technology, our API solutions are engineered to deliver performance,
-                security, scalability, and business agility. We build enterprise-grade systems
-                that empower organizations to scale operations, integrate platforms, and
-                accelerate digital transformation.
-              </p>
-
-              <div className="api-bullet-columns api-bullet-columns--features">
-                <BulletList items={featureBulletsLeft} />
-                <BulletList items={featureBulletsRight} />
-              </div>
-            </article>
-          </div>
-
-          <div className="api-tools">
-            <div className="api-section-title api-section-title--tools">
-              <h2>Tools &amp; Platforms</h2>
-              <p>
-                We use industry-leading, enterprise-grade technologies to build secure, scalable,
-                high-performance APIs and digital platforms for modern businesses.
-              </p>
-            </div>
-
-            <div className="api-tools__grid">
-              {tools.map((tool) => (
-                <div key={tool.name} className="api-tool-card">
-                  <div className="api-tool-card__icon">
-                    <ToolIcon kind={tool.kind} label={tool.name} />
-                  </div>
-                  <span>{tool.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
-      </section>
+    <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", background: "rgba(97,187,197,0.1)", border: "1px solid rgba(97,187,197,0.28)", borderRadius: 50, padding: "0.28rem 0.88rem" }}>
+      <i className={`bi ${icon}`} style={{ fontSize: "0.68rem", color: "#61BBC5" }} />
+      <span style={{ fontSize: "0.68rem", fontWeight: 700, color: "#034665", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</span>
     </div>
   );
 }
+
+function GradText({ children }) {
+  return (
+    <span style={{ background: "linear-gradient(135deg,#034665,#61BBC5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+      {children}
+    </span>
+  );
+}
+
+function ApiSection({ color, bg, borderColor, icon, title, children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      viewport={{ once: true, margin: "-40px" }}
+      style={{ marginTop: "1.5rem", padding: "1.5rem", borderRadius: 16, background: bg, borderLeft: `4px solid ${borderColor}`, boxShadow: "0 2px 12px rgba(0,0,0,0.04)", transition: "box-shadow 0.25s" }}
+      whileHover={{ boxShadow: `0 6px 24px ${color}22` }}
+    >
+      <h4 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#0d1f35", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        {icon} {title}
+      </h4>
+      {children}
+    </motion.div>
+  );
+}
+
+function FeatureGrid({ items }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.3rem 1.5rem", marginTop: "0.75rem" }}>
+      {items.map((f, i) => (
+        <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.45rem", padding: "0.25rem 0" }}>
+          <span style={{ color: "#22c55e", flexShrink: 0, marginTop: "0.15rem", fontSize: "0.8rem" }}>✔</span>
+          <span style={{ fontSize: "0.82rem", color: "#374151", lineHeight: 1.55 }}>{f}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── PAGE ──────────────────────────────────────────────── */
+export default function ApiDevelopmentPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = "API Development | Kevalon Technology";
+    return () => { document.title = "Kevalon Technology"; };
+  }, []);
+
+  return (
+    <div style={{ fontFamily: "'Inter','Segoe UI',sans-serif", color: "#1e293b", background: "#fff", overflowX: "hidden" }}>
+      <style>{`
+        @keyframes float-y  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        @keyframes spin-slow { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .grid-bg {
+          background-image: none;
+        }
+        .dot-bg {
+          background-image: none;
+        }
+        .stat-card { text-align:center; padding:1.2rem 0.9rem; border-radius:18px; background:#fff; border:1.5px solid #e2e8f0; box-shadow:0 4px 18px rgba(0,0,0,0.04); transition:all 0.25s; }
+        .stat-card:hover { border-color:#61BBC5; transform:translateY(-4px); box-shadow:0 12px 28px rgba(97,187,197,0.14); }
+        .api-card-grid { }
+        @media(max-width:760px){ .api-card-grid { grid-template-columns:1fr !important; } }
+        .proc-card { background:#fff; border-radius:18px; padding:1.4rem 1.2rem; border:1.5px solid #e2e8f0; position:relative; overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,0.04); transition:all 0.28s; }
+        .proc-card:hover { border-color:#61BBC5; transform:translateY(-5px); box-shadow:0 12px 30px rgba(97,187,197,0.16); }
+        .offer-row { display:flex; align-items:flex-start; gap:1rem; padding:0.85rem 1rem; border-radius:14px; border:1.5px solid #f1f5f9; background:#fafbfc; transition:all 0.25s; cursor:default; }
+        .offer-row:hover { border-color:#61BBC5; background:#f0fbfc; transform:translateX(4px); }
+        .tech-pill { display:flex; align-items:center; gap:0.5rem; padding:0.65rem 0.95rem; border-radius:50px; border:1.5px solid #e2e8f0; background:#fff; font-size:0.8rem; font-weight:600; color:#374151; transition:all 0.25s; cursor:default; }
+        .tech-pill:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+
+        @media(max-width:960px){
+          .hero-grid  { grid-template-columns:1fr !important; }
+          .intro-grid { grid-template-columns:1fr !important; }
+          .api-two-col { grid-template-columns:1fr !important; }
+          .api-two-col aside { position:static !important; }
+          .proc-grid  { grid-template-columns:1fr 1fr !important; }
+          .bot-grid   { grid-template-columns:1fr !important; }
+          .stats-flow-grid { grid-template-columns:1fr !important; }
+          .svc-bc     { grid-template-columns:1fr !important; }
+        }
+        @media(max-width:560px){
+          .proc-grid  { grid-template-columns:1fr !important; }
+          .stats-grid { grid-template-columns:1fr 1fr !important; }
+          .tech-grid2 { grid-template-columns:1fr 1fr !important; }
+          .svc-tg     { grid-template-columns:1fr 1fr !important; }
+        }
+      `}</style>
+
+      {/* ══ HERO ══ */}
+      <section className="grid-bg" style={{ position: "relative", minHeight: 520, display: "flex", alignItems: "center", background: "#ffffff", overflow: "hidden", paddingTop: "2rem" }}>
+
+        {/* radial glows — unchanged */}
+        
+
+        {/* centered content */}
+        <div style={{ maxWidth:700, margin:"0 auto", padding:"3.5rem 1.5rem", width:"100%", textAlign:"center", position:"relative", zIndex:1 }}>
+          <div>
+           
+            <h1 style={{ fontSize:"clamp(2.4rem,5vw,3.8rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.1, letterSpacing:"-0.03em", marginBottom:"1.1rem" }}>
+              API<br />
+              <GradText>Development</GradText>
+            </h1>
+            <p style={{ color:"#475569", fontSize:"0.97rem", lineHeight:1.8, marginBottom:"1.8rem", maxWidth:520, margin:"0 auto 1.8rem" }}>
+              Secure, scalable, and high-performance APIs that connect systems, integrate platforms, and power modern digital ecosystems.
+            </p>
+          
+            <div style={{ display:"flex", gap:"0.75rem", flexWrap:"wrap", justifyContent:"center" }}>
+              <Link to="/contact" style={{ display:"inline-flex", alignItems:"center", gap:"0.45rem", background:"linear-gradient(135deg,#034665,#0a6e90)", color:"#fff", padding:"0.82rem 1.8rem", borderRadius:12, fontWeight:700, fontSize:"0.87rem", textDecoration:"none", boxShadow:"0 6px 20px rgba(3,70,101,0.28)", transition:"all 0.25s" }}
+                onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";}}
+                onMouseLeave={e=>{e.currentTarget.style.transform="";}}>
+                <i className="bi bi-lightning-charge-fill" style={{ fontSize:"0.82rem" }} /> Start Your Project
+              </Link>
+              <Link to="/portfolio" style={{ display:"inline-flex", alignItems:"center", gap:"0.45rem", background:"#fff", color:"#034665", padding:"0.82rem 1.8rem", borderRadius:12, fontWeight:700, fontSize:"0.87rem", textDecoration:"none", border:"2px solid #e2e8f0", transition:"all 0.25s" }}
+                onMouseEnter={e=>{e.currentTarget.style.borderColor="#61BBC5";e.currentTarget.style.transform="translateY(-2px)";}}
+                onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.transform="";}}>
+                View Portfolio <i className="bi bi-arrow-right" />
+              </Link>
+            </div>
+            </div>
+        </div>
+
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, lineHeight:0 }}>
+          <svg viewBox="0 0 1440 40" preserveAspectRatio="none" style={{ width:"100%", height:40, display:"block" }}>
+            <path d="M0,20 Q360,40 720,20 Q1080,0 1440,20 L1440,40 L0,40 Z" fill="#ffffff" />
+          </svg>
+        </div>
+      </section>
+
+      {/* ══ STATS ══ */}
+      <section style={{ padding:"2rem 0", background:"#fff" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <div className="stats-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem" }}>
+            <motion.div className="stat-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:0 }} viewport={{ once:true }}>
+              <div style={{ width:42, height:42, borderRadius:12, background:"#034665"+"12", border:"1.5px solid "+"#034665"+"25", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 0.65rem" }}>
+                <i className="bi bi-code-square" style={{ fontSize:"1.05rem", color:"#034665" }} />
+              </div>
+              <div style={{ fontSize:"1.8rem", fontWeight:900, color:"#0d1f35", lineHeight:1, marginBottom:"0.25rem" }}>50+</div>
+              <div style={{ fontSize:"0.73rem", color:"#64748b", fontWeight:500 }}>APIs Delivered</div>
+            </motion.div>
+            <motion.div className="stat-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:0.08 }} viewport={{ once:true }}>
+              <div style={{ width:42, height:42, borderRadius:12, background:"#4f46e5"+"12", border:"1.5px solid "+"#4f46e5"+"25", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 0.65rem" }}>
+                <i className="bi bi-calendar-check" style={{ fontSize:"1.05rem", color:"#4f46e5" }} />
+              </div>
+              <div style={{ fontSize:"1.8rem", fontWeight:900, color:"#0d1f35", lineHeight:1, marginBottom:"0.25rem" }}>3+</div>
+              <div style={{ fontSize:"0.73rem", color:"#64748b", fontWeight:500 }}>Years of Expertise</div>
+            </motion.div>
+            <motion.div className="stat-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:0.16 }} viewport={{ once:true }}>
+              <div style={{ width:42, height:42, borderRadius:12, background:"#22c55e"+"12", border:"1.5px solid "+"#22c55e"+"25", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 0.65rem" }}>
+                <i className="bi bi-activity" style={{ fontSize:"1.05rem", color:"#22c55e" }} />
+              </div>
+              <div style={{ fontSize:"1.8rem", fontWeight:900, color:"#0d1f35", lineHeight:1, marginBottom:"0.25rem" }}>99%</div>
+              <div style={{ fontSize:"0.73rem", color:"#64748b", fontWeight:500 }}>Uptime Guaranteed</div>
+            </motion.div>
+            <motion.div className="stat-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:0.24 }} viewport={{ once:true }}>
+              <div style={{ width:42, height:42, borderRadius:12, background:"#f59e0b"+"12", border:"1.5px solid "+"#f59e0b"+"25", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 0.65rem" }}>
+                <i className="bi bi-star-fill" style={{ fontSize:"1.05rem", color:"#f59e0b" }} />
+              </div>
+              <div style={{ fontSize:"1.8rem", fontWeight:900, color:"#0d1f35", lineHeight:1, marginBottom:"0.25rem" }}>100%</div>
+              <div style={{ fontSize:"0.73rem", color:"#64748b", fontWeight:500 }}>Client Satisfaction</div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ WHAT WE DO ══ */}
+      <section className="dot-bg" style={{ padding:"3.5rem 0", background:"#ffffff", position:"relative", overflow:"hidden" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem", position:"relative" }}>
+          <div className="intro-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"center" }}>
+            <motion.div initial={{ opacity:0, x:-22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-info-circle-fill" label="What We Do" />
+              <h2 style={{ fontSize:"clamp(1.7rem,3vw,2.3rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0" }}>
+                API Development <GradText>With Kevalon Technology</GradText>
+              </h2>
+              <p style={{ color:"#4a5568", lineHeight:1.8, marginBottom:"0.75rem", fontSize:"0.94rem" }}>
+                API (Application Programming Interface) development is the process of creating interfaces that allow different software applications to communicate with each other. APIs enable seamless data exchange, integration, and functionality sharing between systems.
+              </p>
+              <p style={{ color:"#4a5568", lineHeight:1.8, marginBottom:"1.2rem", fontSize:"0.94rem" }}>
+                At <strong style={{ color:"#034665" }}>Kevalon Technology</strong>, we specialize in developing secure, scalable, and high-performance APIs that power your applications using the latest technologies and best practices.
+              </p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.5rem" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                  <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} />
+                  </div>
+                  Custom RESTful APIs
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                  <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} />
+                  </div>
+                  GraphQL Services
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                  <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} />
+                  </div>
+                  API Security & Auth
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                  <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} />
+                  </div>
+                  Third-party Integrations
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                  <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} />
+                  </div>
+                  Microservices Architecture
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                  <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                    <i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} />
+                  </div>
+                  Real-time Webhooks
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity:0, x:22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }} style={{ display:"flex", justifyContent:"center" }}>
+              <div style={{ width:"100%", maxWidth:390, background:"#fff", borderRadius:22, border:"1.5px solid #e2e8f0", padding:"1.5rem", boxShadow:"0 8px 32px rgba(0,0,0,0.07)" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", marginBottom:"1.2rem" }}>
+                  <div style={{ width:10, height:10, borderRadius:"50%", background:"#ff5f57" }} />
+                  <div style={{ width:10, height:10, borderRadius:"50%", background:"#febc2e" }} />
+                  <div style={{ width:10, height:10, borderRadius:"50%", background:"#28c840" }} />
+                  <div style={{ flex:1, height:22, background:"#f1f5f9", borderRadius:6, marginLeft:"0.5rem", display:"flex", alignItems:"center", paddingLeft:"0.6rem" }}>
+                    <span style={{ fontSize:"0.63rem", color:"#94a3b8" }}>api.kevalon.com/v2/</span>
+                  </div>
+                </div>
+                <div style={{ display:"flex", gap:"0.45rem", marginBottom:"1rem", flexWrap:"wrap" }}>
+                  <span style={{ fontSize:"0.62rem", fontWeight:800, padding:"0.18rem 0.55rem", borderRadius:4, background:"#22c55e18", color:"#22c55e", border:"1px solid #22c55e38", letterSpacing:"0.04em" }}>GET</span>
+                  <span style={{ fontSize:"0.62rem", fontWeight:800, padding:"0.18rem 0.55rem", borderRadius:4, background:"#3b82f618", color:"#3b82f6", border:"1px solid #3b82f638", letterSpacing:"0.04em" }}>POST</span>
+                  <span style={{ fontSize:"0.62rem", fontWeight:800, padding:"0.18rem 0.55rem", borderRadius:4, background:"#f59e0b18", color:"#f59e0b", border:"1px solid #f59e0b38", letterSpacing:"0.04em" }}>PUT</span>
+                  <span style={{ fontSize:"0.62rem", fontWeight:800, padding:"0.18rem 0.55rem", borderRadius:4, background:"#ef444418", color:"#ef4444", border:"1px solid #ef444438", letterSpacing:"0.04em" }}>DELETE</span>
+                </div>
+                <div>
+                  <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", padding:"0.6rem 0.85rem", borderRadius:11, background:"#ffffff", border:"1.5px solid #f1f5f9" }}>
+                    <div style={{ width:32, height:32, borderRadius:8, flexShrink:0, background:"#61BBC518", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                      <i className="bi bi-laptop" style={{ fontSize:"0.9rem", color:"#61BBC5" }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#0d1f35" }}>Client Request</div>
+                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>Web / Mobile / IoT</div>
+                    </div>
+                    <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"#22c55e", fontSize:"0.78rem" }} />
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"center", padding:"0.15rem 0" }}>
+                    <div style={{ width:2, height:12, background:"linear-gradient(to bottom,#61BBC5,#034665)", borderRadius:2, opacity:0.38 }} />
+                  </div>
+                  <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", padding:"0.6rem 0.85rem", borderRadius:11, background:"linear-gradient(135deg,#034665,#0a6e90)", border:"1.5px solid transparent" }}>
+                    <div style={{ width:32, height:32, borderRadius:8, flexShrink:0, background:"rgba(255,255,255,0.15)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                      <i className="bi bi-shield-check" style={{ fontSize:"0.9rem", color:"#fff" }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#fff" }}>API Gateway</div>
+                      <div style={{ fontSize:"0.64rem", color:"rgba(255,255,255,0.55)" }}>Auth · Rate Limiting</div>
+                    </div>
+                    <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"rgba(255,255,255,0.65)", fontSize:"0.78rem" }} />
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"center", padding:"0.15rem 0" }}>
+                    <div style={{ width:2, height:12, background:"linear-gradient(to bottom,#61BBC5,#034665)", borderRadius:2, opacity:0.38 }} />
+                  </div>
+                  <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", padding:"0.6rem 0.85rem", borderRadius:11, background:"#ffffff", border:"1.5px solid #f1f5f9" }}>
+                    <div style={{ width:32, height:32, borderRadius:8, flexShrink:0, background:"#4f46e518", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                      <i className="bi bi-cpu" style={{ fontSize:"0.9rem", color:"#4f46e5" }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#0d1f35" }}>Business Logic</div>
+                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>Process · Validate</div>
+                    </div>
+                    <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"#22c55e", fontSize:"0.78rem" }} />
+                  </div>
+                  <div style={{ display:"flex", justifyContent:"center", padding:"0.15rem 0" }}>
+                    <div style={{ width:2, height:12, background:"linear-gradient(to bottom,#61BBC5,#034665)", borderRadius:2, opacity:0.38 }} />
+                  </div>
+                  <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", padding:"0.6rem 0.85rem", borderRadius:11, background:"#ffffff", border:"1.5px solid #f1f5f9" }}>
+                    <div style={{ width:32, height:32, borderRadius:8, flexShrink:0, background:"#22c55e18", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                      <i className="bi bi-database" style={{ fontSize:"0.9rem", color:"#22c55e" }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#0d1f35" }}>Database Layer</div>
+                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>PostgreSQL · MongoDB</div>
+                    </div>
+                    <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"#22c55e", fontSize:"0.78rem" }} />
+                  </div>
+                </div>
+                <div style={{ marginTop:"0.85rem", padding:"0.6rem 0.85rem", borderRadius:10, background:"linear-gradient(135deg,#f0fdf4,#ecfdf5)", border:"1.5px solid #bbf7d0", display:"flex", alignItems:"center", gap:"0.55rem" }}>
+                  <span style={{ fontSize:"0.62rem", fontWeight:800, color:"#22c55e", background:"#dcfce7", padding:"0.14rem 0.48rem", borderRadius:4 }}>200 OK</span>
+                  <span style={{ fontSize:"0.68rem", color:"#16a34a", fontWeight:500 }}>Response in 42 ms</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ API TYPES — MAGAZINE CARDS ══ */}
+      <section style={{ padding:"2rem 0", background:"#ffffff" }}>
+        <div style={{ maxWidth:1380, margin:"0 auto", padding:"0 1.5rem" }}>
+
+          <motion.div initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5 }} viewport={{ once:true }}
+            style={{ textAlign:"center", marginBottom:"1.6rem" }}>
+            <Pill icon="bi-layers-fill" label="Our Capabilities" />
+            <h2 style={{ fontSize:"clamp(1.8rem,3.2vw,2.5rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.55rem" }}>
+              Types of APIs We <GradText>Build</GradText>
+            </h2>
+            <p style={{ color:"#64748b", fontSize:"0.94rem", lineHeight:1.7, maxWidth:500, margin:"0 auto" }}>
+              Robust, scalable API solutions engineered for every use case — fully described and always visible.
+            </p>
+          </motion.div>
+
+          {/* ── Card 1 : RESTful ── */}
+          <motion.div
+            initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
+            transition={{ duration:0.5 }} viewport={{ once:true, margin:"-40px" }}
+            style={{ background:"#fff", borderRadius:20, border:"1.5px solid #e2e8f0", overflow:"hidden", marginBottom:"0.7rem", boxShadow:"0 4px 20px rgba(0,0,0,0.04)", display:"grid", gridTemplateColumns:"1fr 1fr" }}
+            className="api-card-grid"
+          >
+            {/* left: content */}
+            <div style={{ padding:"2rem 2rem 2rem 2rem", borderRight:"1.5px solid #f1f5f9" }}>
+              {/* header */}
+              <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1rem" }}>
+                <div style={{ width:46, height:46, borderRadius:14, background:"#eff6ff", border:"1.5px solid #bfdbfe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <FaPlug style={{ fontSize:"1.2rem", color:"#2563eb" }} />
+                </div>
+                <div>
+                  <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#2563eb", marginBottom:"0.15rem" }}>REST Architecture</div>
+                  <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>RESTful API Development</h3>
+                </div>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#eff6ff", color:"#2563eb", border:"1px solid #bfdbfe", whiteSpace:"nowrap" }}>HTTP · JSON</span>
+              </div>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
+                We build <strong style={{ color:"#0d1f35" }}>enterprise-grade RESTful APIs</strong> using standardized HTTP protocols — making them highly scalable, reliable and platform-independent across web, mobile, cloud and enterprise systems.
+              </p>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0" }}>
+                Designed with focus on <strong style={{ color:"#0d1f35" }}>performance, security, scalability and long-term maintainability</strong> with clean architecture and intuitive endpoints.
+              </p>
+            </div>
+            {/* right: features */}
+            <div style={{ padding:"2rem", background:"#ffffff" }}>
+              <div style={{ fontSize:"0.72rem", fontWeight:700, color:"#2563eb", letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:"0.85rem" }}>Key Capabilities</div>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem 1rem" }}>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Standard HTTP methods</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>JSON-based data exchange</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Stateless architecture</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Version control & compatibility</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>JWT, OAuth2, API Keys auth</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>HTTPS / TLS encryption</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Swagger / OpenAPI docs</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dbeafe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#2563eb" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Caching & optimization</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── Card 2 : GraphQL ── */}
+          <motion.div
+            initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
+            transition={{ duration:0.5, delay:0.08 }} viewport={{ once:true, margin:"-40px" }}
+            style={{ background:"#fff", borderRadius:20, border:"1.5px solid #e2e8f0", overflow:"hidden", marginBottom:"0.7rem", boxShadow:"0 4px 20px rgba(0,0,0,0.04)", display:"grid", gridTemplateColumns:"1fr 1fr" }}
+            className="api-card-grid"
+          >
+            {/* left: features */}
+            <div style={{ padding:"2rem", background:"#ffffff", borderRight:"1.5px solid #f1f5f9" }}>
+              <div style={{ fontSize:"0.72rem", fontWeight:700, color:"#7c3aed", letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:"0.85rem" }}>Key Capabilities</div>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem 1rem" }}>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Flexible data querying</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Single unified endpoint</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Reduced network overhead</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Schema-driven development</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Real-time subscriptions</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Microservices support</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Enterprise auth layers</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#ede9fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#7c3aed" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Caching & performance</span>
+                </div>
+              </div>
+            </div>
+            {/* right: content */}
+            <div style={{ padding:"2rem" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1rem" }}>
+                <div style={{ width:46, height:46, borderRadius:14, background:"#f5f3ff", border:"1.5px solid #ddd6fe", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <SiGraphql style={{ fontSize:"1.2rem", color:"#7c3aed" }} />
+                </div>
+                <div>
+                  <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#7c3aed", marginBottom:"0.15rem" }}>Query Language</div>
+                  <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>GraphQL API Development</h3>
+                </div>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#f5f3ff", color:"#7c3aed", border:"1px solid #ddd6fe", whiteSpace:"nowrap" }}>Schema · Types</span>
+              </div>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
+                We design <strong style={{ color:"#0d1f35" }}>high-performance GraphQL APIs</strong> that provide a modern, flexible data layer — letting clients fetch exactly what they need in one request, eliminating over-fetching entirely.
+              </p>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0" }}>
+                Built for <strong style={{ color:"#0d1f35" }}>scalability, real-time performance and enterprise security</strong> — ideal for complex applications and microservices ecosystems.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* ── Card 3 : Security ── */}
+          <motion.div
+            initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
+            transition={{ duration:0.5, delay:0.16 }} viewport={{ once:true, margin:"-40px" }}
+            style={{ background:"#fff", borderRadius:20, border:"1.5px solid #e2e8f0", overflow:"hidden", marginBottom:"0.7rem", boxShadow:"0 4px 20px rgba(0,0,0,0.04)", display:"grid", gridTemplateColumns:"1fr 1fr" }}
+            className="api-card-grid"
+          >
+            {/* left: content */}
+            <div style={{ padding:"2rem", borderRight:"1.5px solid #f1f5f9" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1rem" }}>
+                <div style={{ width:46, height:46, borderRadius:14, background:"#fef2f2", border:"1.5px solid #fecaca", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <FaShieldAlt style={{ fontSize:"1.2rem", color:"#dc2626" }} />
+                </div>
+                <div>
+                  <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#dc2626", marginBottom:"0.15rem" }}>Zero-Trust Model</div>
+                  <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>API Security & Authentication</h3>
+                </div>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#fef2f2", color:"#dc2626", border:"1px solid #fecaca", whiteSpace:"nowrap" }}>Auth · Encrypt</span>
+              </div>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
+                Security is not an add-on — it is built into the foundation. We implement <strong style={{ color:"#0d1f35" }}>enterprise-grade security architectures</strong> protecting data and integrations from modern cyber threats.
+              </p>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0" }}>
+                Our frameworks ensure <strong style={{ color:"#0d1f35" }}>secure access control, data confidentiality and compliance readiness</strong> across all cloud and enterprise environments.
+              </p>
+            </div>
+            {/* right: features */}
+            <div style={{ padding:"2rem", background:"#ffffff" }}>
+              <div style={{ fontSize:"0.72rem", fontWeight:700, color:"#dc2626", letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:"0.85rem" }}>Key Capabilities</div>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem 1rem" }}>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>JWT authentication</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>OAuth 2.0 authorization</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>API key management</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Role-based access (RBAC)</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Rate limiting & throttling</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>HTTPS / SSL / TLS</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Input validation & sanitization</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#fee2e2", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#dc2626" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Threat monitoring & logging</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── Card 4 : Features ── */}
+          <motion.div
+            initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
+            transition={{ duration:0.5, delay:0.24 }} viewport={{ once:true, margin:"-40px" }}
+            style={{ background:"#fff", borderRadius:20, border:"1.5px solid #e2e8f0", overflow:"hidden", boxShadow:"0 4px 20px rgba(0,0,0,0.04)", display:"grid", gridTemplateColumns:"1fr 1fr" }}
+            className="api-card-grid"
+          >
+            {/* left: features */}
+            <div style={{ padding:"2rem", background:"#ffffff", borderRight:"1.5px solid #f1f5f9" }}>
+              <div style={{ fontSize:"0.72rem", fontWeight:700, color:"#16a34a", letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:"0.85rem" }}>Key Capabilities</div>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem 1rem" }}>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>REST & GraphQL APIs</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Swagger / OpenAPI docs</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>API versioning strategies</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Microservices architecture</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Real-time data streaming</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Third-party integrations</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Webhook & event systems</span>
+                </div>
+                <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}>
+                  <span style={{ width:18, height:18, borderRadius:5, background:"#dcfce7", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color:"#16a34a" }} /></span>
+                  <span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>Caching & load balancing</span>
+                </div>
+              </div>
+            </div>
+            {/* right: content */}
+            <div style={{ padding:"2rem" }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1rem" }}>
+                <div style={{ width:46, height:46, borderRadius:14, background:"#ffffff", border:"1.5px solid #bbf7d0", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                  <FaRocket style={{ fontSize:"1.2rem", color:"#16a34a" }} />
+                </div>
+                <div>
+                  <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#16a34a", marginBottom:"0.15rem" }}>Platform Capabilities</div>
+                  <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>Key Features & Capabilities</h3>
+                </div>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#ffffff", color:"#16a34a", border:"1px solid #bbf7d0", whiteSpace:"nowrap" }}>Scale · Speed</span>
+              </div>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
+                Our API solutions are engineered to deliver <strong style={{ color:"#0d1f35" }}>performance, scalability, security and business agility</strong> — empowering organizations to scale operations and integrate platforms effortlessly.
+              </p>
+              <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"1.1rem" }}>
+                From initial design to production deployment, every solution is built for <strong style={{ color:"#0d1f35" }}>long-term maintainability and digital transformation</strong>.
+              </p>
+              {/* mini stat row */}
+              <div style={{ display:"flex", gap:"0.65rem" }}>
+                <div style={{ flex:1, padding:"0.7rem 0.8rem", borderRadius:12, background:"linear-gradient(135deg,#f0fdf4,#ecfdf5)", border:"1.5px solid #bbf7d0", textAlign:"center" }}>
+                  <div style={{ fontSize:"1.2rem", fontWeight:900, color:"#16a34a", lineHeight:1 }}>50+</div>
+                  <div style={{ fontSize:"0.62rem", color:"#4ade80", fontWeight:600, marginTop:"0.2rem" }}>APIs Built</div>
+                </div>
+                <div style={{ flex:1, padding:"0.7rem 0.8rem", borderRadius:12, background:"linear-gradient(135deg,#f0fdf4,#ecfdf5)", border:"1.5px solid #bbf7d0", textAlign:"center" }}>
+                  <div style={{ fontSize:"1.2rem", fontWeight:900, color:"#16a34a", lineHeight:1 }}>99%</div>
+                  <div style={{ fontSize:"0.62rem", color:"#4ade80", fontWeight:600, marginTop:"0.2rem" }}>Uptime SLA</div>
+                </div>
+                <div style={{ flex:1, padding:"0.7rem 0.8rem", borderRadius:12, background:"linear-gradient(135deg,#f0fdf4,#ecfdf5)", border:"1.5px solid #bbf7d0", textAlign:"center" }}>
+                  <div style={{ fontSize:"1.2rem", fontWeight:900, color:"#16a34a", lineHeight:1 }}>3+</div>
+                  <div style={{ fontSize:"0.62rem", color:"#4ade80", fontWeight:600, marginTop:"0.2rem" }}>Yrs Expertise</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* ══ PROCESS ══ */}
+      <section className="grid-bg" style={{ padding:"3.5rem 0", background:"#ffffff", position:"relative", overflow:"hidden" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem", position:"relative" }}>
+          <motion.div initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5 }} viewport={{ once:true }}
+            style={{ textAlign:"center", marginBottom:"2.5rem" }}>
+            <Pill icon="bi-arrow-right-circle-fill" label="How We Work" />
+            <h2 style={{ fontSize:"clamp(1.8rem,3.2vw,2.5rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>
+              Our Development <GradText>Process</GradText>
+            </h2>
+            <p style={{ color:"#64748b", fontSize:"0.94rem", maxWidth:460, margin:"0 auto" }}>
+              A structured workflow that keeps you informed and in control at every stage.
+            </p>
+          </motion.div>
+          <div className="proc-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1.2rem" }}>
+
+            <motion.div className="proc-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay:0 }} viewport={{ once:true }}>
+              <span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>01</span>
+              <div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="bi bi-search" style={{ fontSize:"1.25rem", color:"#034665" }} />
+              </div>
+              <h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>Discovery & Planning</h4>
+              <p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>Analyse systems, data flows, and business goals to map the ideal API architecture.</p>
+            </motion.div>
+
+            <motion.div className="proc-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay:0.07 }} viewport={{ once:true }}>
+              <span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>02</span>
+              <div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="bi bi-pencil-square" style={{ fontSize:"1.25rem", color:"#034665" }} />
+              </div>
+              <h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>API Design</h4>
+              <p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>Endpoint planning, schema design, auth strategy, and OpenAPI spec creation.</p>
+            </motion.div>
+
+            <motion.div className="proc-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay:0.14 }} viewport={{ once:true }}>
+              <span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>03</span>
+              <div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="bi bi-code-slash" style={{ fontSize:"1.25rem", color:"#034665" }} />
+              </div>
+              <h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>Development</h4>
+              <p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>Clean, secure, well-documented code with modern stacks and best practices.</p>
+            </motion.div>
+
+            <motion.div className="proc-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay:0.21 }} viewport={{ once:true }}>
+              <span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>04</span>
+              <div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="bi bi-shield-check" style={{ fontSize:"1.25rem", color:"#034665" }} />
+              </div>
+              <h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>Testing & QA</h4>
+              <p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>Unit, integration, load, and security testing for bulletproof reliability.</p>
+            </motion.div>
+
+            <motion.div className="proc-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay:0.28 }} viewport={{ once:true }}>
+              <span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>05</span>
+              <div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="bi bi-cloud-upload" style={{ fontSize:"1.25rem", color:"#034665" }} />
+              </div>
+              <h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>Deployment</h4>
+              <p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>CI/CD pipelines, zero-downtime releases, and infrastructure-as-code setup.</p>
+            </motion.div>
+
+            <motion.div className="proc-card" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay:0.35 }} viewport={{ once:true }}>
+              <span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>06</span>
+              <div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                <i className="bi bi-graph-up-arrow" style={{ fontSize:"1.25rem", color:"#034665" }} />
+              </div>
+              <h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>Support & Evolution</h4>
+              <p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>Ongoing monitoring, performance tuning, security patches, and feature additions.</p>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ══ SERVICES + TECH ══ */}
+      <section style={{ padding:"3.5rem 0", background:"#fff" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <div className="bot-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"start" }}>
+
+            {/* Offerings */}
+            <motion.div initial={{ opacity:0, x:-22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-check2-all" label="What We Offer" />
+              <h2 style={{ fontSize:"clamp(1.6rem,2.8vw,2.1rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>
+                Our API <GradText>Services</GradText>
+              </h2>
+              <p style={{ color:"#4a5568", marginBottom:"1.2rem", lineHeight:1.7, fontSize:"0.92rem" }}>End-to-end API services from design and development to documentation, testing, and long-term support.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+
+                <motion.div className="offer-row" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay:0 }} viewport={{ once:true }}>
+                  <div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-code-square" style={{ fontSize:"0.98rem", color:"#034665" }} />
+                  </div>
+                  <div>
+                    <strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>Custom API Development</strong>
+                    <p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>Business-specific APIs tailored to your exact workflows and enterprise systems.</p>
+                  </div>
+                  <i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} />
+                </motion.div>
+
+                <motion.div className="offer-row" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay:0.06 }} viewport={{ once:true }}>
+                  <div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-plug" style={{ fontSize:"0.98rem", color:"#034665" }} />
+                  </div>
+                  <div>
+                    <strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>API Integration</strong>
+                    <p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>Seamless integration with web, mobile, cloud, IoT, and third-party services.</p>
+                  </div>
+                  <i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} />
+                </motion.div>
+
+                <motion.div className="offer-row" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay:0.12 }} viewport={{ once:true }}>
+                  <div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-shield-lock" style={{ fontSize:"0.98rem", color:"#034665" }} />
+                  </div>
+                  <div>
+                    <strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>Secure API Architecture</strong>
+                    <p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>Auth, encryption, access control, and enterprise-grade security layers.</p>
+                  </div>
+                  <i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} />
+                </motion.div>
+
+                <motion.div className="offer-row" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay:0.18 }} viewport={{ once:true }}>
+                  <div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-file-text" style={{ fontSize:"0.98rem", color:"#034665" }} />
+                  </div>
+                  <div>
+                    <strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>API Documentation</strong>
+                    <p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>Developer-friendly docs for easy onboarding and long-term maintainability.</p>
+                  </div>
+                  <i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} />
+                </motion.div>
+
+                <motion.div className="offer-row" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay:0.24 }} viewport={{ once:true }}>
+                  <div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-speedometer2" style={{ fontSize:"0.98rem", color:"#034665" }} />
+                  </div>
+                  <div>
+                    <strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>API Testing & Monitoring</strong>
+                    <p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>Performance, load testing, and real-time analytics dashboards.</p>
+                  </div>
+                  <i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} />
+                </motion.div>
+
+                <motion.div className="offer-row" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay:0.30 }} viewport={{ once:true }}>
+                  <div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-arrow-repeat" style={{ fontSize:"0.98rem", color:"#034665" }} />
+                  </div>
+                  <div>
+                    <strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>Maintenance & Support</strong>
+                    <p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>Ongoing upgrades, security patches, and performance optimisation.</p>
+                  </div>
+                  <i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} />
+                </motion.div>
+
+              </div>
+            </motion.div>
+
+            {/* Tech Stack */}
+            <motion.div initial={{ opacity:0, x:22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-cpu-fill" label="Tech Stack" />
+              <h2 style={{ fontSize:"clamp(1.6rem,2.8vw,2.1rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>
+                Technologies We <GradText>Use</GradText>
+              </h2>
+              <p style={{ color:"#4a5568", marginBottom:"1.2rem", lineHeight:1.7, fontSize:"0.92rem" }}>Industry-standard tools chosen for speed, reliability, and long-term scalability.</p>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(2,1fr)", gap:"0.6rem" }}>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#22c55e14", border:"1.5px solid #22c55e28", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-hdd-stack" style={{ fontSize:"0.95rem", color:"#22c55e" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>Node.js</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.055 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#a855f714", border:"1.5px solid #a855f728", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-share-fill" style={{ fontSize:"0.95rem", color:"#a855f7" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>GraphQL</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.11 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#3b82f614", border:"1.5px solid #3b82f628", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-database" style={{ fontSize:"0.95rem", color:"#3b82f6" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>PostgreSQL</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.165 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#16a34a14", border:"1.5px solid #16a34a28", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-database-fill" style={{ fontSize:"0.95rem", color:"#16a34a" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>MongoDB</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.22 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#ef444414", border:"1.5px solid #ef444428", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-lightning" style={{ fontSize:"0.95rem", color:"#ef4444" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>Redis</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.275 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#84cc1614", border:"1.5px solid #84cc1628", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-file-earmark-code" style={{ fontSize:"0.95rem", color:"#84cc16" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>Swagger</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.33 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#f9731614", border:"1.5px solid #f9731628", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-send" style={{ fontSize:"0.95rem", color:"#f97316" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>Postman</span>
+                </motion.div>
+
+                <motion.div className="tech-pill" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay:0.385 }} viewport={{ once:true }}>
+                  <div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:"#0ea5e914", border:"1.5px solid #0ea5e928", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                    <i className="bi bi-box-seam" style={{ fontSize:"0.95rem", color:"#0ea5e9" }} />
+                  </div>
+                  <span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>Docker</span>
+                </motion.div>
+
+              </div>
+              <div style={{ marginTop:"1.2rem", padding:"1rem 1.2rem", borderRadius:15, background:"#ffffff", border:"1.5px solid #bae6fd" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.55rem", marginBottom:"0.4rem" }}>
+                  <i className="bi bi-lightning-charge-fill" style={{ color:"#0ea5e9", fontSize:"0.88rem" }} />
+                  <span style={{ fontSize:"0.8rem", fontWeight:700, color:"#0c4a6e" }}>Fast API Delivery</span>
+                </div>
+                <p style={{ fontSize:"0.76rem", color:"#0369a1", lineHeight:1.6, margin:0 }}>
+                  From discovery to deployment — production-ready APIs within weeks, not months.
+                </p>
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  );
+}
+

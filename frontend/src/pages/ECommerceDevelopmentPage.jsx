@@ -1,461 +1,314 @@
-import React from "react";
+import { useEffect } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import "./ECommerceDevelopmentPage.css";
 
-import aboutImage from "../Images/game-dev-user.jpg.jpg";
-
-const serviceCards = [
-  {
-    title: "Product Management",
-    icon: "bi-cart3",
-    desc: "Comprehensive product management system to organize and showcase your inventory. Manage products, categories, variants, and inventory with ease.",
-    bullets: [
-      "Product catalog management",
-      "Category and subcategory organization",
-      "Product variants and attributes",
-      "Inventory tracking and stock management",
-      "Bulk product import/export",
-      "Product search and filtering",
-    ],
-    tone: "soft",
-  },
-  {
-    title: "Shopping Cart & Checkout",
-    icon: "bi-bag-check",
-    desc: "Streamlined shopping cart and checkout process to maximize conversions. Provide a smooth and secure checkout experience for your customers.",
-    bullets: [
-      "Add to cart functionality",
-      "Cart persistence and recovery",
-      "Guest checkout option",
-      "Multi-step checkout process",
-      "Order summary and review",
-      "Shipping and tax calculation",
-    ],
-    tone: "white",
-  },
-  {
-    title: "Payment Integration",
-    icon: "bi-credit-card",
-    desc: "Secure payment processing with support for multiple payment gateways. Accept payments from customers worldwide with confidence.",
-    bullets: [
-      "Credit/debit card processing",
-      "Payment gateway integration (Stripe, PayPal, Razorpay)",
-      "Digital wallet support",
-      "Bank transfer and COD options",
-      "Secure payment processing (PCI compliance)",
-      "Multi-currency support",
-    ],
-    tone: "soft",
-  },
-  {
-    title: "Order Management",
-    icon: "bi-truck",
-    desc: "Efficient order management system to track, process, and fulfill orders. Manage your entire order lifecycle from placement to delivery.",
-    bullets: [
-      "Order tracking and status updates",
-      "Order history and details",
-      "Order status management",
-      "Invoice generation",
-      "Shipping label printing",
-      "Order cancellation and refunds",
-    ],
-    tone: "white",
-  },
-  {
-    title: "Security & Compliance",
-    icon: "bi-shield-lock",
-    desc: "Enterprise-grade security to protect your business and customer data. Ensure compliance with industry standards and regulations.",
-    bullets: [
-      "SSL/HTTPS encryption",
-      "PCI DSS compliance",
-      "Secure customer data storage",
-      "Fraud detection and prevention",
-      "Regular security audits",
-      "GDPR compliance",
-    ],
-    tone: "soft",
-  },
-];
-
-const ecommerceFeatures = [
-  "Advanced Product Catalog (Categories, filters, search)",
-  "Smart Shopping Cart (Wishlist, save for later)",
-  "Secure Payment Gateway Integration",
-  "Order & Delivery Management System",
-  "Real-Time Inventory Tracking",
-  "Mobile-First Responsive Design",
-  "Multi-Vendor Marketplace Support",
-  "SEO & Conversion Optimization",
-];
-
-const featureTiles = [
-  { title: "High Performance", subtitle: "Fast & optimized stores" },
-  { title: "Secure Payments", subtitle: "Safe transactions" },
-  { title: "Scalable Systems", subtitle: "Business growth ready" },
-  { title: "Smart Analytics", subtitle: "Data-driven decisions" },
-];
-
-const tools = [
-  { name: "React", kind: "react" },
-  { name: "Node.js", kind: "node" },
-  { name: "PostgreSQL", kind: "postgres" },
-  { name: "MongoDB", kind: "mongodb" },
-  { name: "PayPal", kind: "paypal" },
-  { name: "Shopify", kind: "shopify" },
-  { name: "Woo Commerce", kind: "woocommerce" },
-  { name: "AWS", kind: "aws" },
-  { name: "Docker", kind: "docker" },
-  { name: "Mobile Commerce", kind: "mobilecommerce" },
-];
-
-const heroStats = [
-  { value: "350+", label: "Stores Built" },
-  { value: "99.9%", label: "Secure Checkout" },
-  { value: "24/7", label: "Business Support" },
-];
-
-const dashboardMetrics = [
-  { label: "Today’s Revenue", value: "₹42.8K", delta: "+18%" },
-  { label: "Orders", value: "128", delta: "+12" },
-  { label: "Visitors", value: "3.4K", delta: "+9%" },
-];
-
-const chartBars = [
-  { label: "Mon", value: 42 },
-  { label: "Tue", value: 58 },
-  { label: "Wed", value: 76 },
-  { label: "Thu", value: 64 },
-  { label: "Fri", value: 88 },
-  { label: "Sat", value: 72 },
-];
-
-const recentOrders = [
-  { customer: "Aarav", product: "Wireless Headphones", amount: "₹2,490", status: "Paid" },
-  { customer: "Meera", product: "Smart Watch Pro", amount: "₹4,199", status: "Processing" },
-  { customer: "Rohan", product: "Running Shoes", amount: "₹3,280", status: "Shipped" },
-];
-
-const productHighlights = [
-  { name: "Smart Watch Pro", sold: "84 sold" },
-  { name: "Wireless Headphones", sold: "129 sold" },
-  { name: "Fitness Band", sold: "62 sold" },
-];
-
-function ToolIcon({ kind, label }) {
-  switch (kind) {
-    case "react":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <g fill="none" stroke="#61dafb" strokeWidth="3.2" strokeLinecap="round">
-            <ellipse cx="32" cy="32" rx="22" ry="9" />
-            <ellipse cx="32" cy="32" rx="22" ry="9" transform="rotate(60 32 32)" />
-            <ellipse cx="32" cy="32" rx="22" ry="9" transform="rotate(120 32 32)" />
-          </g>
-          <circle cx="32" cy="32" r="4.5" fill="#61dafb" />
-        </svg>
-      );
-    case "node":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M32 7 50 17v20L32 57 14 37V17z" fill="#4f9d45" />
-          <path d="M24 24h5v16h-5zM31 24h5l4 9v-9h5v16h-5l-4-9v9h-5z" fill="#fff" />
-        </svg>
-      );
-    case "postgres":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M41 9c8 0 14 6 14 14 0 7-3 13-8 17l2 8-8-4c-3 1-6 2-9 2-11 0-20-8-20-19S22 9 32 9c3 0 6 1 9 2 0 0 0 0 0-2z" fill="#336791" />
-          <path d="M24 24c0-5 4-9 9-9s9 4 9 9-4 9-9 9-9-4-9-9z" fill="#fff" opacity="0.92" />
-          <path d="M32 18c-3 2-4 4-4 7 0 4 3 7 7 7 1 0 2 0 3-1-3-1-5-4-5-7 0-2 0-4-1-6z" fill="#336791" opacity="0.8" />
-        </svg>
-      );
-    case "mongodb":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M32 6c7 8 12 16 12 25 0 13-5 19-12 27-7-8-12-14-12-27 0-9 5-17 12-25z" fill="#6cac48" />
-          <path d="M32 18v28" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
-          <path d="M29 32c3-3 4-6 3-10 4 5 4 10 0 16-1-3-2-4-3-6z" fill="#fff" opacity="0.9" />
-        </svg>
-      );
-    case "paypal":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M24 50h8c8 0 14-4 16-13 2-8-2-13-10-13H26c-2 0-4 1-4 4l-5 22h7z" fill="#1f6bff" />
-          <path d="M30 43h7c6 0 10-4 11-9 1-5-1-8-7-8h-9z" fill="#0b3ea9" />
-          <path d="M18 14h13c6 0 10 3 10 8 0 6-4 10-10 10H24l-2 8h-7l3-26z" fill="#2493ff" />
-        </svg>
-      );
-    case "shopify":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M20 16 26 11h12l6 5 3 31-15 6-15-6 3-31z" fill="#95bf47" />
-          <path d="M27 25c0-5 3-8 7-8s7 3 7 8v3h-4v-3c0-3-1-5-3-5s-3 2-3 5v3h-4z" fill="#fff" />
-          <path d="M22 24h20l2 18-12 4-12-4z" fill="#7aa52f" />
-        </svg>
-      );
-    case "woocommerce":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M14 20h20l7 5v18l-7 5H14z" fill="#7f54b3" />
-          <path d="M18 24h8l2 10 3-10h5l-6 20h-5l-3-10-3 10h-5l-6-20h5z" fill="#fff" />
-          <path d="M37 21h11l4 4v17l-4 4H37z" fill="#a36dd8" opacity="0.95" />
-          <text x="42" y="37" fontSize="10" fontWeight="700" textAnchor="middle" fill="#fff" fontFamily="Arial, sans-serif">Woo</text>
-        </svg>
-      );
-    case "aws":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <text x="32" y="34" textAnchor="middle" fontSize="18" fontWeight="700" fill="#232f3e" fontFamily="Arial, sans-serif">aws</text>
-          <path d="M16 42c11-8 23-8 32-4" fill="none" stroke="#ff9900" strokeWidth="3" strokeLinecap="round" />
-          <path d="M41 42c2 1 5 2 7 2 2 0 4-1 5-2" fill="none" stroke="#ff9900" strokeWidth="3" strokeLinecap="round" />
-        </svg>
-      );
-    case "docker":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <path d="M14 30h8v-7h8v7h8v-7h8v7c4 0 8 2 10 5-1 5-4 11-10 15H20c-4 0-8-2-10-5 0-7 2-11 4-15z" fill="#2496ed" />
-          <path d="M13 36c3 3 7 4 12 4h21c4 0 6-1 8-2-1 5-4 9-8 12H20c-4 0-8-2-10-5 0-4 1-7 3-9z" fill="#0d77c7" />
-          <rect x="18" y="26" width="6" height="4" rx="1" fill="#fff" />
-          <rect x="27" y="26" width="6" height="4" rx="1" fill="#fff" />
-        </svg>
-      );
-    case "mobilecommerce":
-      return (
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <rect x="17" y="10" width="30" height="44" rx="6" fill="#1f2937" />
-          <rect x="21" y="15" width="22" height="28" rx="2" fill="#eef6fb" />
-          <path d="M26 24h12l2 9H24z" fill="#3aa0c7" />
-          <circle cx="32" cy="44" r="2.5" fill="#cbd5e1" />
-          <path d="M39 31c0 5-4 9-9 9s-9-4-9-9" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M41 26h6l2 4-2 4h-5" fill="none" stroke="#3aa0c7" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-      );
-    default:
-      return <span className="ece-tool__fallback">{label}</span>;
-  }
+function GradText({ c }) { return <span style={{ background:"linear-gradient(135deg,#034665,#61BBC5)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text" }}>{c}</span>; }
+function Pill({ icon, label }) {
+  return <div style={{ display:"inline-flex", alignItems:"center", gap:"0.45rem", background:"rgba(97,187,197,0.1)", border:"1px solid rgba(97,187,197,0.28)", borderRadius:50, padding:"0.28rem 0.88rem" }}><i className={`bi ${icon}`} style={{ fontSize:"0.68rem", color:"#61BBC5" }} /><span style={{ fontSize:"0.68rem", fontWeight:700, color:"#034665", letterSpacing:"0.1em", textTransform:"uppercase" }}>{label}</span></div>;
+}
+function CheckItem({ text, bg, color }) {
+  return <div style={{ display:"flex", alignItems:"flex-start", gap:"0.4rem" }}><span style={{ width:18, height:18, borderRadius:5, background:bg, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:"0.1rem" }}><i className="bi bi-check-lg" style={{ fontSize:"0.58rem", color }} /></span><span style={{ fontSize:"0.79rem", color:"#374151", lineHeight:1.5 }}>{text}</span></div>;
+}
+function TechPill({ color, bg, border, icon, label, delay }) {
+  return <motion.div className="svc-tp" initial={{ opacity:0, scale:0.88 }} whileInView={{ opacity:1, scale:1 }} transition={{ duration:0.28, delay }} viewport={{ once:true }}><div style={{ width:32, height:32, borderRadius:9, flexShrink:0, background:bg, border:`1.5px solid ${border}`, display:"flex", alignItems:"center", justifyContent:"center" }}><i className={`bi ${icon}`} style={{ fontSize:"0.95rem", color }} /></div><span style={{ fontSize:"0.81rem", fontWeight:600, color:"#374151" }}>{label}</span></motion.div>;
+}
+function OfferRow({ icon, title, desc, delay }) {
+  return <motion.div className="svc-or" initial={{ opacity:0, x:-14 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.32, delay }} viewport={{ once:true }}><div style={{ flexShrink:0, width:40, height:40, borderRadius:11, background:"linear-gradient(135deg,rgba(97,187,197,0.12),rgba(3,70,101,0.06))", border:"1.5px solid rgba(97,187,197,0.2)", display:"flex", alignItems:"center", justifyContent:"center" }}><i className={`bi ${icon}`} style={{ fontSize:"0.98rem", color:"#034665" }} /></div><div><strong style={{ display:"block", fontSize:"0.87rem", fontWeight:700, color:"#0d1f35", marginBottom:"0.12rem" }}>{title}</strong><p style={{ fontSize:"0.77rem", color:"#64748b", lineHeight:1.55, margin:0 }}>{desc}</p></div><i className="bi bi-arrow-right" style={{ marginLeft:"auto", fontSize:"0.78rem", color:"#cbd5e1", flexShrink:0 }} /></motion.div>;
+}
+function ProcCard({ n, icon, title, desc, delay }) {
+  return <motion.div className="svc-pc" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.38, delay }} viewport={{ once:true }}><span style={{ position:"absolute", top:12, right:16, fontSize:"3rem", fontWeight:900, color:"#f1f5f9", lineHeight:1, userSelect:"none" }}>{n}</span><div style={{ width:48, height:48, borderRadius:13, marginBottom:"0.9rem", background:"linear-gradient(135deg,rgba(97,187,197,0.15),rgba(3,70,101,0.07))", border:"1.5px solid rgba(97,187,197,0.24)", display:"flex", alignItems:"center", justifyContent:"center" }}><i className={`bi ${icon}`} style={{ fontSize:"1.25rem", color:"#034665" }} /></div><h4 style={{ fontSize:"0.97rem", fontWeight:800, color:"#0d1f35", marginBottom:"0.35rem" }}>{title}</h4><p style={{ fontSize:"0.82rem", color:"#64748b", lineHeight:1.65 }}>{desc}</p></motion.div>;
 }
 
+const CSS=`.svc-sc{text-align:center;padding:1.2rem 0.9rem;border-radius:18px;background:#fff;border:1.5px solid #e2e8f0;box-shadow:0 4px 18px rgba(0,0,0,0.04);transition:all 0.25s;}.svc-sc:hover{border-color:#61BBC5;transform:translateY(-4px);box-shadow:0 12px 28px rgba(97,187,197,0.14);}.svc-pc{background:#fff;border-radius:18px;padding:1.4rem 1.2rem;border:1.5px solid #e2e8f0;position:relative;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.04);transition:all 0.28s;}.svc-pc:hover{border-color:#61BBC5;transform:translateY(-5px);box-shadow:0 12px 30px rgba(97,187,197,0.16);}.svc-or{display:flex;align-items:flex-start;gap:1rem;padding:0.85rem 1rem;border-radius:14px;border:1.5px solid #f1f5f9;background:#fafbfc;transition:all 0.25s;cursor:default;}.svc-or:hover{border-color:#61BBC5;background:#f0fbfc;transform:translateX(4px);}.svc-tp{display:flex;align-items:center;gap:0.5rem;padding:0.55rem 0.85rem;border-radius:50px;border:1.5px solid #e2e8f0;background:#fff;transition:all 0.25s;cursor:default;}.svc-tp:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.08);}.svc-mc{background:#fff;border-radius:20px;border:1.5px solid #e2e8f0;overflow:hidden;margin-bottom:0.7rem;box-shadow:0 4px 20px rgba(0,0,0,0.04);display:grid;grid-template-columns:1fr 1fr;}@media(max-width:960px){.svc-2c,.svc-bc,.svc-mc{grid-template-columns:1fr !important;}.svc-3c{grid-template-columns:1fr 1fr !important;}.svc-4c{grid-template-columns:1fr 1fr !important;}}@media(max-width:560px){.svc-3c{grid-template-columns:1fr !important;}.svc-tg{grid-template-columns:1fr !important;}.svc-4c{grid-template-columns:1fr 1fr !important;}.svc-2c{grid-template-columns:1fr !important;}}`;
+
+const CARDS=[
+  {ac:"#034665",abg:"rgba(97,187,197,0.12)",abdr:"rgba(97,187,197,0.35)",ic:"bi-box-seam",cat:"Product & Catalog",title:"Product Management",badge:"Catalog & Inventory",
+    desc:"Comprehensive product management system to organize and showcase your inventory. Manage products, categories, variants, and inventory with ease.",
+    desc2:"Designed for growing catalogs with SEO-optimized product pages and smart search capabilities.",
+    feats:["Product catalog management","Category and subcategory organization","Product variants and attributes","Inventory tracking and stock management","Bulk product import/export","Product search and filtering"],fbg:"#f0fbfc",flip:false},
+  {ac:"#16a34a",abg:"#f0fdf4",abdr:"#bbf7d0",ic:"bi-credit-card-fill",cat:"Payments & Security",title:"Payment Integration",badge:"PCI Compliant",
+    desc:"Secure payment processing with support for multiple payment gateways. Accept payments from customers worldwide with confidence.",
+    desc2:"Supports digital wallets, UPI, bank transfers, and COD with seamless one-click checkout experiences.",
+    feats:["Credit/debit card processing","Payment gateway integration (Stripe, PayPal, Razorpay)","Digital wallet support","Bank transfer and COD options","Secure payment processing (PCI compliance)","Multi-currency support"],fbg:"#f0fdf4",flip:true},
+  {ac:"#f59e0b",abg:"#fffbeb",abdr:"#fed7aa",ic:"bi-bag-check-fill",cat:"Shopping Experience",title:"Shopping Cart & Checkout",badge:"Conversion Optimized",
+    desc:"Streamlined shopping cart and checkout process to maximize conversions. Provide a smooth and secure checkout experience for your customers.",
+    desc2:"Built to delight customers with transparent order visibility and efficient fulfilment workflows.",
+    feats:["Add to cart functionality","Cart persistence and recovery","Guest checkout option","Multi-step checkout process","Order summary and review","Shipping and tax calculation"],fbg:"#fffbf0",flip:false},
+  {ac:"#0ea5e9",abg:"#f0f9ff",abdr:"#bae6fd",ic:"bi-truck",cat:"Orders & Logistics",title:"Order Management",badge:"Real-time Tracking",
+    desc:"Efficient order management system to track, process, and fulfill orders. Manage your entire order lifecycle from placement to delivery.",
+    desc2:"Full order lifecycle management from placement to delivery with real-time tracking and automated status updates.",
+    feats:["Order tracking and status updates","Order history and details","Order status management","Invoice generation","Shipping label printing","Order cancellation and refunds"],fbg:"#f0f9ff",flip:true},
+  {ac:"#8b5cf6",abg:"#f5f3ff",abdr:"#ddd6fe",ic:"bi-shield-lock-fill",cat:"Security & Compliance",title:"Security & Compliance",badge:"Enterprise Grade",
+    desc:"Enterprise-grade security to protect your business and customer data. Ensure compliance with industry standards and regulations.",
+    desc2:"Our platforms are optimized for speed, SEO, mobile responsiveness, and high conversion rates.",
+    feats:["SSL/HTTPS encryption","PCI DSS compliance","Secure customer data storage","Fraud detection and prevention","Regular security audits","GDPR compliance"],fbg:"#fdf8ff",flip:false},
+];
+
 export default function ECommerceDevelopmentPage() {
+  useEffect(()=>{ window.scrollTo(0,0); document.title="E-Commerce Development | Kevalon Technology"; return ()=>{ document.title="Kevalon Technology"; }; },[]);
   return (
-    <div className="ece-page">
-      <section className="ece-hero">
-        {/* White-theme hero decorations */}
-        <div className="ece-hero__orb ece-hero__orb--1" aria-hidden="true" />
-        <div className="ece-hero__orb ece-hero__orb--2" aria-hidden="true" />
-        <div className="ece-hero__beam" aria-hidden="true" />
+    <div style={{ fontFamily:"'Inter','Segoe UI',sans-serif", color:"#1e293b", background:"#fff", overflowX:"hidden" }}>
+      <style>{CSS}</style>
 
-        <div className="ece-hero__inner">
-          <div className="ece-hero__grid">
-            <div className="ece-hero__content">
-              <div className="ece-hero__badge">
-                <span />
-                E-Commerce Development
-              </div>
+      {/* HERO */}
+      <section style={{ position:"relative", minHeight:520, display:"flex", alignItems:"center", background:"#ffffff", overflow:"hidden", paddingTop:"2rem" }}>
+        <div style={{ maxWidth:700, margin:"0 auto", padding:"3.5rem 1.5rem", width:"100%", textAlign:"center", position:"relative", zIndex:1 }}>
+          <Pill icon="bi-cart3" label="Know More About" />
+          <h1 style={{ fontSize:"clamp(2.4rem,5vw,3.8rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.1, letterSpacing:"-0.03em", margin:"1rem 0 0.75rem" }}>
+            E-Commerce<br /><GradText c="Development" />
+          </h1>
+          <p style={{ color:"#475569", fontSize:"0.97rem", lineHeight:1.8, maxWidth:520, margin:"0 auto 1.8rem" }}>
+            Build powerful online stores that drive sales and grow your business.
+          </p>
+          <div style={{ display:"flex", gap:"0.75rem", flexWrap:"wrap", justifyContent:"center" }}>
+            <Link to="/contact" style={{ display:"inline-flex", alignItems:"center", gap:"0.45rem", background:"linear-gradient(135deg,#034665,#0a6e90)", color:"#fff", padding:"0.82rem 1.8rem", borderRadius:12, fontWeight:700, fontSize:"0.87rem", textDecoration:"none", boxShadow:"0 6px 20px rgba(3,70,101,0.28)", transition:"all 0.25s" }} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.transform="";}}>
+              <i className="bi bi-rocket-takeoff-fill" style={{ fontSize:"0.82rem" }} /> Get in Touch
+            </Link>
+            <Link to="/portfolio" style={{ display:"inline-flex", alignItems:"center", gap:"0.45rem", background:"#fff", color:"#034665", padding:"0.82rem 1.8rem", borderRadius:12, fontWeight:700, fontSize:"0.87rem", textDecoration:"none", border:"2px solid #e2e8f0", transition:"all 0.25s" }} onMouseEnter={e=>{e.currentTarget.style.borderColor="#61BBC5";e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e2e8f0";e.currentTarget.style.transform="";}}>
+              View Portfolio <i className="bi bi-arrow-right" />
+            </Link>
+          </div>
+        </div>
+        <div style={{ position:"absolute", bottom:0, left:0, right:0, lineHeight:0 }}><svg viewBox="0 0 1440 40" preserveAspectRatio="none" style={{ width:"100%", height:40, display:"block" }}><path d="M0,20 Q360,40 720,20 Q1080,0 1440,20 L1440,40 L0,40 Z" fill="#ffffff" /></svg></div>
+      </section>
 
-              <h1>
-                E-Commerce<br />
-                <span className="ece-hero__title-accent">Development</span>
-              </h1>
-              <p>Build powerful online stores that drive sales and grow your business globally.</p>
+      {/* STATS */}
+      <section style={{ padding:"2rem 0", background:"#fff" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <div className="svc-4c" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem" }}>
+            {[{icon:"bi-cart-check-fill",color:"#034665",val:"350+",label:"Stores Built"},{icon:"bi-shield-lock-fill",color:"#22c55e",val:"99.9%",label:"Secure Checkout"},{icon:"bi-graph-up-arrow",color:"#f59e0b",val:"3+",label:"Years Experience"},{icon:"bi-star-fill",color:"#4f46e5",val:"100%",label:"Client Satisfaction"}].map((s,i)=>(
+              <motion.div key={s.label} className="svc-sc" initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:i*0.08 }} viewport={{ once:true }}>
+                <div style={{ width:42, height:42, borderRadius:12, background:s.color+"12", border:"1.5px solid "+s.color+"25", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 0.65rem" }}><i className={`bi ${s.icon}`} style={{ fontSize:"1.05rem", color:s.color }} /></div>
+                <div style={{ fontSize:"1.8rem", fontWeight:900, color:"#0d1f35", lineHeight:1, marginBottom:"0.25rem" }}>{s.val}</div>
+                <div style={{ fontSize:"0.73rem", color:"#64748b", fontWeight:500 }}>{s.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="ece-hero__actions">
-                <Link to="/contact" className="ece-btn ece-btn--primary">
-                  Get Started <i className="bi bi-arrow-right ms-2" />
-                </Link>
-                <Link to="/portfolio" className="ece-btn ece-btn--ghost">
-                  View Work
-                </Link>
-              </div>
-
-              <div className="ece-hero__stats">
-                {heroStats.map((item) => (
-                  <div key={item.label} className="ece-stat">
-                    <strong>{item.value}</strong>
-                    <span>{item.label}</span>
+      {/* WHAT WE DO */}
+      <section style={{ padding:"3.5rem 0", background:"#ffffff" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <div className="svc-2c" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"center" }}>
+            <motion.div initial={{ opacity:0, x:-22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-info-circle-fill" label="What We Do" />
+              <h2 style={{ fontSize:"clamp(1.7rem,3vw,2.3rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0" }}>
+                E-Commerce Development<br /><GradText c="With Kevalon Technology" />
+              </h2>
+              <p style={{ color:"#4a5568", lineHeight:1.85, marginBottom:"0.85rem", fontSize:"0.94rem" }}>
+                E-commerce development involves creating online stores and digital marketplaces that enable businesses to sell products and services over the internet. A well-designed e-commerce platform provides a seamless shopping experience, secure payment processing, and efficient order management.
+              </p>
+              <p style={{ color:"#4a5568", lineHeight:1.85, marginBottom:"1.2rem", fontSize:"0.94rem" }}>
+                At <strong style={{ color:"#034665" }}>Kevalon Technology</strong>, we develop custom e-commerce solutions that help businesses establish a strong online presence and maximize their sales potential. Our e-commerce platforms are designed to be user-friendly, secure, and scalable.
+              </p>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.5rem" }}>
+                {["Product Catalog & Search","Secure Payment Gateway","Order Management","Inventory Tracking","Mobile Commerce","SEO & Performance"].map(f=>(
+                  <div key={f} style={{ display:"flex", alignItems:"center", gap:"0.45rem", fontSize:"0.82rem", color:"#374151", fontWeight:500 }}>
+                    <div style={{ width:19, height:19, borderRadius:5, background:"rgba(97,187,197,0.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><i className="bi bi-check-lg" style={{ fontSize:"0.6rem", color:"#034665" }} /></div>
+                    {f}
                   </div>
                 ))}
               </div>
-            </div>
-
-            <div className="ece-hero__visual" aria-hidden="true">
-              <div className="ece-hero__visual-card">
-                <div className="ece-hero__visual-top">
-                  <div>
-                    <span>Online Store Dashboard</span>
-                    <strong>Sales overview</strong>
-                  </div>
-                  <i className="bi bi-cart3" />
+            </motion.div>
+            <motion.div initial={{ opacity:0, x:22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }} style={{ display:"flex", justifyContent:"center" }}>
+              <div style={{ width:"100%", maxWidth:390, background:"#fff", borderRadius:22, border:"1.5px solid #e2e8f0", padding:"1.5rem", boxShadow:"0 8px 32px rgba(0,0,0,0.07)" }}>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.4rem", marginBottom:"1rem" }}>
+                  <div style={{ width:10, height:10, borderRadius:"50%", background:"#ff5f57" }} /><div style={{ width:10, height:10, borderRadius:"50%", background:"#febc2e" }} /><div style={{ width:10, height:10, borderRadius:"50%", background:"#28c840" }} />
+                  <div style={{ flex:1, height:22, background:"#f1f5f9", borderRadius:6, marginLeft:"0.5rem", display:"flex", alignItems:"center", paddingLeft:"0.6rem" }}><span style={{ fontSize:"0.63rem", color:"#94a3b8" }}>store.kevalontechnology.in</span></div>
                 </div>
-                <div className="ece-hero__visual-metrics">
-                  {dashboardMetrics.map((metric) => (
-                    <div key={metric.label} className="ece-metric-card">
-                      <span>{metric.label}</span>
-                      <strong>{metric.value}</strong>
-                      <small>{metric.delta}</small>
+                {[
+                  {icon:"bi-bar-chart-line-fill",color:"#034665",dark:true,label:"Sales Overview",sub:"High Performance - Fast & Optimized"},
+                  {icon:"bi-credit-card-fill",color:"#22c55e",bg:"#f0fdf4",label:"Secure Payments",sub:"Safe Transactions - PCI Compliant"},
+                  {icon:"bi-boxes",color:"#f59e0b",bg:"#fffbeb",label:"Scalable Systems",sub:"Business Growth Ready"},
+                  {icon:"bi-graph-up-arrow",color:"#4f46e5",bg:"#eff6ff",label:"Smart Analytics",sub:"Data-Driven Decisions"},
+                ].map((item,i)=>(
+                  <div key={i}>
+                    <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", padding:"0.6rem 0.85rem", borderRadius:11, background:item.dark?"linear-gradient(135deg,#034665,#0a6e90)":(item.bg||"#ffffff"), border:`1.5px solid ${item.dark?"transparent":"#f1f5f9"}` }}>
+                      <div style={{ width:32, height:32, borderRadius:8, flexShrink:0, background:item.dark?"rgba(255,255,255,0.15)":item.color+"18", display:"flex", alignItems:"center", justifyContent:"center" }}><i className={`bi ${item.icon}`} style={{ fontSize:"0.9rem", color:item.dark?"#fff":item.color }} /></div>
+                      <div><div style={{ fontSize:"0.77rem", fontWeight:700, color:item.dark?"#fff":"#0d1f35" }}>{item.label}</div><div style={{ fontSize:"0.64rem", color:item.dark?"rgba(255,255,255,0.55)":"#94a3b8" }}>{item.sub}</div></div>
+                      <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:item.dark?"rgba(255,255,255,0.65)":"#22c55e", fontSize:"0.78rem" }} />
                     </div>
-                  ))}
-                </div>
-                <div className="ece-hero__visual-body">
-                  <div className="ece-chart-card">
-                    <div className="ece-chart-card__head">
-                      <span>Revenue trend</span>
-                      <strong>Weekly sales</strong>
-                    </div>
-                    <div className="ece-chart-bars">
-                      {chartBars.map((bar) => (
-                        <div key={bar.label} className="ece-chart-bar-wrap">
-                          <div className="ece-chart-bar" style={{ height: `${bar.value}%` }} />
-                          <span>{bar.label}</span>
-                        </div>
-                      ))}
-                    </div>
+                    {i<3&&<div style={{ display:"flex", justifyContent:"center", padding:"0.15rem 0" }}><div style={{ width:2, height:12, background:"linear-gradient(to bottom,#61BBC5,#034665)", borderRadius:2, opacity:0.38 }} /></div>}
                   </div>
-
-                  <div className="ece-side-stack">
-                    <div className="ece-side-card ece-side-card--status">
-                      <span>Today's Goal</span>
-                      <strong>82% completed</strong>
-                      <div className="ece-progress"><span style={{ width: "82%" }} /></div>
-                    </div>
-
-                    <div className="ece-side-card">
-                      <span>Top Products</span>
-                      <div className="ece-product-list">
-                        {productHighlights.map((item) => (
-                          <div key={item.name} className="ece-product-item">
-                            <div className="ece-product-item__dot" />
-                            <div>
-                              <strong>{item.name}</strong>
-                              <small>{item.sold}</small>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="ece-orders-card">
-                  <div className="ece-orders-card__head">
-                    <span>Recent Orders</span>
-                    <strong>Live updates</strong>
-                  </div>
-                  <div className="ece-orders-list">
-                    {recentOrders.map((order) => (
-                      <div key={`${order.customer}-${order.product}`} className="ece-order-item">
-                        <div className="ece-order-item__avatar">{order.customer.slice(0, 1)}</div>
-                        <div className="ece-order-item__details">
-                          <strong>{order.customer}</strong>
-                          <span>{order.product}</span>
-                        </div>
-                        <div className="ece-order-item__amount">
-                          <strong>{order.amount}</strong>
-                          <span>{order.status}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                ))}
+                <div style={{ marginTop:"0.85rem", padding:"0.6rem 0.85rem", borderRadius:10, background:"linear-gradient(135deg,#f0fdf4,#ecfdf5)", border:"1.5px solid #bbf7d0", display:"flex", alignItems:"center", gap:"0.55rem" }}>
+                  <span style={{ fontSize:"0.62rem", fontWeight:800, color:"#22c55e", background:"#dcfce7", padding:"0.14rem 0.48rem", borderRadius:4 }}>LIVE</span>
+                  <span style={{ fontSize:"0.68rem", color:"#16a34a", fontWeight:500 }}>Store live and processing orders</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="ece-content">
-        <div className="ece-container">
-          <div className="ece-section-head">
-            <div className="ece-section-label">
-              <i className="bi bi-cart3" /> Our Services
-            </div>
-          </div>
-
-          <div className="ece-main-grid">
-            <div className="ece-left-col">
-              {serviceCards.slice(0, 5).map((card) => (
-                <article key={card.title} className={`ece-card ece-card--${card.tone}`}>
-                  <div className="ece-card__title-row">
-                    <i className={`bi ${card.icon}`} aria-hidden="true" />
-                    <h3>{card.title}</h3>
+      {/* MAGAZINE CARDS */}
+      <section style={{ padding:"2rem 0", background:"#ffffff" }}>
+        <div style={{ maxWidth:1380, margin:"0 auto", padding:"0 1.5rem" }}>
+          <motion.div initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5 }} viewport={{ once:true }} style={{ textAlign:"center", marginBottom:"1.6rem" }}>
+            <Pill icon="bi-layers-fill" label="Our Capabilities" />
+            <h2 style={{ fontSize:"clamp(1.8rem,3.2vw,2.5rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.55rem" }}>E-Commerce Features We <GradText c="Build" /></h2>
+            <p style={{ color:"#64748b", fontSize:"0.94rem", lineHeight:1.7, maxWidth:500, margin:"0 auto" }}>End-to-end e-commerce solutions engineered for performance, security, and growth.</p>
+          </motion.div>
+          {CARDS.map((card,idx)=>(
+            <motion.div key={card.title} className="svc-mc" initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5, delay:idx*0.08 }} viewport={{ once:true, margin:"-40px" }}>
+              {!card.flip?(
+                <>
+                  <div style={{ padding:"2rem", borderRight:"1.5px solid #f1f5f9" }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1rem" }}>
+                      <div style={{ width:46, height:46, borderRadius:14, background:card.abg, border:`1.5px solid ${card.abdr}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><i className={`bi ${card.ic}`} style={{ fontSize:"1.2rem", color:card.ac }} /></div>
+                      <div><div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:card.ac, marginBottom:"0.15rem" }}>{card.cat}</div><h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>{card.title}</h3></div>
+                      <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:card.abg, color:card.ac, border:`1px solid ${card.abdr}`, whiteSpace:"nowrap" }}>{card.badge}</span>
+                    </div>
+                    <p style={{ fontSize:"0.9rem", color:"#4a5568", lineHeight:1.8, marginBottom:"0.75rem" }}>{card.desc}</p>
+                    <p style={{ fontSize:"0.9rem", color:"#4a5568", lineHeight:1.8, margin:0 }}>{card.desc2}</p>
                   </div>
-                  <p>{card.desc}</p>
-                  <ul>
-                    {card.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
+                  <div style={{ padding:"2rem", background:card.fbg }}>
+                    <div style={{ fontSize:"0.72rem", fontWeight:700, color:card.ac, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:"0.85rem" }}>Key Capabilities</div>
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem 1rem" }}>{card.feats.map(f=><CheckItem key={f} text={f} bg={card.abg} color={card.ac} />)}</div>
+                  </div>
+                </>
+              ):(
+                <>
+                  <div style={{ padding:"2rem", background:card.fbg, borderRight:"1.5px solid #f1f5f9" }}>
+                    <div style={{ fontSize:"0.72rem", fontWeight:700, color:card.ac, letterSpacing:"0.08em", textTransform:"uppercase", marginBottom:"0.85rem" }}>Key Capabilities</div>
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.45rem 1rem" }}>{card.feats.map(f=><CheckItem key={f} text={f} bg={card.abg} color={card.ac} />)}</div>
+                  </div>
+                  <div style={{ padding:"2rem" }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:"0.75rem", marginBottom:"1rem" }}>
+                      <div style={{ width:46, height:46, borderRadius:14, background:card.abg, border:`1.5px solid ${card.abdr}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}><i className={`bi ${card.ic}`} style={{ fontSize:"1.2rem", color:card.ac }} /></div>
+                      <div><div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:card.ac, marginBottom:"0.15rem" }}>{card.cat}</div><h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>{card.title}</h3></div>
+                      <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:card.abg, color:card.ac, border:`1px solid ${card.abdr}`, whiteSpace:"nowrap" }}>{card.badge}</span>
+                    </div>
+                    <p style={{ fontSize:"0.9rem", color:"#4a5568", lineHeight:1.8, marginBottom:"0.75rem" }}>{card.desc}</p>
+                    <p style={{ fontSize:"0.9rem", color:"#4a5568", lineHeight:1.8, margin:0 }}>{card.desc2}</p>
+                  </div>
+                </>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-            <div className="ece-right-col">
-              <article className="ece-about-card">
-                <h3>About E-Commerce Development</h3>
-                <img src={aboutImage} alt="E-Commerce development team planning" />
-                <div className="ece-about-card__copy">
-                  <p>
-                    At Kevalon Technology, we design and develop powerful, secure, and scalable e-commerce platforms that empower businesses to sell products and services globally. Our solutions combine modern UI/UX, seamless navigation, and high-performance architecture to deliver smooth and engaging shopping experiences.
-                  </p>
-                  <p>
-                    From product management, inventory automation, and secure payment gateways to order processing, analytics, and marketing integrations — we deliver complete end-to-end e-commerce ecosystems.
-                  </p>
-                </div>
+      {/* ABOUT */}
+      <section style={{ padding:"3.5rem 0", background:"#f8fafc", borderTop:"1.5px solid rgba(97,187,197,0.12)" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <div className="svc-2c" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"center" }}>
+            <motion.div initial={{ opacity:0, x:-22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-building" label="About E-Commerce Development" />
+              <h2 style={{ fontSize:"clamp(1.7rem,3vw,2.3rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 1rem" }}>
+                Online Shopping - Digital Commerce - <GradText c="Global Sales" />
+              </h2>
+              <p style={{ color:"#4a5568", lineHeight:1.85, marginBottom:"0.85rem", fontSize:"0.94rem" }}>
+                At Kevalon Technology, we design and develop powerful, secure, and scalable e-commerce platforms that empower businesses to sell products and services globally. Our solutions combine modern UI/UX, seamless navigation, and high-performance architecture to deliver smooth and engaging shopping experiences.
+              </p>
+              <p style={{ color:"#4a5568", lineHeight:1.85, marginBottom:"1.4rem", fontSize:"0.94rem" }}>
+                From product management, inventory automation, and secure payment gateways to order processing, analytics, and marketing integrations — we deliver complete end-to-end e-commerce ecosystems. Our platforms are optimized for speed, SEO, mobile responsiveness, and high conversion rates, helping businesses grow revenue, retain customers, and scale operations confidently in the digital marketplace.
+              </p>
+              <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+                {[
+                  "Advanced Product Catalog (Categories, filters, search)",
+                  "Smart Shopping Cart (Wishlist, save for later)",
+                  "Secure Payment Gateway Integration",
+                  "Order & Delivery Management System",
+                  "Real-Time Inventory Tracking",
+                  "Mobile-First Responsive Design",
+                  "Multi-Vendor Marketplace Support",
+                  "SEO & Conversion Optimization",
+                ].map(f=>(
+                  <div key={f} style={{ display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                    <i className="bi bi-check-circle-fill" style={{ color:"#61BBC5", fontSize:"0.85rem", flexShrink:0 }} />
+                    <span style={{ fontSize:"0.85rem", color:"#334155", fontWeight:500 }}>{f}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity:0, x:22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-cpu-fill" label="Technologies We Use" />
+              <h3 style={{ fontSize:"clamp(1.4rem,2.5vw,1.9rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.5rem" }}>Technologies <GradText c="We Use" /></h3>
+              <p style={{ color:"#4a5568", marginBottom:"1.2rem", lineHeight:1.7, fontSize:"0.92rem" }}>At Kevalon Technology, we use modern, scalable, and enterprise-grade technologies to build secure, high-performance, and future-ready e-commerce platforms.</p>
+              <div className="svc-tg" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.6rem" }}>
+                <TechPill color="#61dafb" bg="#f0fcff" border="#61dafb28" icon="bi-code-slash"  label="React"          delay={0}     />
+                <TechPill color="#3c873a" bg="#f0fdf4" border="#3c873a28" icon="bi-node-plus"   label="Node.js"        delay={0.055} />
+                <TechPill color="#336791" bg="#eff6ff" border="#33679128" icon="bi-database"    label="PostgreSQL"     delay={0.11}  />
+                <TechPill color="#6cac48" bg="#f0fdf4" border="#6cac4828" icon="bi-hdd-fill"    label="MongoDB"        delay={0.165} />
+                <TechPill color="#008cdd" bg="#f0f9ff" border="#008cdd28" icon="bi-stripe"      label="Stripe"         delay={0.22}  />
+                <TechPill color="#003087" bg="#eff6ff" border="#00308728" icon="bi-paypal"      label="PayPal"         delay={0.275} />
+                <TechPill color="#96bf48" bg="#f0fdf4" border="#96bf4828" icon="bi-bag-fill"    label="Shopify"        delay={0.33}  />
+                <TechPill color="#21759b" bg="#f0f9ff" border="#21759b28" icon="bi-wordpress"   label="WooCommerce"    delay={0.385} />
+                <TechPill color="#ff9900" bg="#fffbeb" border="#ff990028" icon="bi-cloud-fill"  label="AWS Cloud"      delay={0.44}  />
+                <TechPill color="#2496ed" bg="#f0f9ff" border="#2496ed28" icon="bi-box-seam"    label="Docker"         delay={0.495} />
+                <TechPill color="#61BBC5" bg="rgba(97,187,197,0.1)" border="rgba(97,187,197,0.3)" icon="bi-phone-fill" label="Mobile Commerce" delay={0.55} />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-                <div className="ece-tiles">
-                  {featureTiles.map((tile) => (
-                    <div key={tile.title} className="ece-tile">
-                      <strong>{tile.title}</strong>
-                      <span>{tile.subtitle}</span>
+      {/* PROCESS */}
+      <section style={{ padding:"3.5rem 0", background:"#fff" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <motion.div initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5 }} viewport={{ once:true }} style={{ textAlign:"center", marginBottom:"2.5rem" }}>
+            <Pill icon="bi-arrow-right-circle-fill" label="How We Work" />
+            <h2 style={{ fontSize:"clamp(1.8rem,3.2vw,2.5rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>Our Development <GradText c="Process" /></h2>
+          </motion.div>
+          <div className="svc-3c" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1.2rem" }}>
+            <ProcCard n="01" icon="bi-search"       title="Discovery & Strategy"  desc="We analyze your products, audience, and business model to define the ideal store architecture." delay={0} />
+            <ProcCard n="02" icon="bi-palette2"     title="UI/UX Design"           desc="Conversion-focused design with intuitive navigation, product pages, and checkout flows." delay={0.07} />
+            <ProcCard n="03" icon="bi-code-slash"   title="Development"            desc="Clean, secure store built with modern stack — fast, scalable, and SEO-optimized." delay={0.14} />
+            <ProcCard n="04" icon="bi-shield-check" title="Testing & QA"           desc="Cross-device testing, payment gateway validation, and performance audits." delay={0.21} />
+            <ProcCard n="05" icon="bi-cloud-upload" title="Launch"                 desc="Smooth go-live with product data migration, SSL setup, and monitoring." delay={0.28} />
+            <ProcCard n="06" icon="bi-graph-up-arrow" title="Growth & Support"     desc="Ongoing SEO, feature additions, performance monitoring, and dedicated support." delay={0.35} />
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES + TECH */}
+      <section style={{ padding:"3.5rem 0", background:"#f8fafc", borderTop:"1.5px solid rgba(97,187,197,0.12)" }}>
+        <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
+          <div className="svc-bc" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"start" }}>
+            <motion.div initial={{ opacity:0, x:-22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <Pill icon="bi-check2-all" label="What We Offer" />
+              <h2 style={{ fontSize:"clamp(1.6rem,2.8vw,2.1rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>Our E-Commerce <GradText c="Services" /></h2>
+              <p style={{ color:"#4a5568", marginBottom:"1.2rem", lineHeight:1.7, fontSize:"0.92rem" }}>Complete e-commerce services from store design to post-launch growth.</p>
+              <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+                <OfferRow icon="bi-shop"          title="Custom Store Development"   desc="Bespoke e-commerce platforms built around your brand and business requirements." delay={0} />
+                <OfferRow icon="bi-bag-fill"      title="Shopify & WooCommerce"       desc="Expert setup, customisation, and integration for leading e-commerce platforms." delay={0.06} />
+                <OfferRow icon="bi-credit-card"   title="Payment Gateway Integration" desc="Stripe, Razorpay, PayPal — secure, multi-currency, subscription-ready." delay={0.12} />
+                <OfferRow icon="bi-phone-fill"    title="Mobile Commerce App"         desc="Native iOS and Android shopping apps with push notifications and loyalty features." delay={0.18} />
+                <OfferRow icon="bi-search"        title="SEO & Performance"           desc="Technical SEO, Core Web Vitals, and speed optimisation for higher rankings." delay={0.24} />
+                <OfferRow icon="bi-arrow-repeat"  title="Maintenance & Support"       desc="Ongoing updates, security patches, and dedicated e-commerce support." delay={0.30} />
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity:0, x:22 }} whileInView={{ opacity:1, x:0 }} transition={{ duration:0.6 }} viewport={{ once:true }}>
+              <div style={{ background:"#fff", borderRadius:20, border:"1.5px solid rgba(97,187,197,0.16)", padding:"2rem", boxShadow:"0 4px 20px rgba(3,70,101,0.06)" }}>
+                <p style={{ fontSize:"0.68rem", fontWeight:800, letterSpacing:"0.1em", textTransform:"uppercase", color:"#94a3b8", margin:"0 0 1.2rem" }}>E-Commerce Features</p>
+                <p style={{ fontSize:"0.9rem", color:"#4a5568", lineHeight:1.85, marginBottom:"1.2rem" }}>Our e-commerce platforms are designed to deliver seamless shopping experiences, secure transactions, and scalable business growth.</p>
+                <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem" }}>
+                  {[
+                    { icon:"bi-box-seam",         text:"Advanced Product Catalog (Categories, filters, search)"  },
+                    { icon:"bi-cart-check-fill",  text:"Smart Shopping Cart (Wishlist, save for later)"          },
+                    { icon:"bi-credit-card-fill", text:"Secure Payment Gateway Integration"                      },
+                    { icon:"bi-truck",            text:"Order & Delivery Management System"                      },
+                    { icon:"bi-boxes",            text:"Real-Time Inventory Tracking"                            },
+                    { icon:"bi-phone-fill",       text:"Mobile-First Responsive Design"                         },
+                    { icon:"bi-people-fill",      text:"Multi-Vendor Marketplace Support"                        },
+                    { icon:"bi-graph-up-arrow",   text:"SEO & Conversion Optimization"                          },
+                  ].map(item=>(
+                    <div key={item.text} style={{ display:"flex", alignItems:"center", gap:"0.75rem" }}>
+                      <div style={{ width:34, height:34, borderRadius:9, background:"rgba(97,187,197,0.12)", border:"1.5px solid rgba(97,187,197,0.25)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                        <i className={`bi ${item.icon}`} style={{ fontSize:"0.85rem", color:"#034665" }} />
+                      </div>
+                      <span style={{ fontSize:"0.85rem", color:"#334155", fontWeight:500 }}>{item.text}</span>
                     </div>
                   ))}
                 </div>
-              </article>
-
-              <article className="ece-features-card">
-                <div className="ece-card__title-row">
-                  <i className="bi bi-cart3" aria-hidden="true" />
-                  <h3>E-Commerce Features</h3>
-                </div>
-                <p>
-                  Our e-commerce platforms are designed to deliver seamless shopping experiences, secure transactions, and scalable business growth.
-                </p>
-                <ul className="ece-features-list">
-                  {ecommerceFeatures.map((feature) => (
-                    <li key={feature}>
-                      <i className="bi bi-check2" aria-hidden="true" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            </div>
+              </div>
+            </motion.div>
           </div>
-
-          <section className="ece-tools">
-            <h2>Tools & Platforms</h2>
-            <div className="ece-tools__grid">
-              {tools.map((tool) => (
-                <div key={tool.name} className="ece-tool-card">
-                  <div className="ece-tool-card__icon">
-                    <ToolIcon kind={tool.kind} label={tool.name} />
-                  </div>
-                  <span>{tool.name}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="ece-cta">
-            <h2>Ready to Launch Your Online Store?</h2>
-            <p>
-              Let Kevalon Technology help you build a powerful e-commerce platform that drives sales and grows your business online.
-            </p>
-            <Link to="/contact" className="ece-btn ece-btn--primary">
-              Get In Touch
-            </Link>
-          </section>
         </div>
       </section>
+
     </div>
   );
 }
