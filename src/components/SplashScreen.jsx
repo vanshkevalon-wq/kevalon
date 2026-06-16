@@ -2,141 +2,352 @@ import { useEffect, useState } from 'react';
 import logo from '../Images/Logo.png';
 
 export default function SplashScreen({ onDone }) {
-  const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState('loading');
+  const [phase, setPhase] = useState('idle'); // 'idle' | 'show' | 'exit'
 
   useEffect(() => {
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) { clearInterval(progressInterval); return 100; }
-        const increment = prev < 50 ? 2 : prev < 80 ? 3 : 5;
-        return Math.min(prev + increment, 100);
-      });
-    }, 40);
-    const readyTimer = setTimeout(() => setPhase('ready'),  2200);
-    const exitTimer  = setTimeout(() => setPhase('exit'),   3000);
-    const doneTimer  = setTimeout(() => onDone(),           3600);
-    return () => { clearInterval(progressInterval); clearTimeout(readyTimer); clearTimeout(exitTimer); clearTimeout(doneTimer); };
+    const showTimer = setTimeout(() => setPhase('show'), 80);
+    const exitTimer = setTimeout(() => setPhase('exit'), 3000);
+    const doneTimer = setTimeout(() => onDone(), 3700);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(exitTimer);
+      clearTimeout(doneTimer);
+    };
   }, [onDone]);
 
-  const anim = phase === 'loading' ? 'sp-in 0.4s ease both'
-             : phase === 'exit'    ? 'sp-out 0.6s cubic-bezier(0.55,0,1,0.45) forwards'
-             : 'sp-in 0.01s ease both';
-
   return (
-    <div
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-[#020e18] overflow-hidden w-screen h-screen min-h-screen"
-      style={{ perspective: 800, animation: anim }}
-    >
-      {/* Animated gradient background — wrapped in overflow-hidden via outer div */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-[-20%]">
-          <div className="absolute rounded-full" style={{ width:'60%',height:'60%',top:'10%',left:'5%',background:'radial-gradient(circle,rgba(3,70,101,0.55) 0%,transparent 70%)',filter:'blur(100px)',animation:'sp-bg-shift-1 14s ease-in-out infinite' }} />
-          <div className="absolute rounded-full" style={{ width:'55%',height:'55%',bottom:'5%',right:'5%',background:'radial-gradient(circle,rgba(97,187,197,0.22) 0%,transparent 70%)',filter:'blur(100px)',animation:'sp-bg-shift-2 18s ease-in-out infinite' }} />
-          <div className="absolute rounded-full" style={{ width:'40%',height:'40%',top:'50%',left:'50%',transform:'translate(-50%,-50%)',background:'radial-gradient(circle,rgba(2,40,65,0.8) 0%,transparent 70%)',filter:'blur(100px)',animation:'sp-bg-shift-3 10s ease-in-out infinite' }} />
+    <>
+      <style>{`
+        @keyframes sp2-bg-in {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes sp2-card-in {
+          0%   { opacity: 0; transform: translateY(32px) scale(0.96); }
+          100% { opacity: 1; transform: translateY(0)    scale(1);    }
+        }
+        @keyframes sp2-logo-in {
+          0%   { opacity: 0; transform: scale(0.82) translateY(10px); }
+          60%  { opacity: 1; transform: scale(1.04) translateY(-3px); }
+          100% { opacity: 1; transform: scale(1)    translateY(0);    }
+        }
+        @keyframes sp2-text-in {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0);    }
+        }
+        @keyframes sp2-bar-fill {
+          0%   { width: 0%;   opacity: 1; }
+          85%  { width: 100%; opacity: 1; }
+          100% { width: 100%; opacity: 0.6; }
+        }
+        @keyframes sp2-shimmer {
+          0%   { transform: translateX(-100%); }
+          100% { transform: translateX(250%);  }
+        }
+        @keyframes sp2-float {
+          0%,100% { transform: translateY(0px);  }
+          50%     { transform: translateY(-6px); }
+        }
+        @keyframes sp2-ring-cw {
+          from { transform: rotate(0deg);   }
+          to   { transform: rotate(360deg); }
+        }
+        @keyframes sp2-ring-ccw {
+          from { transform: rotate(0deg);    }
+          to   { transform: rotate(-360deg); }
+        }
+        @keyframes sp2-pulse {
+          0%,100% { opacity: 0.4; transform: scale(1);    }
+          50%     { opacity: 0.9; transform: scale(1.06); }
+        }
+        @keyframes sp2-dot-blink {
+          0%,80%,100% { opacity: 0.15; transform: scale(0.8); }
+          40%         { opacity: 1;    transform: scale(1.2); }
+        }
+        @keyframes sp2-orb-a {
+          0%,100% { transform: translate(0,0)       scale(1);    }
+          50%     { transform: translate(40px,-30px) scale(1.15); }
+        }
+        @keyframes sp2-orb-b {
+          0%,100% { transform: translate(0,0)        scale(1);    }
+          50%     { transform: translate(-35px,25px)  scale(1.1);  }
+        }
+        @keyframes sp2-star-twinkle {
+          0%,100% { opacity: 0.2; }
+          50%     { opacity: 1;   }
+        }
+        @keyframes sp2-exit {
+          0%   { opacity: 1; transform: scale(1);    filter: blur(0px);  }
+          100% { opacity: 0; transform: scale(1.06); filter: blur(12px); }
+        }
+
+        .sp2-wrapper {
+          animation: sp2-bg-in 0.5s ease both;
+        }
+        .sp2-wrapper.exiting {
+          animation: sp2-exit 0.7s cubic-bezier(0.55,0,1,0.45) forwards;
+        }
+
+        .sp2-dot-1 { animation: sp2-dot-blink 1.4s ease-in-out 0.0s infinite; }
+        .sp2-dot-2 { animation: sp2-dot-blink 1.4s ease-in-out 0.2s infinite; }
+        .sp2-dot-3 { animation: sp2-dot-blink 1.4s ease-in-out 0.4s infinite; }
+      `}</style>
+
+      {/* ── Full-screen backdrop ── */}
+      <div
+        className={`sp2-wrapper${phase === 'exit' ? ' exiting' : ''}`}
+        style={{
+          position: 'fixed', inset: 0, zIndex: 99999,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'linear-gradient(135deg, #020d16 0%, #041825 30%, #071f30 60%, #030f1a 100%)',
+          overflow: 'hidden',
+        }}
+      >
+
+        {/* ── Background ambient orbs ── */}
+        <div style={{ position:'absolute', inset:0, pointerEvents:'none', overflow:'hidden' }}>
+          {/* Large teal orb — top-left */}
+          <div style={{
+            position:'absolute', width:'55%', height:'55%',
+            top:'-10%', left:'-10%',
+            borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(97,187,197,0.12) 0%, transparent 68%)',
+            filter:'blur(60px)',
+            animation:'sp2-orb-a 14s ease-in-out infinite',
+          }} />
+          {/* Deep blue orb — bottom-right */}
+          <div style={{
+            position:'absolute', width:'50%', height:'50%',
+            bottom:'-8%', right:'-8%',
+            borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(3,70,101,0.35) 0%, transparent 68%)',
+            filter:'blur(70px)',
+            animation:'sp2-orb-b 18s ease-in-out infinite',
+          }} />
+          {/* Accent orb — center */}
+          <div style={{
+            position:'absolute', width:'30%', height:'30%',
+            top:'35%', left:'38%',
+            borderRadius:'50%',
+            background:'radial-gradient(circle, rgba(97,187,197,0.06) 0%, transparent 70%)',
+            filter:'blur(50px)',
+            animation:'sp2-pulse 6s ease-in-out infinite',
+          }} />
         </div>
-      </div>
 
-      {/* Floating orbs */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        {/* ── Star field ── */}
         {[
-          { w:6, h:6,  top:'15%', left:'12%',              bg:'rgba(97,187,197,0.7)',  shadow:'0 0 12px rgba(97,187,197,0.8)', anim:'sp-orb-drift 7s ease-in-out infinite',      dx:'50px',  dy:'30px' },
-          { w:4, h:4,  top:'25%', right:'15%',             bg:'rgba(97,187,197,0.5)',  shadow:'0 0 10px rgba(97,187,197,0.6)', anim:'sp-orb-drift 9s ease-in-out 1s infinite',   dx:'-40px', dy:'50px' },
-          { w:8, h:8,  bottom:'20%', left:'20%',           bg:'rgba(3,70,101,0.9)',    shadow:'0 0 16px rgba(97,187,197,0.5)', anim:'sp-orb-drift 11s ease-in-out 2s infinite',  dx:'60px',  dy:'-40px' },
-          { w:3, h:3,  bottom:'30%', right:'20%',          bg:'rgba(97,187,197,0.8)',  shadow:'0 0 8px rgba(97,187,197,0.9)',  anim:'sp-orb-drift 6s ease-in-out 0.5s infinite', dx:'-30px', dy:'-50px' },
-          { w:5, h:5,  top:'60%', left:'8%',               bg:'rgba(97,187,197,0.6)',  shadow:'0 0 14px rgba(97,187,197,0.7)', anim:'sp-orb-drift 13s ease-in-out 1.5s infinite',dx:'70px',  dy:'20px' },
-          { w:4, h:4,  top:'45%', right:'8%',              bg:'rgba(97,187,197,0.5)',  shadow:'0 0 10px rgba(97,187,197,0.6)', anim:'sp-orb-drift 8s ease-in-out 3s infinite',   dx:'-50px', dy:'30px' },
-          { w:7, h:7,  top:'75%', right:'12%',             bg:'rgba(3,70,101,0.8)',    shadow:'0 0 18px rgba(97,187,197,0.5)', anim:'sp-orb-drift 10s ease-in-out 2.5s infinite',dx:'-60px', dy:'-30px' },
-          { w:3, h:3,  top:'10%', left:'45%',              bg:'rgba(97,187,197,0.9)',  shadow:'0 0 8px rgba(97,187,197,1)',    anim:'sp-orb-drift 5s ease-in-out 1s infinite',   dx:'20px',  dy:'40px' },
-        ].map((o, i) => (
-          <div key={i} className="absolute rounded-full" style={{ width:o.w,height:o.h,top:o.top,bottom:o.bottom,left:o.left,right:o.right,background:o.bg,boxShadow:o.shadow,filter:'blur(1px)',animation:o.anim,'--orb-dx':o.dx,'--orb-dy':o.dy,'--orb-opacity':'0.6' }} />
+          {t:'8%', l:'6%',  s:2.5}, {t:'14%',l:'78%', s:2},   {t:'22%',l:'45%', s:1.5},
+          {t:'33%',l:'91%', s:2},   {t:'55%',l:'4%',  s:2.5}, {t:'62%',l:'88%', s:1.5},
+          {t:'71%',l:'22%', s:2},   {t:'80%',l:'65%', s:2.5}, {t:'88%',l:'12%', s:1.5},
+          {t:'92%',l:'82%', s:2},   {t:'18%',l:'32%', s:1.5}, {t:'47%',l:'96%', s:2},
+        ].map((d, i) => (
+          <div key={i} style={{
+            position:'absolute', top:d.t, left:d.l,
+            width:d.s, height:d.s, borderRadius:'50%',
+            background:'#fff',
+            boxShadow:`0 0 ${d.s * 3}px rgba(255,255,255,0.8)`,
+            animation:`sp2-star-twinkle ${2.2 + i * 0.3}s ease-in-out ${i * 0.18}s infinite`,
+          }} />
         ))}
-      </div>
 
-      {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-[600px] px-5">
+        {/* ── Center stage ── */}
+        <div
+          style={{
+            position:'relative',
+            display:'flex', flexDirection:'column', alignItems:'center',
+            gap:0,
+            animation: phase === 'show' ? 'sp2-card-in 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both' : 'none',
+          }}
+        >
 
-        {/* Logo container */}
-        <div className="relative w-[240px] h-[240px]" style={{ animation:'sp-logo-in 1s cubic-bezier(0.22,1,0.36,1) 0.2s both' }}>
+          {/* ── Spinning orbit rings ── */}
+          <div style={{ position:'relative', width:340, height:340, flexShrink:0 }}>
 
-          {/* Glass card */}
-          <div
-            className="relative w-full h-full rounded-full flex items-center justify-center"
-            style={{
-              background:'radial-gradient(circle at 35% 30%,rgba(97,187,197,0.15),transparent 60%),radial-gradient(circle at 65% 70%,rgba(3,70,101,0.3),transparent 60%),rgba(4,18,31,0.55)',
-              backdropFilter:'blur(20px)',
-              border:'1px solid rgba(97,187,197,0.2)',
-              animation:'sp-float 5s ease-in-out 1.2s infinite,sp-glow-pulse 3s ease-in-out 1s infinite',
-            }}
-          >
-            {/* glossy highlight */}
-            <div className="absolute top-[8%] left-[15%] right-[15%] h-[35%] rounded-[50%_50%_0_0/30%_30%_0_0] pointer-events-none" style={{ background:'linear-gradient(180deg,rgba(255,255,255,0.06) 0%,transparent 100%)' }} />
-
-            {/* logo */}
-            <div className="relative z-10 flex items-center justify-center">
-              <img src={logo} alt="Kevalon Technology" className="w-[150px] h-auto object-contain" style={{ filter:'brightness(1.15) drop-shadow(0 0 16px rgba(97,187,197,0.5)) drop-shadow(0 0 40px rgba(97,187,197,0.2))' }} />
+            {/* Ring 3 — outermost slow dashed */}
+            <div style={{
+              position:'absolute', inset:0, borderRadius:'50%',
+              border:'1px dashed rgba(97,187,197,0.2)',
+              animation:'sp2-ring-cw 30s linear infinite',
+            }}>
+              {/* orbit dot */}
+              <div style={{
+                position:'absolute', top:-3, left:'50%', marginLeft:-3,
+                width:6, height:6, borderRadius:'50%',
+                background:'rgba(97,187,197,0.9)',
+                boxShadow:'0 0 8px 2px rgba(97,187,197,0.7)',
+              }} />
             </div>
 
-            {/* SVG liquid border */}
-            <svg className="absolute pointer-events-none" style={{ inset:-6,width:'calc(100% + 12px)',height:'calc(100% + 12px)' }} viewBox="0 0 300 300">
-              <defs>
-                <linearGradient id="liquidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%"   stopColor="#61BBC5" />
-                  <stop offset="50%"  stopColor="#034665" />
-                  <stop offset="100%" stopColor="#61BBC5" />
-                </linearGradient>
-              </defs>
-              <circle cx="150" cy="150" r="140" stroke="url(#liquidGrad)" strokeWidth="3" fill="none"
-                strokeDasharray="880" style={{ animation:'sp-stroke-dash 1.4s cubic-bezier(0.4,0,0.2,1) 0.4s both' }} />
-            </svg>
+            {/* Ring 2 */}
+            <div style={{
+              position:'absolute',
+              top:'50%', left:'50%',
+              width:268, height:268,
+              marginTop:-134, marginLeft:-134,
+              borderRadius:'50%',
+              border:'1px solid rgba(97,187,197,0.28)',
+              boxShadow:'0 0 18px rgba(97,187,197,0.08), inset 0 0 18px rgba(97,187,197,0.05)',
+              animation:'sp2-ring-ccw 18s linear infinite',
+            }}>
+              {/* orbit dot */}
+              <div style={{
+                position:'absolute', top:-3, left:'50%', marginLeft:-3,
+                width:5, height:5, borderRadius:'50%',
+                background:'rgba(255,255,255,0.75)',
+                boxShadow:'0 0 6px 2px rgba(255,255,255,0.5)',
+              }} />
+            </div>
 
-            {/* Rotating rings */}
-            <div className="absolute top-1/2 left-1/2 rounded-full pointer-events-none border border-dashed border-[rgba(97,187,197,0.2)]" style={{ width:280,height:280,animation:'sp-ring-rotate 18s linear infinite' }} />
-            <div className="absolute top-1/2 left-1/2 rounded-full pointer-events-none border border-transparent" style={{ width:320,height:320,borderTopColor:'rgba(97,187,197,0.25)',borderRightColor:'rgba(97,187,197,0.1)',animation:'sp-ring-rotate-reverse 12s linear infinite' }} />
-            <div className="absolute top-1/2 left-1/2 rounded-full pointer-events-none border border-dashed border-[rgba(97,187,197,0.08)]" style={{ width:360,height:360,animation:'sp-ring-rotate 30s linear infinite' }} />
+            {/* Ring 1 — spinner arc */}
+            <div style={{
+              position:'absolute',
+              top:'50%', left:'50%',
+              width:200, height:200,
+              marginTop:-100, marginLeft:-100,
+              borderRadius:'50%',
+              border:'2px solid transparent',
+              borderTopColor:'rgba(97,187,197,0.9)',
+              borderRightColor:'rgba(97,187,197,0.45)',
+              borderBottomColor:'rgba(97,187,197,0.1)',
+              animation:'sp2-ring-cw 4s linear infinite',
+            }} />
+
+            {/* ── Logo card (WHITE background so original colors show) ── */}
+            <div style={{
+              position:'absolute',
+              top:'50%', left:'50%',
+              width:148, height:148,
+              marginTop:-74, marginLeft:-74,
+              borderRadius:'50%',
+              /* White card so teal/navy logo is perfectly visible */
+              background:'linear-gradient(145deg, #ffffff 0%, #f0f8fa 60%, #e2f2f5 100%)',
+              border:'3px solid rgba(255,255,255,0.95)',
+              boxShadow:
+                '0 0 0 1px rgba(97,187,197,0.25),' +
+                '0 8px 32px rgba(0,0,0,0.45),' +
+                '0 0 50px rgba(97,187,197,0.35),' +
+                '0 0 100px rgba(97,187,197,0.15)',
+              display:'flex', alignItems:'center', justifyContent:'center',
+              animation:'sp2-float 4.5s ease-in-out infinite',
+            }}>
+              {/* subtle inner radial highlight */}
+              <div style={{
+                position:'absolute', inset:0, borderRadius:'50%',
+                background:'radial-gradient(circle at 38% 32%, rgba(255,255,255,0.7) 0%, transparent 55%)',
+                pointerEvents:'none',
+              }} />
+              <img
+                src={logo}
+                alt="Kevalon Technology"
+                style={{
+                  width:98, height:'auto',
+                  objectFit:'contain',
+                  position:'relative', zIndex:1,
+                  /* NO filter — show real logo colors */
+                  filter:'drop-shadow(0 2px 8px rgba(3,70,101,0.2))',
+                }}
+              />
+            </div>
+
+          </div>{/* end rings wrapper */}
+
+          {/* ── Brand text block ── */}
+          <div style={{
+            marginTop: -16,
+            display:'flex', flexDirection:'column', alignItems:'center', gap:10,
+            animation: phase === 'show' ? 'sp2-text-in 0.8s ease 0.5s both' : 'none',
+          }}>
+
+            {/* Company name */}
+            <h1 style={{
+              margin:0,
+              fontFamily:"'Cinzel','Trajan Pro','Georgia',serif",
+              fontWeight:600,
+              fontSize:'clamp(1.7rem,4vw,2.4rem)',
+              letterSpacing:'0.5em',
+              color:'#ffffff',
+              textShadow:
+                '0 0 24px rgba(97,187,197,0.65),' +
+                '0 0 50px rgba(97,187,197,0.3),' +
+                '0 2px 6px rgba(0,0,0,0.5)',
+            }}>
+              KEVALON
+            </h1>
+
+            {/* Divider + tagline */}
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <div style={{
+                width:36, height:1,
+                background:'linear-gradient(90deg, transparent, rgba(97,187,197,0.7))',
+              }} />
+              <span style={{
+                fontFamily:"'Inter','Helvetica Neue',sans-serif",
+                fontSize:'0.62rem',
+                letterSpacing:'0.36em',
+                color:'rgba(150,215,225,0.7)',
+                textTransform:'uppercase',
+              }}>
+                TECHNOLOGY
+              </span>
+              <div style={{
+                width:36, height:1,
+                background:'linear-gradient(90deg, rgba(97,187,197,0.7), transparent)',
+              }} />
+            </div>
+
+            {/* Progress bar */}
+            <div style={{ marginTop:14, display:'flex', flexDirection:'column', alignItems:'center', gap:9 }}>
+              <div style={{
+                position:'relative',
+                width:220, height:2,
+                background:'rgba(97,187,197,0.12)',
+                borderRadius:4,
+                overflow:'hidden',
+              }}>
+                {/* fill */}
+                <div style={{
+                  position:'absolute', top:0, left:0, height:'100%',
+                  background:'linear-gradient(90deg, rgba(97,187,197,0.6), rgba(150,230,240,0.95), rgba(97,187,197,0.6))',
+                  borderRadius:4,
+                  animation:'sp2-bar-fill 2.8s ease-out 0.4s both',
+                }} />
+                {/* shimmer */}
+                <div style={{
+                  position:'absolute', top:0, left:0,
+                  width:'40%', height:'100%',
+                  background:'linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent)',
+                  animation:'sp2-shimmer 1.8s ease-in-out 0.6s infinite',
+                }} />
+              </div>
+
+              {/* Dots row */}
+              <div style={{ display:'flex', alignItems:'center', gap:7 }}>
+                <span style={{
+                  fontFamily:"'Inter',sans-serif",
+                  fontSize:'0.58rem',
+                  letterSpacing:'0.18em',
+                  color:'rgba(150,215,225,0.45)',
+                  textTransform:'uppercase',
+                }}>
+                  Loading Innovation
+                </span>
+                <span style={{ display:'flex', gap:3 }}>
+                  {[0,1,2].map(i => (
+                    <span key={i} className={`sp2-dot-${i+1}`} style={{
+                      display:'inline-block',
+                      width:3.5, height:3.5, borderRadius:'50%',
+                      background:'rgba(97,187,197,0.8)',
+                    }} />
+                  ))}
+                </span>
+              </div>
+            </div>
+
           </div>
-        </div>
+        </div>{/* end center stage */}
 
-        {/* Brand name */}
-        <h1 className="relative m-0 leading-none text-center w-full overflow-visible" style={{ animation:'sp-brand-in 0.8s cubic-bezier(0.22,1,0.36,1) 0.8s both' }}>
-          <span
-            className="block font-['Inter','Nunito_Sans',sans-serif] font-extrabold tracking-[0.2em] uppercase whitespace-nowrap"
-            style={{ fontSize:'clamp(1.8rem,5vw,2.8rem)',background:'linear-gradient(90deg,#61BBC5 0%,#ffffff 30%,#61BBC5 50%,#034665 70%,#61BBC5 100%)',backgroundSize:'200% auto',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',animation:'sp-brand-in 0.8s cubic-bezier(0.22,1,0.36,1) 0.8s both,sp-text-shimmer 4s linear 1.6s infinite' }}
-          >
-            KEVALON
-          </span>
-          <span
-            className="absolute inset-0 font-['Inter','Nunito_Sans',sans-serif] font-extrabold tracking-[0.2em] uppercase whitespace-nowrap"
-            aria-hidden="true"
-            style={{ fontSize:'clamp(1.8rem,5vw,2.8rem)',color:'transparent',WebkitTextFillColor:'transparent',filter:'blur(18px)',background:'linear-gradient(90deg,#61BBC5,#034665,#61BBC5)',backgroundSize:'200% auto',WebkitBackgroundClip:'text',backgroundClip:'text',opacity:0.5,animation:'sp-text-shimmer 4s linear 1.6s infinite' }}
-          >
-            KEVALON
-          </span>
-        </h1>
-
-        {/* Tagline */}
-        <p className="font-['Inter',sans-serif] text-[0.72rem] font-normal text-[rgba(170,218,230,0.55)] tracking-[0.12em] uppercase m-0 text-center max-w-[320px] leading-[1.4]" style={{ animation:'sp-tagline-in 0.7s ease 1.2s both' }}>
-          Building technology that turns ideas into products
-        </p>
-
-        {/* Progress */}
-        <div className="flex flex-col gap-2 w-full max-w-[260px] px-2.5" style={{ animation:'sp-progress-in 0.6s ease 1s both' }}>
-          <div className="relative w-full h-0.5 bg-[rgba(97,187,197,0.1)] rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-[width] duration-[150ms] ease-[ease]"
-              style={{ width:`${progress}%`,background:'linear-gradient(90deg,rgba(3,70,101,0.8) 0%,#61BBC5 50%,rgba(97,187,197,0.9) 100%)',boxShadow:'0 0 8px rgba(97,187,197,0.6),0 0 20px rgba(97,187,197,0.3)' }}
-            />
-            <div className="absolute top-0 w-[60px] h-full" style={{ background:'linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)',animation:'sp-shimmer 1.6s ease-in-out 0.8s infinite' }} />
-          </div>
-          <div className="flex justify-between items-center w-full">
-            <span className="font-['Inter',monospace] text-[0.65rem] font-medium text-[rgba(97,187,197,0.45)] tracking-[0.1em] uppercase truncate max-w-[70%]">Loading Experience</span>
-            <span className="font-['JetBrains_Mono','Fira_Code',monospace] text-[0.65rem] font-semibold text-[rgba(97,187,197,0.7)] tracking-[0.05em] min-w-[38px] text-right">{progress}%</span>
-          </div>
-        </div>
       </div>
-
-      {/* Scan line */}
-      <div aria-hidden="true" className="absolute left-0 right-0 h-0.5 pointer-events-none" style={{ background:'linear-gradient(90deg,transparent 0%,rgba(97,187,197,0.06) 20%,rgba(97,187,197,0.15) 50%,rgba(97,187,197,0.06) 80%,transparent 100%)',animation:'sp-scan 4s linear infinite' }} />
-    </div>
+    </>
   );
 }

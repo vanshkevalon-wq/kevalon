@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { apiRequest } from '../utils/api';
 
 const contactInfo = [
-  { icon: 'bi-envelope-fill', label: 'Email Us',  value: 'contact@kevalontechnology.in', sub: 'We reply within 24 hours'         },
-  { icon: 'bi-telephone-fill',label: 'Call Us',   value: '+91 98765 43210',               sub: 'Mon – Sat, 9 AM – 7 PM IST'       },
+  { icon: 'bi-envelope-fill', label: 'Email Us',  value: 'career@kevalontechnology.in', sub: 'We reply within 24 hours'         },
+  { icon: 'bi-telephone-fill',label: 'Call Us',   value: '+91 9081012218',               sub: 'Mon – Sat, 9 AM – 7 PM IST'       },
   { icon: 'bi-geo-alt-fill',  label: 'Visit Us',  value: 'India',                         sub: 'Available for in-person meetings'  },
 ];
 
@@ -201,8 +201,8 @@ const Contact = ({ showMap = false }) => {
                 <button
                   type="submit"
                   disabled={status.type === 'loading'}
-                  className="inline-flex items-center justify-center gap-2.5 w-full py-3.5 sm:py-4 border-0 rounded-[12px] text-white text-[0.9rem] sm:text-[0.95rem] font-bold cursor-pointer transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed hover:enabled:-translate-y-0.5 mt-1"
-                  style={{ background: 'linear-gradient(137.68deg,#61BBC5 0.13%,#034665 100%)', boxShadow: '0 8px 24px rgba(1,72,103,0.25)' }}
+                  className="inline-flex items-center justify-center gap-2.5 w-full py-3.5 sm:py-4 border-0 rounded-full text-white text-[0.9rem] sm:text-[0.95rem] font-bold cursor-pointer transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed hover:enabled:-translate-y-0.5 mt-1"
+                  style={{ background: 'linear-gradient(137.68deg,#61BBC5 0.13%,#034665 100%)', boxShadow: '0 8px 24px rgba(1,72,103,0.25)', borderRadius: '9999px' }}
                 >
                   {status.type === 'loading' ? (
                     <>

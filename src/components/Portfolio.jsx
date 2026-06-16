@@ -172,7 +172,8 @@ function MobileSlider({ items, onOpen }) {
             onClick={() => { paused.current = true; goTo(current - 1); setTimeout(() => { paused.current = false; }, 4000); }}
             disabled={current === 0}
             aria-label="Previous project"
-            className="absolute left-1 top-[42%] -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center text-[#034665] bg-white/90 shadow-md border border-[rgba(97,187,197,0.25)] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 z-10"
+            className="absolute left-1 top-[42%] -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#034665] bg-white/90 shadow-md border border-[rgba(97,187,197,0.25)] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 z-10"
+            style={{ borderRadius: '50%' }}
           >
             <i className="bi bi-chevron-left text-[0.85rem]" />
           </button>
@@ -180,7 +181,8 @@ function MobileSlider({ items, onOpen }) {
             onClick={() => { paused.current = true; goTo(current + 1); setTimeout(() => { paused.current = false; }, 4000); }}
             disabled={current === items.length - 1}
             aria-label="Next project"
-            className="absolute right-1 top-[42%] -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center text-[#034665] bg-white/90 shadow-md border border-[rgba(97,187,197,0.25)] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 z-10"
+            className="absolute right-1 top-[42%] -translate-y-1/2 w-8 h-8 flex items-center justify-center text-[#034665] bg-white/90 shadow-md border border-[rgba(97,187,197,0.25)] transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed active:scale-95 z-10"
+            style={{ borderRadius: '50%' }}
           >
             <i className="bi bi-chevron-right text-[0.85rem]" />
           </button>
@@ -455,31 +457,80 @@ export default function Portfolio() {
 
         {/* filter tabs */}
         <nav
-          className="flex items-center justify-center flex-wrap gap-2 mb-10 sm:mb-14 md:mb-20"
           role="tablist"
           aria-label="Filter projects by category"
+          className="mb-10 sm:mb-14 md:mb-20"
           style={{ animation: 'pfFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.25s both' }}
         >
-          {TABS.map(t => (
-            <button
-              key={t}
-              role="tab"
-              aria-selected={tab === t}
-              onClick={() => setTab(t)}
-              className={`relative inline-flex items-center gap-1.5 px-4 sm:px-[26px] py-2 sm:py-3 rounded-full text-[0.82rem] sm:text-[0.88rem] font-bold overflow-hidden transition-all duration-[280ms] ease-[cubic-bezier(0.22,1,0.36,1)]
-                ${tab === t
-                  ? 'text-white shadow-[0_8px_28px_rgba(3,70,101,0.25)]'
-                  : 'text-[#5a7a8a] bg-transparent border-2 border-[rgba(97,187,197,0.18)] hover:border-[rgba(97,187,197,0.45)] hover:text-[#034665] hover:bg-[rgba(97,187,197,0.05)]'
-                }`}
-              style={tab === t ? { background: 'linear-gradient(138deg,#61BBC5 0%,#034665 100%)' } : {}}
+          {/* Mobile: 2×2 grid  |  sm+: single centered row */}
+          <div className="grid grid-cols-2 gap-2 place-items-center sm:flex sm:flex-row sm:flex-nowrap sm:justify-center sm:items-center sm:gap-3 px-2 sm:px-0">
+
+            {TABS.map(t => {
+              const active = tab === t;
+              const icon = t === 'All' ? 'bi-grid-fill' : CAT[t]?.icon;
+              return (
+                <button
+                  key={t}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setTab(t)}
+                  className="inline-flex items-center justify-center gap-2 transition-all duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-95"
+                  style={{
+                    height: 44,
+                    borderRadius: 999,
+                    border: active ? '2px solid transparent' : '2px solid rgba(97,187,197,0.28)',
+                    background: active
+                      ? 'linear-gradient(138deg,#61BBC5 0%,#034665 100%)'
+                      : '#ffffff',
+                    boxShadow: active
+                      ? '0 6px 20px rgba(3,70,101,0.22)'
+                      : '0 1px 6px rgba(3,70,101,0.07)',
+                    cursor: 'pointer',
+                    outline: 'none',
+                    padding: '0 14px',
+                  }}
+                >
+                  {/* icon circle */}
+                  <span
+                    className="inline-flex items-center justify-center rounded-full flex-shrink-0"
+                    style={{
+                      width: 26,
+                      height: 26,
+                      background: active ? 'rgba(255,255,255,0.22)' : 'rgba(97,187,197,0.12)',
+                    }}
+                  >
+                    <i className={`bi ${icon}`} style={{ fontSize: '0.78rem', color: active ? '#fff' : '#61BBC5' }} />
+                  </span>
+                  {/* label */}
+                  <span style={{
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    color: active ? '#ffffff' : '#2d5a72',
+                    letterSpacing: '0.02em',
+                  }}>
+                    {t}
+                  </span>
+                </button>
+              );
+            })}
+
+            {/* count badge */}
+            <span
+              className="col-span-2 sm:col-span-1 inline-flex items-center justify-center flex-shrink-0"
+              style={{
+                height: 44,
+                borderRadius: 999,
+                background: 'rgba(97,187,197,0.08)',
+                border: '2px solid rgba(97,187,197,0.18)',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                color: '#61BBC5',
+                padding: '0 18px',
+              }}
             >
-              {t !== 'All' && CAT[t] && <i className={`bi ${CAT[t].icon}`} />}
-              {t}
-            </button>
-          ))}
-          <span className="text-[0.72rem] sm:text-[0.75rem] font-bold text-[#7a9aaa] bg-[rgba(97,187,197,0.08)] border border-[rgba(97,187,197,0.15)] rounded-full px-3 sm:px-3.5 py-1 sm:py-1.5 tracking-[0.04em] ml-1 sm:ml-2">
-            {items.length} {items.length === 1 ? 'project' : 'projects'}
-          </span>
+              {items.length}&nbsp;{items.length === 1 ? 'project' : 'projects'}
+            </span>
+          </div>
         </nav>
 
         {/* mobile slider — visible only on < md */}
