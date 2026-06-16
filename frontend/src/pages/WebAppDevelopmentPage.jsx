@@ -52,8 +52,8 @@ export default function WebAppDevelopmentPage() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section style={{ position:"relative", minHeight:500, display:"flex", alignItems:"center", background:"#fff", overflow:"hidden", paddingTop:"2rem" }}>
-        <div style={{ maxWidth:720, margin:"0 auto", padding:"3.5rem 1.5rem", width:"100%", textAlign:"center", position:"relative", zIndex:1 }}>
+      <section style={{ position:"relative", minHeight:500, display:"flex", alignItems:"center", background:"#fff", overflow:"hidden", paddingTop:"5rem" }}>
+        <div style={{ maxWidth:720, margin:"0 auto", padding:"2rem 1.5rem 3.5rem", width:"100%", textAlign:"center", position:"relative", zIndex:1 }}>
           <Pill icon="bi-globe2" label="Know More About" />
           <h1 style={{ fontSize:"clamp(2.4rem,5vw,3.6rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.1, letterSpacing:"-0.03em", margin:"1rem 0 1rem" }}>
             Web Application<br /><GradText>Development</GradText>
