@@ -103,9 +103,9 @@ export default function ServicesPage() {
               { icon: 'bi-emoji-smile-fill',    val: 98, suffix: '%', lbl: 'Satisfaction' },
             ].map((s, i) => (
               <div key={s.lbl}
-                className="flex items-center gap-3 px-4 sm:px-7 py-4 sm:py-6 transition-colors duration-200 hover:bg-[rgba(97,187,197,0.05)]"
+                className="flex items-center gap-3 px-4 sm:px-7 py-5 sm:py-6 transition-colors duration-200 hover:bg-[rgba(97,187,197,0.05)]"
                 style={{
-                  borderRight: i < 3 ? '1px solid rgba(97,187,197,0.13)' : 'none',
+                  borderRight: i !== 1 && i !== 3 ? '1px solid rgba(97,187,197,0.13)' : 'none',
                   borderBottom: i < 2 ? '1px solid rgba(97,187,197,0.13)' : 'none',
                   animation: `svFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) ${0.3 + i * 0.08}s both`,
                 }}>
@@ -125,8 +125,7 @@ export default function ServicesPage() {
           </div>
 
           {/* ── SERVICE TILES GRID ── */}
-          <div className="grid gap-2.5 sm:gap-4"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(140px, 100%), 1fr))' }}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {SVC_CARDS.map((svc, i) => (
               <Link
                 key={svc.label}
