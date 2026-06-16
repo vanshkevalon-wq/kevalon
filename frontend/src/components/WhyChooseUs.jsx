@@ -102,10 +102,11 @@ function FeatureCarousel() {
             <div
               key={`${fi}-${pos}`}
               onClick={() => { if (pos === 0) prev(); else if (pos === 2) next(); }}
-              className="flex-shrink-0 rounded-full flex flex-col items-center justify-center text-center transition-all duration-500"
+              className="flex-shrink-0 flex flex-col items-center justify-center text-center transition-all duration-500"
               style={{
                 width:  isCenter ? 200 : 110,
                 height: isCenter ? 200 : 110,
+                borderRadius: isCenter ? '32px' : '20px',
                 background: isCenter
                   ? `radial-gradient(circle at 35% 30%, ${f.color}30 0%, transparent 65%), radial-gradient(circle at 65% 70%, #034665 0%, #0d3d5a 100%)`
                   : 'rgba(245,250,252,1)',
