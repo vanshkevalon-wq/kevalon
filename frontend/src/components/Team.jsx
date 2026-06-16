@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const TEAM = [
-  { name: "Harsh Kothari",    role: "Founder & CEO",               image: "/harsh kothari.jpg",    initials: "HK", tag: "Leadership"  },
-  { name: "Sachin Prajapati", role: "HR Manager / Technical Head", image: "/sachin prajapati.jpg", initials: "SP", tag: "Operations"  },
-  { name: "Abhishek Shah",    role: "Sales & Marketing Head",      image: "/abhishek shah.jpg",    initials: "AS", tag: "Growth"      },
-  { name: "Hetvi Pandya",     role: "MERN Stack Developer",        image: "/hetvi pandya.jpg",     initials: "HP", tag: "Engineering" },
-  { name: "Keyur Nayi",       role: "Graphic Designer",            image: "/keyur nayi.jpg",       initials: "KN", tag: "Design"      },
-  { name: "Shubham Suthar",   role: "UI/UX Designer",              image: "/shubham suthar.jpg",   initials: "SS", tag: "Design"      },
-  { name: "Parth Patel",      role: "UI/UX Designer",              image: "/Parth Patel.jpg",      initials: "PP", tag: "Design"      },
-  { name: "Harsh Tailor",     role: "Digital Marketing Executive", image: "/harsh tailor.jpg",     initials: "HT", tag: "Marketing"   },
-  { name: "Bhavya Shah",      role: "Digital Marketing Executive", image: "/bhavya shah.png",      initials: "BS", tag: "Marketing"   },
-  { name: "Yesha Patel",      role: "Digital Marketing Executive", image: "/yesha patel.png",      initials: "YP", tag: "Marketing"   },
+  { name: "Harsh Kothari",     role: "Founder & CEO",               image: "/harsh kothari.jpg",  initials: "HK", tag: "Leadership"  },
+  { name: "Hetvi Pandya",      role: "MERN Stack Developer",        image: "/hetvi pandya.jpg",   initials: "HP", tag: "Engineering" },
+  { name: "Keyur Nayi",        role: "Graphic Designer",            image: "/keyur nayi.jpg",     initials: "KN", tag: "Design"      },
+  { name: "Parth Patel",       role: "UI/UX Designer",              image: "/Parth Patel.jpg",    initials: "PP", tag: "Design"      },
+  { name: "Harsh Tailor",      role: "Digital Marketing Executive", image: "/harsh tailor.jpg",   initials: "HT", tag: "Marketing"   },
+  { name: "Bhavya Shah",       role: "Digital Marketing Executive", image: "/bhavya shah.png",    initials: "BS", tag: "Marketing"   },
+  { name: "Yesha Patel",       role: "Digital Marketing Executive", image: "/yesha patel.png",    initials: "YP", tag: "Marketing"   },
+  { name: "Vansh Patel",       role: "Team Member",                 image: null,                  initials: "VP", tag: "Engineering" },
+  { name: "Vrushali Panchal",  role: "Team Member",                 image: null,                  initials: "VP", tag: "Design"      },
+  { name: "Vanshita Rathod",   role: "Team Member",                 image: null,                  initials: "VR", tag: "Growth"      },
+  { name: "Jeel Popat",        role: "Team Member",                 image: null,                  initials: "JP", tag: "Marketing"   },
 ];
 
 const tagColors = {
@@ -212,19 +213,30 @@ export default function Team() {
                 ...ORBIT_STYLE[pos],
               }}
             >
-              <img
-                src={TEAM[idx].image}
-                alt={TEAM[idx].name}
-                className="w-full h-full object-cover object-top block rounded-full"
-                onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
-              />
-              {/* fallback initials */}
-              <div
-                className="w-full h-full hidden items-center justify-center text-[0.7rem] font-extrabold text-white rounded-full"
-                style={{ background: "linear-gradient(135deg,#61BBC5,#034665)" }}
-              >
-                {TEAM[idx].initials}
-              </div>
+              {TEAM[idx].image ? (
+                <>
+                  <img
+                    src={TEAM[idx].image}
+                    alt={TEAM[idx].name}
+                    className="w-full h-full object-cover object-top block rounded-full"
+                    onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
+                  />
+                  {/* fallback initials */}
+                  <div
+                    className="w-full h-full hidden items-center justify-center text-[0.7rem] font-extrabold text-white rounded-full"
+                    style={{ background: "linear-gradient(135deg,#61BBC5,#034665)" }}
+                  >
+                    {TEAM[idx].initials}
+                  </div>
+                </>
+              ) : (
+                <div
+                  className="w-full h-full flex items-center justify-center text-[0.7rem] font-extrabold text-white rounded-full"
+                  style={{ background: "linear-gradient(135deg,#61BBC5,#034665)" }}
+                >
+                  {TEAM[idx].initials}
+                </div>
+              )}
             </button>
           ))}
 
@@ -268,11 +280,15 @@ export default function Team() {
                 src={member.image}
                 alt={member.name}
                 className="w-full h-full object-cover object-top block"
+                style={{ display: member.image ? "block" : "none" }}
                 onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.nextSibling.style.display = "flex"; }}
               />
               <div
-                className="w-full h-full hidden items-center justify-center text-[2.5rem] font-extrabold text-white"
-                style={{ background: "linear-gradient(135deg,#61BBC5,#034665)" }}
+                className="w-full h-full items-center justify-center text-[2.5rem] font-extrabold text-white"
+                style={{
+                  display: member.image ? "none" : "flex",
+                  background: "linear-gradient(135deg,#61BBC5,#034665)",
+                }}
               >
                 {member.initials}
               </div>
