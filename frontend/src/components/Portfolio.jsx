@@ -2,11 +2,12 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import ProjectModal from './ProjectModal';
 import portfolioItems from '../data/portfolioData';
 
-const TABS = ['All', 'Web', 'Mobile', 'Game'];
+const TABS = ['All', 'Web', 'Mobile', 'Game', 'CRM'];
 const CAT = {
-  Web:    { icon: 'bi-code-slash', color: '#61BBC5', bg: 'rgba(97,187,197,0.12)', label: 'Web'    },
-  Mobile: { icon: 'bi-phone-fill', color: '#0a8fb6', bg: 'rgba(10,143,182,0.12)', label: 'Mobile' },
-  Game:   { icon: 'bi-controller', color: '#034665', bg: 'rgba(3,70,101,0.10)',   label: 'Game'   },
+  Web:    { icon: 'bi-code-slash',      color: '#61BBC5', bg: 'rgba(97,187,197,0.12)', label: 'Web'    },
+  Mobile: { icon: 'bi-phone-fill',      color: '#0a8fb6', bg: 'rgba(10,143,182,0.12)', label: 'Mobile' },
+  Game:   { icon: 'bi-controller',      color: '#034665', bg: 'rgba(3,70,101,0.10)',   label: 'Game'   },
+  CRM:    { icon: 'bi-people-fill',     color: '#7c3aed', bg: 'rgba(124,58,237,0.10)', label: 'CRM'    },
 };
 
 function useReveal() {
@@ -285,7 +286,7 @@ function ShowcaseRow({ item, index, onOpen }) {
       {/* ── DESKTOP: side-by-side alternating layout ── */}
       <div
         className={`hidden md:grid transition-opacity duration-500 ${on ? 'opacity-100' : 'opacity-0'}`}
-        style={{ gridTemplateColumns: '1fr 1fr', gridTemplateRows: 320 }}
+        style={{ gridTemplateColumns: '1fr 1fr', gridTemplateRows: 380 }}
       >
         {/* image panel */}
         <div
@@ -332,7 +333,7 @@ function ShowcaseRow({ item, index, onOpen }) {
 
         {/* content panel */}
         <div
-          className={`relative flex flex-col justify-center overflow-hidden transition-[transform,opacity] duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)] px-8 lg:px-10
+          className={`relative flex flex-col justify-center overflow-hidden transition-[transform,opacity] duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)] px-10 lg:px-14
             ${flip ? 'order-1 bg-[#f8fbfc]' : 'order-2 bg-white'}
             ${on ? 'translate-x-0 opacity-100' : (flip ? '-translate-x-14 opacity-0' : 'translate-x-14 opacity-0')}`}
         >
@@ -345,11 +346,11 @@ function ShowcaseRow({ item, index, onOpen }) {
             <i className={`bi ${c.icon}`} /> {c.label}
           </div>
 
-          <h3 className="font-['Playfair_Display',Georgia,serif] font-[900] text-[#0d3d5a] tracking-[-0.02em] leading-[1.2] mb-2 text-[1rem] lg:text-[1.25rem]">{item.title}</h3>
-          <p className="text-[0.82rem] text-[#5a7a8a] leading-[1.65] mb-2.5 max-w-[400px] line-clamp-2">{item.desc}</p>
+          <h3 className="font-['Playfair_Display',Georgia,serif] font-[900] text-[#0d3d5a] tracking-[-0.02em] leading-[1.2] mb-3 text-[1rem] lg:text-[1.35rem]">{item.title}</h3>
+          <p className="text-[0.84rem] text-[#5a7a8a] leading-[1.7] mb-4 max-w-[400px] line-clamp-2">{item.desc}</p>
 
           {item.tech?.length > 0 && (
-            <div className="flex flex-wrap gap-[5px] mb-2.5">
+            <div className="flex flex-wrap gap-[6px] mb-4">
               {item.tech.slice(0, 4).map(t => (
                 <span key={t} className="px-3 py-1 bg-[rgba(97,187,197,0.08)] border-[1.5px] border-[rgba(97,187,197,0.18)] rounded-full text-[0.68rem] font-bold text-[#034665]">{t}</span>
               ))}
@@ -357,17 +358,17 @@ function ShowcaseRow({ item, index, onOpen }) {
           )}
 
           {item.results?.length > 0 && (
-            <div className="flex mb-2.5 border border-[rgba(97,187,197,0.14)] rounded-[10px] overflow-hidden bg-[rgba(248,251,252,0.8)]">
+            <div className="flex mb-4 border border-[rgba(97,187,197,0.14)] rounded-[10px] overflow-hidden bg-[rgba(248,251,252,0.8)]">
               {item.results.slice(0, 3).map((r, i) => (
-                <div key={r.label} className={`flex-1 flex flex-col items-center py-[7px] px-[6px] gap-0.5 ${i < 2 ? 'border-r border-[rgba(97,187,197,0.12)]' : ''}`}>
-                  <span className="text-[0.88rem] font-[900] leading-none" style={{ color: c.color }}>{r.metric}</span>
-                  <span className="text-[0.6rem] font-bold text-[#7a9aaa] uppercase tracking-[0.06em] text-center">{r.label}</span>
+                <div key={r.label} className={`flex-1 flex flex-col items-center py-[9px] px-[6px] gap-0.5 ${i < 2 ? 'border-r border-[rgba(97,187,197,0.12)]' : ''}`}>
+                  <span className="text-[0.92rem] font-[900] leading-none" style={{ color: c.color }}>{r.metric}</span>
+                  <span className="text-[0.62rem] font-bold text-[#7a9aaa] uppercase tracking-[0.06em] text-center">{r.label}</span>
                 </div>
               ))}
             </div>
           )}
 
-          <div className="flex gap-3 flex-wrap mb-2.5">
+          <div className="flex gap-4 flex-wrap mb-4">
             {item.client   && <div className="flex items-center gap-1 text-[0.74rem] font-semibold text-[#7a9aaa]"><i className="bi bi-building text-[#61BBC5]" />{item.client}</div>}
             {item.duration && <div className="flex items-center gap-1 text-[0.74rem] font-semibold text-[#7a9aaa]"><i className="bi bi-clock text-[#61BBC5]" />{item.duration}</div>}
           </div>
@@ -424,7 +425,7 @@ export default function Portfolio() {
 
   return (
     <section
-      className="relative bg-white py-14 sm:py-16 md:py-20 font-['Inter','Nunito_Sans',sans-serif] overflow-hidden isolate"
+      className="relative bg-white pt-14 sm:pt-16 md:pt-20 pb-14 sm:pb-16 md:pb-20 font-['Inter','Nunito_Sans',sans-serif] overflow-hidden isolate"
       ref={secRef}
       id="portfolio"
     >
@@ -514,22 +515,7 @@ export default function Portfolio() {
               );
             })}
 
-            {/* count badge */}
-            <span
-              className="col-span-2 sm:col-span-1 inline-flex items-center justify-center flex-shrink-0"
-              style={{
-                height: 44,
-                borderRadius: 999,
-                background: 'rgba(97,187,197,0.08)',
-                border: '2px solid rgba(97,187,197,0.18)',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                color: '#61BBC5',
-                padding: '0 18px',
-              }}
-            >
-              {items.length}&nbsp;{items.length === 1 ? 'project' : 'projects'}
-            </span>
+            {/* count badge removed */}
           </div>
         </nav>
 
@@ -537,7 +523,7 @@ export default function Portfolio() {
         <MobileSlider items={items} onOpen={setSelected} />
 
         {/* showcase rows — desktop (md+) only */}
-        <div className="hidden md:flex flex-col mb-10 sm:mb-16 md:mb-24">
+        <div className="hidden md:flex flex-col gap-y-2 mb-10 sm:mb-16 md:mb-24">
           {items.map((item, idx) => (
             <ShowcaseRow key={item.id} item={item} index={idx} onOpen={setSelected} />
           ))}

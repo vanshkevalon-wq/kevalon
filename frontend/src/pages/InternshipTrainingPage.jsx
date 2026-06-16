@@ -1,4 +1,4 @@
-﻿import { useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -26,7 +26,7 @@ const CARDS=[
     ac:"#2563eb", abg:"#eff6ff", abdr:"#bfdbfe", ic:"bi-code-slash",
     cat:"Web Development Training", title:"Web Development Training", badge:"Industry Oriented",
     desc:"Learn to build powerful, scalable, and modern web applications with a complete hands-on learning approach. From UI design to backend logic and deployment, this training prepares you for real-world development environments.",
-    quote:"Build real applications, not just projects — become industry ready.",
+    quote:"Build real applications, not just projects � become industry ready.",
     feats:[
       "HTML5, CSS3, and JavaScript fundamentals",
       "React.js and modern frontend frameworks",
@@ -42,7 +42,7 @@ const CARDS=[
     ac:"#16a34a", abg:"#f0fdf4", abdr:"#bbf7d0", ic:"bi-phone-fill",
     cat:"Mobile Development Training", title:"Mobile Development Training", badge:"App Industry Ready",
     desc:"Learn to design, develop, and deploy high-performance mobile applications for Android and iOS. This program focuses on real-world app development, scalable architecture, and industry-level practices to make you job-ready in the mobile app ecosystem.",
-    quote:"From idea to App Store — build real mobile products.",
+    quote:"From idea to App Store � build real mobile products.",
     feats:[
       "React Native for cross-platform development",
       "Flutter for native mobile applications",
@@ -117,7 +117,7 @@ export default function InternshipTrainingPage() {
       </section>
 
       {/* STATS */}
-      <section style={{ padding:"2rem 0", background:"#fff" }}>
+      <section style={{ padding:"3rem 0", background:"#fff" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
           <div className="svc-4c" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem" }}>
             {[{icon:"bi-clock-fill",color:"#034665",val:"3-6 Mo",label:"Program Duration"},{icon:"bi-briefcase-fill",color:"#22c55e",val:"100%",label:"Live Project Exposure"},{icon:"bi-award-fill",color:"#f59e0b",val:"Certified",label:"Industry Recognition"},{icon:"bi-people-fill",color:"#4f46e5",val:"Expert",label:"Mentor Guidance"}].map((s,i)=>(
@@ -186,13 +186,13 @@ export default function InternshipTrainingPage() {
         </div>
       </section>
 
-      {/* TRAINING TRACKS — magazine cards */}
+      {/* TRAINING TRACKS_PLACEHOLDER � magazine cards */}
       <section style={{ padding:"2rem 0", background:"#ffffff" }}>
         <div style={{ maxWidth:1380, margin:"0 auto", padding:"0 1.5rem" }}>
           <motion.div initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5 }} viewport={{ once:true }} style={{ textAlign:"center", marginBottom:"1.6rem" }}>
             <Pill icon="bi-layers-fill" label="Our Programs" />
             <h2 style={{ fontSize:"clamp(1.8rem,3.2vw,2.5rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.55rem" }}>Training Tracks We <GradText c="Offer" /></h2>
-            <p style={{ color:"#64748b", fontSize:"0.94rem", lineHeight:1.7, maxWidth:500, margin:"0 auto" }}>Structured programs built for career-readiness — from first code to job placement.</p>
+            <p style={{ color:"#64748b", fontSize:"0.94rem", lineHeight:1.7, maxWidth:500, margin:"0 auto" }}>Structured programs built for career-readiness � from first code to job placement.</p>
           </motion.div>
           {CARDS.map((card,idx)=>(
             <motion.div key={card.title} className="svc-mc" initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5, delay:idx*0.08 }} viewport={{ once:true, margin:"-40px" }}>
@@ -240,7 +240,7 @@ export default function InternshipTrainingPage() {
         </div>
       </section>
 
-      {/* ABOUT — Program section */}
+      {/* ABOUT � Program section */}
       <section style={{ padding:"3.5rem 0", background:"#f8fafc", borderTop:"1.5px solid rgba(97,187,197,0.12)" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
           <div className="svc-2c" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"start" }}>
@@ -253,7 +253,7 @@ export default function InternshipTrainingPage() {
                 At Kevalon Technology, our internship and training programs are designed to bridge the gap between academic learning and real-world industry requirements. We provide hands-on practical training with modern technologies, live projects, and professional mentorship to help students and freshers build strong technical foundations.
               </p>
               <p style={{ color:"#4a5568", lineHeight:1.85, marginBottom:"1.4rem", fontSize:"0.94rem" }}>
-                Our programs focus on skill development, real project exposure, teamwork, and problem-solving abilities. From software development and UI/UX design to mobile apps, web technologies, and emerging IT domains — we prepare learners for real IT careers, not just certificates.
+                Our programs focus on skill development, real project exposure, teamwork, and problem-solving abilities. From software development and UI/UX design to mobile apps, web technologies, and emerging IT domains � we prepare learners for real IT careers, not just certificates.
               </p>
 
               {/* Training Features */}
@@ -298,7 +298,7 @@ export default function InternshipTrainingPage() {
                 <TechPill color="#2496ed" bg="#f0f9ff" border="#2496ed28" icon="bi-box-seam"      label="Docker"      delay={0.495} />
               </div>
               <div style={{ marginTop:"1rem", padding:"0.85rem 1rem", borderRadius:12, background:"rgba(97,187,197,0.08)", border:"1.5px solid rgba(97,187,197,0.25)", textAlign:"center" }}>
-                <span style={{ fontSize:"0.8rem", fontWeight:700, color:"#034665" }}>Job-oriented syllabus • Industry standards • Project-based learning</span>
+                <span style={{ fontSize:"0.8rem", fontWeight:700, color:"#034665" }}>Job-oriented syllabus � Industry standards � Project-based learning</span>
               </div>
 
               {/* Certification */}
@@ -337,7 +337,7 @@ export default function InternshipTrainingPage() {
             <h2 style={{ fontSize:"clamp(1.8rem,3.2vw,2.5rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>From Enrollment to <GradText c="Employment" /></h2>
           </motion.div>
           <div className="svc-3c" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1.2rem" }}>
-            <ProcCard n="01" icon="bi-person-check-fill" title="Apply & Enroll"       desc="Submit your application, get assessed, and join the next batch — no prior experience required." delay={0} />
+            <ProcCard n="01" icon="bi-person-check-fill" title="Apply & Enroll"       desc="Submit your application, get assessed, and join the next batch � no prior experience required." delay={0} />
             <ProcCard n="02" icon="bi-book-fill"         title="Structured Learning"   desc="Guided modules covering fundamentals to advanced topics with hands-on exercises." delay={0.07} />
             <ProcCard n="03" icon="bi-code-slash"        title="Live Project Work"     desc="Work on real production applications with your team under mentor supervision." delay={0.14} />
             <ProcCard n="04" icon="bi-people-fill"       title="Code Reviews"          desc="Weekly 1-on-1 code reviews and feedback sessions to improve your technical skills." delay={0.21} />
@@ -356,7 +356,7 @@ export default function InternshipTrainingPage() {
               <h2 style={{ fontSize:"clamp(1.6rem,2.8vw,2.1rem)", fontWeight:900, color:"#0d1f35", lineHeight:1.2, margin:"0.8rem 0 0.6rem" }}>Program <GradText c="Highlights" /></h2>
               <p style={{ color:"#4a5568", marginBottom:"1.2rem", lineHeight:1.7, fontSize:"0.92rem" }}>Everything you need to go from learner to job-ready engineer.</p>
               <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem" }}>
-                <OfferRow icon="bi-code-slash"        title="Full-Stack Development"   desc="React, Node.js, Flutter, and databases — complete web and mobile development skills." delay={0} />
+                <OfferRow icon="bi-code-slash"        title="Full-Stack Development"   desc="React, Node.js, Flutter, and databases � complete web and mobile development skills." delay={0} />
                 <OfferRow icon="bi-diagram-3"         title="System Design"            desc="Learn to design scalable systems, APIs, and database schemas for production apps." delay={0.06} />
                 <OfferRow icon="bi-git"               title="Git & DevOps Basics"      desc="Version control, CI/CD, deployment, and cloud hosting fundamentals." delay={0.12} />
                 <OfferRow icon="bi-people-fill"       title="Team Collaboration"       desc="Work in agile teams, sprint planning, code reviews, and standups." delay={0.18} />

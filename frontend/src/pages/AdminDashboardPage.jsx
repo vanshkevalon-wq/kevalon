@@ -344,6 +344,44 @@ const ADMIN_DASHBOARD_CSS = `:root {
   min-height: 140px;
 }
 
+/* ── Positions form — compact inputs & buttons ── */
+.admin-form--positions {
+  gap: 5px !important;
+  padding: 10px 12px !important;
+}
+
+.admin-form--positions .admin-panel__header {
+  margin-bottom: 4px !important;
+  padding-bottom: 6px !important;
+  border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+}
+
+.admin-form--positions input,
+.admin-form--positions textarea,
+.admin-form--positions select {
+  padding: 5px 9px !important;
+  font-size: 0.81rem !important;
+  border-radius: 6px !important;
+  height: 30px !important;
+  min-height: unset !important;
+}
+
+.admin-form--positions textarea {
+  height: auto !important;
+  min-height: 52px !important;
+  max-height: 80px !important;
+}
+
+.admin-form--positions .admin-button {
+  padding: 4px 12px !important;
+  font-size: 0.78rem !important;
+}
+
+.admin-form--positions > div,
+.admin-form--positions > label {
+  margin: 0 !important;
+}
+
 .admin-login-form input:focus,
 .admin-form input:focus,
 .admin-form textarea:focus,
@@ -752,6 +790,7 @@ const ADMIN_DASHBOARD_CSS = `:root {
 
 .admin-pages-layout {
   grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+  align-items: start;
 }
 
 .admin-form__actions {
@@ -2030,6 +2069,14 @@ const ADMIN_DASHBOARD_CSS = `:root {
 .admin-button--ghost { background: #f5f6fa !important; color: var(--content-text) !important; border: 1px solid rgba(0,0,0,0.1) !important; }
 .admin-button--danger { background: rgba(239,68,68,0.08) !important; color: #dc2626 !important; border: 1px solid rgba(239,68,68,0.2) !important; }
 
+/* ── Positions form compact overrides ── */
+.admin-form--positions { gap: 5px !important; padding: 10px 12px !important; }
+.admin-form--positions .admin-panel__header { margin-bottom: 4px !important; padding-bottom: 6px !important; }
+.admin-form--positions input, .admin-form--positions textarea, .admin-form--positions select { padding: 5px 9px !important; font-size: 0.81rem !important; border-radius: 6px !important; height: 30px !important; min-height: unset !important; }
+.admin-form--positions textarea { height: auto !important; min-height: 52px !important; max-height: 80px !important; }
+.admin-form--positions .admin-button { padding: 4px 12px !important; font-size: 0.78rem !important; }
+.admin-form--positions > div, .admin-form--positions > label { margin: 0 !important; }
+
 /* ── Status ── */
 .admin-status--success { background: rgba(34,197,94,0.08) !important; color: #16a34a !important; }
 .admin-status--error { background: rgba(239,68,68,0.08) !important; color: #dc2626 !important; }
@@ -2963,9 +3010,34 @@ export default function AdminDashboardPage() {
 
   /* ── Unread notification tracking ── */
   const [seenCount, setSeenCount] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('kevalon-notif-seen') || '{"apps":0,"contacts":0,"leads":0}'); }
+    try {
+      // Version check — reset if stored version doesn't match
+      const version = localStorage.getItem('kevalon-notif-version');
+      if (version !== '2') {
+        localStorage.removeItem('kevalon-notif-seen');
+        localStorage.setItem('kevalon-notif-version', '2');
+        return { apps: 0, contacts: 0, leads: 0 };
+      }
+      return JSON.parse(localStorage.getItem('kevalon-notif-seen') || '{"apps":0,"contacts":0,"leads":0}');
+    }
     catch { return { apps: 0, contacts: 0, leads: 0 }; }
   });
+
+  // Auto-update seenCount if actual data exceeds stored seen (handles stale localStorage)
+  useEffect(() => {
+    setSeenCount(prev => {
+      const next = {
+        apps:     Math.min(prev.apps,     applications.length),
+        contacts: Math.min(prev.contacts, contacts.length),
+        leads:    Math.min(prev.leads,    portfolioLeads.length),
+      };
+      if (next.apps !== prev.apps || next.contacts !== prev.contacts || next.leads !== prev.leads) {
+        localStorage.setItem('kevalon-notif-seen', JSON.stringify(next));
+        return next;
+      }
+      return prev;
+    });
+  }, [applications.length, contacts.length, portfolioLeads.length]);
 
   const unreadCount = useMemo(() => {
     const newApps     = Math.max(0, applications.length   - seenCount.apps);
@@ -4151,50 +4223,96 @@ export default function AdminDashboardPage() {
         {activeTab === 'positions' ? (
           <section className="admin-pages-layout">
             {/* ── Create / Edit form ── */}
-            <form className="admin-panel admin-form" onSubmit={submitPosition}>
-              <div className="admin-panel__header">
-                <h3>{positionForm.id ? 'Edit Position' : 'Add Position'}</h3>
-                <span>{positionForm.id ? 'editing' : 'new'}</span>
+            <form onSubmit={submitPosition} style={{
+              background: '#fff',
+              border: '1px solid rgba(0,0,0,0.08)',
+              borderRadius: '16px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              padding: '18px 20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px'
+            }}>
+              {/* Header */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px', borderBottom: '1px solid rgba(0,0,0,0.07)' }}>
+                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--content-text)' }}>{positionForm.id ? 'Edit Position' : 'Add Position'}</h3>
+                <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)' }}>{positionForm.id ? 'editing' : 'new'}</span>
               </div>
 
-              <label>Title *<input name="title" value={positionForm.title} onChange={handlePositionFormChange} placeholder="Web Development – Intern" required /></label>
+              {/* Title */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Title *</span>
+                <input name="title" value={positionForm.title} onChange={handlePositionFormChange} placeholder="Web Development – Intern" required
+                  style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+              </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <label>Type
-                  <select name="type" value={positionForm.type} onChange={handlePositionFormChange}>
+              {/* Type + Category */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Type</span>
+                  <select name="type" value={positionForm.type} onChange={handlePositionFormChange}
+                    style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%' }}>
                     <option value="Intern">Intern</option>
                     <option value="Full-time">Full-time</option>
                   </select>
-                </label>
-                <label>Category *<input name="category" value={positionForm.category} onChange={handlePositionFormChange} placeholder="Development" required /></label>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Category *</span>
+                  <input name="category" value={positionForm.category} onChange={handlePositionFormChange} placeholder="Development" required
+                    style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+                </div>
               </div>
 
-              <label>Description<textarea name="desc" value={positionForm.desc} onChange={handlePositionFormChange} rows="3" placeholder="Role description…" /></label>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <label>Experience<input name="exp" value={positionForm.exp} onChange={handlePositionFormChange} placeholder="Fresher / 0–1 yr" /></label>
-                <label>Location<input name="location" value={positionForm.location} onChange={handlePositionFormChange} placeholder="Ahmedabad (On-site)" /></label>
+              {/* Description */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Description</span>
+                <textarea name="desc" value={positionForm.desc} onChange={handlePositionFormChange} rows={3} placeholder="Role description…"
+                  style={{ padding: '8px 11px', fontSize: '0.88rem', minHeight: '72px', resize: 'vertical', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
               </div>
 
-              <label>Skills <small style={{ color: '#94a3b8' }}>(comma-separated)</small>
-                <input name="skills" value={positionForm.skills} onChange={handlePositionFormChange} placeholder="React, Node.js, Git" />
-              </label>
+              {/* Experience + Location */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Experience</span>
+                  <input name="exp" value={positionForm.exp} onChange={handlePositionFormChange} placeholder="Fresher / 0–1 yr"
+                    style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Location</span>
+                  <input name="location" value={positionForm.location} onChange={handlePositionFormChange} placeholder="Ahmedabad (On-site)"
+                    style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+                </div>
+              </div>
 
-              <label>Responsibilities <small style={{ color: '#94a3b8' }}>(comma-separated)</small>
-                <input name="responsibilities" value={positionForm.responsibilities} onChange={handlePositionFormChange} placeholder="Build features, Code reviews" />
-              </label>
+              {/* Skills */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Skills <small style={{ color: '#94a3b8', fontWeight: 400 }}>(comma-separated)</small></span>
+                <input name="skills" value={positionForm.skills} onChange={handlePositionFormChange} placeholder="React, Node.js, Git"
+                  style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+              </div>
 
-              <label className="admin-checkbox">
+              {/* Responsibilities */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--content-muted)', fontWeight: 600 }}>Responsibilities <small style={{ color: '#94a3b8', fontWeight: 400 }}>(comma-separated)</small></span>
+                <input name="responsibilities" value={positionForm.responsibilities} onChange={handlePositionFormChange} placeholder="Build features, Code reviews"
+                  style={{ padding: '8px 11px', fontSize: '0.88rem', height: '36px', borderRadius: '8px', border: '1px solid rgba(0,0,0,0.1)', background: '#f5f6fa', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+              </div>
+
+              {/* Active checkbox */}
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--content-muted)', cursor: 'pointer' }}>
                 <input name="isActive" type="checkbox" checked={positionForm.isActive} onChange={handlePositionFormChange} />
                 Active (visible on careers page)
               </label>
 
-              <div className="admin-form__actions">
-                <button type="submit" className="admin-button admin-button--primary">
+              {/* Buttons */}
+              <div style={{ display: 'flex', gap: '10px', marginTop: '2px' }}>
+                <button type="submit" className="admin-button admin-button--primary" style={{ padding: '8px 18px', fontSize: '0.85rem' }}>
                   {positionForm.id ? 'Update position' : 'Create position'}
                 </button>
                 {positionForm.id && (
-                  <button type="button" className="admin-button admin-button--ghost" onClick={resetPositionForm}>Cancel edit</button>
+                  <button type="button" className="admin-button admin-button--ghost" onClick={resetPositionForm} style={{ padding: '8px 18px', fontSize: '0.85rem' }}>
+                    Cancel edit
+                  </button>
                 )}
               </div>
 

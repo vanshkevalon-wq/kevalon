@@ -1,4 +1,4 @@
-﻿import { useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FaPlug, FaShieldAlt, FaRocket, FaCode, FaServer, FaAws } from "react-icons/fa";
@@ -7,10 +7,10 @@ import {
   SiRedis, SiSwagger, SiPostman, SiDocker,
 } from "react-icons/si";
 
-/* ─── shared token ──────────────────────────────────────── */
+/* --- shared token ---------------------------------------- */
 const DS = { fontSize: "0.9rem", color: "#4a5568", lineHeight: 1.78, marginBottom: "0.75rem" };
 
-/* ─── helpers ───────────────────────────────────────────── */
+/* --- helpers --------------------------------------------- */
 function Pill({ icon, label }) {
   return (
     <div style={{ display: "inline-flex", alignItems: "center", gap: "0.45rem", background: "rgba(97,187,197,0.1)", border: "1px solid rgba(97,187,197,0.28)", borderRadius: 50, padding: "0.28rem 0.88rem" }}>
@@ -51,7 +51,7 @@ function FeatureGrid({ items }) {
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.3rem 1.5rem", marginTop: "0.75rem" }}>
       {items.map((f, i) => (
         <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "0.45rem", padding: "0.25rem 0" }}>
-          <span style={{ color: "#22c55e", flexShrink: 0, marginTop: "0.15rem", fontSize: "0.8rem" }}>✔</span>
+          <span style={{ color: "#22c55e", flexShrink: 0, marginTop: "0.15rem", fontSize: "0.8rem" }}>?</span>
           <span style={{ fontSize: "0.82rem", color: "#374151", lineHeight: 1.55 }}>{f}</span>
         </div>
       ))}
@@ -59,7 +59,7 @@ function FeatureGrid({ items }) {
   );
 }
 
-/* ─── PAGE ──────────────────────────────────────────────── */
+/* --- PAGE ------------------------------------------------ */
 export default function ApiDevelopmentPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -107,10 +107,10 @@ export default function ApiDevelopmentPage() {
         }
       `}</style>
 
-      {/* ══ HERO ══ */}
+      {/* -- HERO -- */}
       <section className="grid-bg" style={{ position: "relative", minHeight: 520, display: "flex", alignItems: "center", background: "#ffffff", overflow: "hidden", paddingTop: "2rem" }}>
 
-        {/* radial glows — unchanged */}
+        {/* radial glows � unchanged */}
         
 
         {/* centered content */}
@@ -147,7 +147,7 @@ export default function ApiDevelopmentPage() {
         </div>
       </section>
 
-      {/* ══ STATS ══ */}
+      {/* -- STATS -- */}
       <section style={{ padding:"2rem 0", background:"#fff" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
           <div className="stats-grid" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem" }}>
@@ -183,7 +183,7 @@ export default function ApiDevelopmentPage() {
         </div>
       </section>
 
-      {/* ══ WHAT WE DO ══ */}
+      {/* -- WHAT WE DO -- */}
       <section className="dot-bg" style={{ padding:"3.5rem 0", background:"#ffffff", position:"relative", overflow:"hidden" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem", position:"relative" }}>
           <div className="intro-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"center" }}>
@@ -274,7 +274,7 @@ export default function ApiDevelopmentPage() {
                     </div>
                     <div>
                       <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#fff" }}>API Gateway</div>
-                      <div style={{ fontSize:"0.64rem", color:"rgba(255,255,255,0.55)" }}>Auth · Rate Limiting</div>
+                      <div style={{ fontSize:"0.64rem", color:"rgba(255,255,255,0.55)" }}>Auth � Rate Limiting</div>
                     </div>
                     <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"rgba(255,255,255,0.65)", fontSize:"0.78rem" }} />
                   </div>
@@ -287,7 +287,7 @@ export default function ApiDevelopmentPage() {
                     </div>
                     <div>
                       <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#0d1f35" }}>Business Logic</div>
-                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>Process · Validate</div>
+                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>Process � Validate</div>
                     </div>
                     <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"#22c55e", fontSize:"0.78rem" }} />
                   </div>
@@ -300,7 +300,7 @@ export default function ApiDevelopmentPage() {
                     </div>
                     <div>
                       <div style={{ fontSize:"0.77rem", fontWeight:700, color:"#0d1f35" }}>Database Layer</div>
-                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>PostgreSQL · MongoDB</div>
+                      <div style={{ fontSize:"0.64rem", color:"#94a3b8" }}>PostgreSQL � MongoDB</div>
                     </div>
                     <i className="bi bi-check-circle-fill" style={{ marginLeft:"auto", color:"#22c55e", fontSize:"0.78rem" }} />
                   </div>
@@ -315,7 +315,7 @@ export default function ApiDevelopmentPage() {
         </div>
       </section>
 
-      {/* ══ API TYPES — MAGAZINE CARDS ══ */}
+      {/* -- API TYPES � MAGAZINE CARDS -- */}
       <section style={{ padding:"2rem 0", background:"#ffffff" }}>
         <div style={{ maxWidth:1380, margin:"0 auto", padding:"0 1.5rem" }}>
 
@@ -326,11 +326,11 @@ export default function ApiDevelopmentPage() {
               Types of APIs We <GradText>Build</GradText>
             </h2>
             <p style={{ color:"#64748b", fontSize:"0.94rem", lineHeight:1.7, maxWidth:500, margin:"0 auto" }}>
-              Robust, scalable API solutions engineered for every use case — fully described and always visible.
+              Robust, scalable API solutions engineered for every use case � fully described and always visible.
             </p>
           </motion.div>
 
-          {/* ── Card 1 : RESTful ── */}
+          {/* -- Card 1 : RESTful -- */}
           <motion.div
             initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
             transition={{ duration:0.5 }} viewport={{ once:true, margin:"-40px" }}
@@ -348,10 +348,10 @@ export default function ApiDevelopmentPage() {
                   <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#2563eb", marginBottom:"0.15rem" }}>REST Architecture</div>
                   <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>RESTful API Development</h3>
                 </div>
-                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#eff6ff", color:"#2563eb", border:"1px solid #bfdbfe", whiteSpace:"nowrap" }}>HTTP · JSON</span>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#eff6ff", color:"#2563eb", border:"1px solid #bfdbfe", whiteSpace:"nowrap" }}>HTTP � JSON</span>
               </div>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
-                We build <strong style={{ color:"#0d1f35" }}>enterprise-grade RESTful APIs</strong> using standardized HTTP protocols — making them highly scalable, reliable and platform-independent across web, mobile, cloud and enterprise systems.
+                We build <strong style={{ color:"#0d1f35" }}>enterprise-grade RESTful APIs</strong> using standardized HTTP protocols � making them highly scalable, reliable and platform-independent across web, mobile, cloud and enterprise systems.
               </p>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0" }}>
                 Designed with focus on <strong style={{ color:"#0d1f35" }}>performance, security, scalability and long-term maintainability</strong> with clean architecture and intuitive endpoints.
@@ -397,7 +397,7 @@ export default function ApiDevelopmentPage() {
             </div>
           </motion.div>
 
-          {/* ── Card 2 : GraphQL ── */}
+          {/* -- Card 2 : GraphQL -- */}
           <motion.div
             initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
             transition={{ duration:0.5, delay:0.08 }} viewport={{ once:true, margin:"-40px" }}
@@ -452,18 +452,18 @@ export default function ApiDevelopmentPage() {
                   <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#7c3aed", marginBottom:"0.15rem" }}>Query Language</div>
                   <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>GraphQL API Development</h3>
                 </div>
-                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#f5f3ff", color:"#7c3aed", border:"1px solid #ddd6fe", whiteSpace:"nowrap" }}>Schema · Types</span>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#f5f3ff", color:"#7c3aed", border:"1px solid #ddd6fe", whiteSpace:"nowrap" }}>Schema � Types</span>
               </div>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
-                We design <strong style={{ color:"#0d1f35" }}>high-performance GraphQL APIs</strong> that provide a modern, flexible data layer — letting clients fetch exactly what they need in one request, eliminating over-fetching entirely.
+                We design <strong style={{ color:"#0d1f35" }}>high-performance GraphQL APIs</strong> that provide a modern, flexible data layer � letting clients fetch exactly what they need in one request, eliminating over-fetching entirely.
               </p>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0" }}>
-                Built for <strong style={{ color:"#0d1f35" }}>scalability, real-time performance and enterprise security</strong> — ideal for complex applications and microservices ecosystems.
+                Built for <strong style={{ color:"#0d1f35" }}>scalability, real-time performance and enterprise security</strong> � ideal for complex applications and microservices ecosystems.
               </p>
             </div>
           </motion.div>
 
-          {/* ── Card 3 : Security ── */}
+          {/* -- Card 3 : Security -- */}
           <motion.div
             initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
             transition={{ duration:0.5, delay:0.16 }} viewport={{ once:true, margin:"-40px" }}
@@ -480,10 +480,10 @@ export default function ApiDevelopmentPage() {
                   <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#dc2626", marginBottom:"0.15rem" }}>Zero-Trust Model</div>
                   <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>API Security & Authentication</h3>
                 </div>
-                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#fef2f2", color:"#dc2626", border:"1px solid #fecaca", whiteSpace:"nowrap" }}>Auth · Encrypt</span>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#fef2f2", color:"#dc2626", border:"1px solid #fecaca", whiteSpace:"nowrap" }}>Auth � Encrypt</span>
               </div>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
-                Security is not an add-on — it is built into the foundation. We implement <strong style={{ color:"#0d1f35" }}>enterprise-grade security architectures</strong> protecting data and integrations from modern cyber threats.
+                Security is not an add-on � it is built into the foundation. We implement <strong style={{ color:"#0d1f35" }}>enterprise-grade security architectures</strong> protecting data and integrations from modern cyber threats.
               </p>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0" }}>
                 Our frameworks ensure <strong style={{ color:"#0d1f35" }}>secure access control, data confidentiality and compliance readiness</strong> across all cloud and enterprise environments.
@@ -529,7 +529,7 @@ export default function ApiDevelopmentPage() {
             </div>
           </motion.div>
 
-          {/* ── Card 4 : Features ── */}
+          {/* -- Card 4 : Features -- */}
           <motion.div
             initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }}
             transition={{ duration:0.5, delay:0.24 }} viewport={{ once:true, margin:"-40px" }}
@@ -584,10 +584,10 @@ export default function ApiDevelopmentPage() {
                   <div style={{ fontSize:"0.64rem", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"#16a34a", marginBottom:"0.15rem" }}>Platform Capabilities</div>
                   <h3 style={{ fontSize:"1.08rem", fontWeight:800, color:"#0d1f35", margin:0 }}>Key Features & Capabilities</h3>
                 </div>
-                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#ffffff", color:"#16a34a", border:"1px solid #bbf7d0", whiteSpace:"nowrap" }}>Scale · Speed</span>
+                <span style={{ marginLeft:"auto", fontSize:"0.65rem", fontWeight:700, padding:"0.2rem 0.65rem", borderRadius:20, background:"#ffffff", color:"#16a34a", border:"1px solid #bbf7d0", whiteSpace:"nowrap" }}>Scale � Speed</span>
               </div>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"0.75rem" }}>
-                Our API solutions are engineered to deliver <strong style={{ color:"#0d1f35" }}>performance, scalability, security and business agility</strong> — empowering organizations to scale operations and integrate platforms effortlessly.
+                Our API solutions are engineered to deliver <strong style={{ color:"#0d1f35" }}>performance, scalability, security and business agility</strong> � empowering organizations to scale operations and integrate platforms effortlessly.
               </p>
               <p style={{ fontSize:"0.86rem", color:"#4a5568", lineHeight:1.75, marginBottom:"1.1rem" }}>
                 From initial design to production deployment, every solution is built for <strong style={{ color:"#0d1f35" }}>long-term maintainability and digital transformation</strong>.
@@ -613,7 +613,7 @@ export default function ApiDevelopmentPage() {
         </div>
       </section>
 
-      {/* ══ PROCESS ══ */}
+      {/* -- PROCESS -- */}
       <section className="grid-bg" style={{ padding:"3.5rem 0", background:"#ffffff", position:"relative", overflow:"hidden" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem", position:"relative" }}>
           <motion.div initial={{ opacity:0, y:18 }} whileInView={{ opacity:1, y:0 }} transition={{ duration:0.5 }} viewport={{ once:true }}
@@ -686,7 +686,7 @@ export default function ApiDevelopmentPage() {
         </div>
       </section>
 
-      {/* ══ SERVICES + TECH ══ */}
+      {/* -- SERVICES + TECH -- */}
       <section style={{ padding:"3.5rem 0", background:"#fff" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
           <div className="bot-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"3.5rem", alignItems:"start" }}>
@@ -841,7 +841,7 @@ export default function ApiDevelopmentPage() {
                   <span style={{ fontSize:"0.8rem", fontWeight:700, color:"#0c4a6e" }}>Fast API Delivery</span>
                 </div>
                 <p style={{ fontSize:"0.76rem", color:"#0369a1", lineHeight:1.6, margin:0 }}>
-                  From discovery to deployment — production-ready APIs within weeks, not months.
+                  From discovery to deployment � production-ready APIs within weeks, not months.
                 </p>
               </div>
             </motion.div>

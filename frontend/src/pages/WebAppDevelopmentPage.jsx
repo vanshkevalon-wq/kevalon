@@ -86,7 +86,7 @@ export default function WebAppDevelopmentPage() {
       </section>
 
       {/* ── STATS ── */}
-      <section style={{ padding:"2rem 0", background:"#fff" }}>
+      <section style={{ padding:"3rem 0", background:"#fff" }}>
         <div style={{ maxWidth:1160, margin:"0 auto", padding:"0 1.5rem" }}>
           <div className="svc-four-col" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem" }}>
             {[

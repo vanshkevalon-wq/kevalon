@@ -68,7 +68,7 @@ export default function Team() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-12 sm:py-16 px-4 sm:px-6 font-['Inter','Nunito_Sans',sans-serif] overflow-hidden"
+      className="relative pt-14 sm:pt-16 pb-14 sm:pb-16 px-4 sm:px-6 font-['Inter','Nunito_Sans',sans-serif] overflow-hidden"
       style={{ background: "linear-gradient(135deg,#f8fbfc 0%,#eef6f8 100%)" }}
     >
       {/* dot-grid bg */}
