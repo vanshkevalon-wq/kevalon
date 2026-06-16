@@ -93,8 +93,8 @@ function MobileCarousel() {
         <button
           onClick={prev}
           aria-label="Previous"
-          className="w-[38px] h-[38px] flex-shrink-0 rounded-full border border-[rgba(97,187,197,0.35)] bg-white flex items-center justify-center text-[15px] text-[#034665] active:scale-90 transition-transform"
-          style={{ boxShadow: '0 3px 14px rgba(3,70,101,0.10)' }}
+          className="w-[38px] h-[38px] flex-shrink-0 border border-[rgba(97,187,197,0.35)] bg-white flex items-center justify-center text-[15px] text-[#034665] active:scale-90 transition-transform"
+          style={{ borderRadius: '50%', boxShadow: '0 3px 14px rgba(3,70,101,0.10)' }}
         >
           <i className="bi bi-chevron-left" />
         </button>
@@ -105,10 +105,10 @@ function MobileCarousel() {
               key={i}
               onClick={() => goTo(i)}
               aria-label={`Go to service ${i + 1}`}
-              className="h-2 rounded-full border-0 p-0 cursor-pointer transition-all duration-300"
+              className="h-2 border-0 p-0 cursor-pointer transition-all duration-300"
               style={i === cur
-                ? { width: 28, background: 'linear-gradient(90deg,#61BBC5,#034665)', boxShadow: '0 2px 10px rgba(97,187,197,0.45)' }
-                : { width: 8,  background: 'rgba(97,187,197,0.3)' }}
+                ? { width: 28, borderRadius: 999, background: 'linear-gradient(90deg,#61BBC5,#034665)', boxShadow: '0 2px 10px rgba(97,187,197,0.45)' }
+                : { width: 8,  borderRadius: '50%', background: 'rgba(97,187,197,0.3)' }}
             />
           ))}
         </div>
@@ -116,8 +116,8 @@ function MobileCarousel() {
         <button
           onClick={next}
           aria-label="Next"
-          className="w-[38px] h-[38px] flex-shrink-0 rounded-full border border-[rgba(97,187,197,0.35)] bg-white flex items-center justify-center text-[15px] text-[#034665] active:scale-90 transition-transform"
-          style={{ boxShadow: '0 3px 14px rgba(3,70,101,0.10)' }}
+          className="w-[38px] h-[38px] flex-shrink-0 border border-[rgba(97,187,197,0.35)] bg-white flex items-center justify-center text-[15px] text-[#034665] active:scale-90 transition-transform"
+          style={{ borderRadius: '50%', boxShadow: '0 3px 14px rgba(3,70,101,0.10)' }}
         >
           <i className="bi bi-chevron-right" />
         </button>

@@ -112,9 +112,9 @@ export default function Testimonials() {
   const slideAnim = animDir==='next' ? 'tmrSlideNext 0.80s cubic-bezier(0.22,1,0.36,1) both' : 'tmrSlidePrev 0.80s cubic-bezier(0.22,1,0.36,1) both';
 
   const NavBtn = ({ onClick, label, children }) => (
-    <button onClick={onClick} aria-label={label} className="flex-shrink-0 w-[50px] h-[50px] rounded-full border border-[rgba(97,187,197,0.28)] bg-white text-[#034665] text-[1rem] flex items-center justify-center cursor-pointer transition-all duration-200 hover:text-white hover:border-transparent hover:scale-[1.08] hover:shadow-[0_10px_28px_rgba(97,187,197,0.35)]" style={{ boxShadow:'0 4px 16px rgba(3,70,101,0.08)' }}
-      onMouseEnter={e=>{e.currentTarget.style.background='linear-gradient(137deg,#61BBC5 0%,#034665 100%)';}}
-      onMouseLeave={e=>{e.currentTarget.style.background='#fff';}}
+    <button onClick={onClick} aria-label={label} className="flex-shrink-0 w-[50px] h-[50px] border border-[rgba(97,187,197,0.28)] bg-white text-[#034665] text-[1rem] flex items-center justify-center cursor-pointer transition-all duration-200 hover:text-white hover:border-transparent hover:scale-[1.08] hover:shadow-[0_10px_28px_rgba(97,187,197,0.35)]" style={{ borderRadius:'50%', boxShadow:'0 4px 16px rgba(3,70,101,0.08)' }}
+      onMouseEnter={e=>{e.currentTarget.style.background='linear-gradient(137deg,#61BBC5 0%,#034665 100%)'; e.currentTarget.style.borderRadius='50%';}}
+      onMouseLeave={e=>{e.currentTarget.style.background='#fff'; e.currentTarget.style.borderRadius='50%';}}
     >
       {children}
     </button>

@@ -284,7 +284,7 @@ export default function CareersPage() {
               <a href="#values"
                 className="inline-flex items-center gap-2.5 rounded-full font-bold no-underline text-[#034665] bg-white transition-all duration-200 hover:-translate-y-0.5 hover:text-[#034665]"
                 style={{ padding:'13px 30px', fontSize:'0.92rem', border:'1.5px solid rgba(97,187,197,0.35)', boxShadow:'0 4px 14px rgba(3,70,101,0.07)' }}>
-                <i className="bi bi-heart-fill" /> Our Culture
+                Our Culture
               </a>
             </div>
           </div>
