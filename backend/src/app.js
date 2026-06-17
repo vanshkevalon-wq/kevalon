@@ -46,6 +46,46 @@ function createApp() {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
+  /* ── Email diagnostics (safe — no real email sent) ── */
+  app.get('/api/email-status', (req, res) => {
+    const user = process.env.SMTP_USER || '';
+    const pass = process.env.SMTP_PASS || '';
+    const configured = !!(user && pass &&
+      user !== 'your_gmail@gmail.com' &&
+      pass !== 'your_app_password_here');
+    res.json({
+      configured,
+      SMTP_HOST: process.env.SMTP_HOST || 'smtp.gmail.com',
+      SMTP_PORT: process.env.SMTP_PORT || '587',
+      SMTP_USER: user ? user.replace(/(.{2}).*(@.*)/, '$1***$2') : 'NOT SET',
+      SMTP_FROM_NAME: process.env.SMTP_FROM_NAME || 'NOT SET',
+    });
+  });
+
+  /* ── Send a real test email (GET for easy browser testing) ── */
+  app.get('/api/email-test', async (req, res) => {
+    const nodemailer = require('nodemailer');
+    const to = req.query.to || process.env.SMTP_USER;
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: Number(process.env.SMTP_PORT || 587),
+        secure: false,
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+      await transporter.verify();
+      const info = await transporter.sendMail({
+        from: `"Kevalon Technology" <${process.env.SMTP_USER}>`,
+        to,
+        subject: 'Kevalon Email Test',
+        html: '<p>Email system is working correctly on this server.</p>',
+      });
+      res.json({ success: true, messageId: info.messageId, to });
+    } catch (err) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
   app.use('/api/auth', authRoutes);
   app.use('/api/applications', applicationRoutes);
   app.use('/api/contact', contactRoutes);
