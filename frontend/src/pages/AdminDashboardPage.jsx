@@ -3378,6 +3378,43 @@ export default function AdminDashboardPage() {
     await loadDashboard();
   };
 
+  /* ── Interview / Notification Modal state ── */
+  const [interviewModal, setInterviewModal] = React.useState(null); // { application }
+  const [interviewForm, setInterviewForm] = React.useState({ date: '', time: '', result: '' });
+  const [interviewStatus, setInterviewStatus] = React.useState({ type: 'idle', message: '' });
+
+  const openInterviewModal = (application) => {
+    setInterviewModal({ application });
+    setInterviewForm({ date: '', time: '', result: '' });
+    setInterviewStatus({ type: 'idle', message: '' });
+  };
+
+  const closeInterviewModal = () => {
+    setInterviewModal(null);
+    setInterviewForm({ date: '', time: '', result: '' });
+    setInterviewStatus({ type: 'idle', message: '' });
+  };
+
+  const submitInterviewAction = async (action, overrideResult) => {
+    if (!interviewModal) return;
+    setInterviewStatus({ type: 'loading', message: 'Processing…' });
+    try {
+      const payload = { action, date: interviewForm.date, time: interviewForm.time };
+      if (overrideResult !== undefined) payload.result = overrideResult;
+      else if (interviewForm.result) payload.result = interviewForm.result;
+      await apiRequest(`/api/applications/admin/${interviewModal.application._id}/interview`, {
+        method: 'POST',
+        headers: authHeaders,
+        body: JSON.stringify(payload),
+      });
+      setInterviewStatus({ type: 'success', message: 'Done! Email notification sent to the applicant.' });
+      await loadDashboard();
+      setTimeout(closeInterviewModal, 1800);
+    } catch (err) {
+      setInterviewStatus({ type: 'error', message: err.message || 'Something went wrong.' });
+    }
+  };
+
   const submitPage = async (event) => {
     event.preventDefault();
     setPageStatus({ type: 'loading', message: pageForm.id ? 'Updating page...' : 'Creating page...' });
@@ -4044,57 +4081,361 @@ export default function AdminDashboardPage() {
                     <th>Role</th>
                     <th>Resume</th>
                     <th>Status</th>
+                    <th>Interview</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredApplications.map((application) => (
-                    <tr key={application._id}>
-                      <td data-label="Applicant">
-                        <strong>{application.firstName} {application.lastName}</strong>
-                        <span>{application.enrollmentNumber || application.uniqueId || 'No ID'}</span>
-                      </td>
-                      <td data-label="Contact">
-                        <strong>{application.email}</strong>
-                        <span>{application.phone}</span>
-                      </td>
-                      <td data-label="Role">
-                        <strong>{application.role}</strong>
-                        {application.positionId?.category && (
-                          <span style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8' }}>
-                            {application.positionId.category}
-                          </span>
-                        )}
-                      </td>
-                      <td data-label="Resume">
-                        {application.resumeFileUrl ? (
-                          <a
-                            className="admin-download-link"
-                            href={`${API_BASE_URL}${application.resumeFileUrl}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Download resume
-                          </a>
-                        ) : (
-                          <span className="admin-empty">No file</span>
-                        )}
-                      </td>
-                      <td data-label="Status">
-                        <select value={application.status || 'submitted'} onChange={(event) => updateApplicationStatus(application._id, event.target.value)}>
-                          <option value="submitted">submitted</option>
-                          <option value="reviewing">reviewing</option>
-                          <option value="shortlisted">shortlisted</option>
-                          <option value="rejected">rejected</option>
-                          <option value="hired">hired</option>
-                        </select>
-                      </td>
-                    </tr>
-                  ))}
+                  {filteredApplications.map((application) => {
+                    const st = application.status || 'submitted';
+                    const r1 = application.round1Status || '';
+                    const r2 = application.round2Status || '';
+
+                    /* derive which interview actions are available */
+                    const canShortlist = st !== 'shortlisted' && st !== 'hired' && st !== 'rejected';
+                    const isShortlisted = st === 'shortlisted';
+                    const r1Scheduled = r1 === 'scheduled';
+                    const r1Selected  = r1 === 'selected';
+                    const r1Done      = r1 === 'selected' || r1 === 'rejected';
+                    const r2Scheduled = r2 === 'scheduled';
+                    const r2Done      = r2 === 'selected' || r2 === 'rejected' || application.finalStatus;
+
+                    return (
+                      <tr key={application._id}>
+                        <td data-label="Applicant">
+                          <strong>{application.firstName} {application.lastName}</strong>
+                          <span>{application.enrollmentNumber || application.uniqueId || 'No ID'}</span>
+                        </td>
+                        <td data-label="Contact">
+                          <strong>{application.email}</strong>
+                          <span>{application.phone}</span>
+                        </td>
+                        <td data-label="Role">
+                          <strong>{application.role}</strong>
+                          {application.positionId?.category && (
+                            <span style={{ display: 'block', fontSize: '0.75rem', color: '#94a3b8' }}>
+                              {application.positionId.category}
+                            </span>
+                          )}
+                        </td>
+                        <td data-label="Resume">
+                          {application.resumeFileUrl ? (
+                            <a
+                              className="admin-download-link"
+                              href={`${API_BASE_URL}${application.resumeFileUrl}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              Download resume
+                            </a>
+                          ) : (
+                            <span className="admin-empty">No file</span>
+                          )}
+                        </td>
+                        <td data-label="Status">
+                          <select value={st} onChange={(event) => updateApplicationStatus(application._id, event.target.value)}>
+                            <option value="submitted">submitted</option>
+                            <option value="reviewing">reviewing</option>
+                            <option value="shortlisted">shortlisted</option>
+                            <option value="rejected">rejected</option>
+                            <option value="hired">hired</option>
+                          </select>
+                        </td>
+                        <td data-label="Interview">
+                          {/* ── Interview pipeline display ── */}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 160 }}>
+
+                            {/* Round 1 badge */}
+                            {r1 && (
+                              <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 4,
+                                fontSize: '0.72rem', fontWeight: 700, padding: '3px 9px',
+                                borderRadius: 999, border: '1px solid',
+                                background: r1 === 'selected' ? 'rgba(22,163,74,0.08)' : r1 === 'rejected' ? 'rgba(239,68,68,0.08)' : 'rgba(99,102,241,0.08)',
+                                borderColor: r1 === 'selected' ? 'rgba(22,163,74,0.25)' : r1 === 'rejected' ? 'rgba(239,68,68,0.25)' : 'rgba(99,102,241,0.25)',
+                                color: r1 === 'selected' ? '#16a34a' : r1 === 'rejected' ? '#dc2626' : '#6366f1',
+                              }}>
+                                <i className={`bi ${r1 === 'selected' ? 'bi-check-circle-fill' : r1 === 'rejected' ? 'bi-x-circle-fill' : 'bi-calendar-check'}`} />
+                                R1: {r1 === 'scheduled' ? `${application.round1Date} ${application.round1Time}` : r1}
+                              </span>
+                            )}
+
+                            {/* Round 2 badge */}
+                            {r2 && (
+                              <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 4,
+                                fontSize: '0.72rem', fontWeight: 700, padding: '3px 9px',
+                                borderRadius: 999, border: '1px solid',
+                                background: r2 === 'selected' ? 'rgba(22,163,74,0.08)' : r2 === 'rejected' ? 'rgba(239,68,68,0.08)' : 'rgba(249,115,22,0.08)',
+                                borderColor: r2 === 'selected' ? 'rgba(22,163,74,0.25)' : r2 === 'rejected' ? 'rgba(239,68,68,0.25)' : 'rgba(249,115,22,0.25)',
+                                color: r2 === 'selected' ? '#16a34a' : r2 === 'rejected' ? '#dc2626' : '#ea580c',
+                              }}>
+                                <i className={`bi ${r2 === 'selected' ? 'bi-check-circle-fill' : r2 === 'rejected' ? 'bi-x-circle-fill' : 'bi-calendar-check'}`} />
+                                R2: {r2 === 'scheduled' ? `${application.round2Date} ${application.round2Time}` : r2}
+                              </span>
+                            )}
+
+                            {/* Action button */}
+                            {st !== 'hired' && st !== 'rejected' && (
+                              <button
+                                type="button"
+                                onClick={() => openInterviewModal(application)}
+                                style={{
+                                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                                  fontSize: '0.75rem', fontWeight: 700, padding: '5px 12px',
+                                  borderRadius: 8, border: '1.5px solid rgba(124,92,252,0.3)',
+                                  background: 'rgba(124,92,252,0.06)', color: '#7c5cfc',
+                                  cursor: 'pointer', transition: 'all 0.15s',
+                                }}
+                              >
+                                <i className="bi bi-calendar2-plus" />
+                                Manage Interview
+                              </button>
+                            )}
+
+                            {st === 'hired' && (
+                              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#16a34a' }}>
+                                <i className="bi bi-trophy-fill" /> Hired
+                              </span>
+                            )}
+                            {st === 'rejected' && !r1 && (
+                              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#dc2626' }}>
+                                <i className="bi bi-x-circle-fill" /> Rejected
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
           </section>
         ) : null}
+
+        {/* ── Interview Management Modal ── */}
+        {interviewModal && (() => {
+          const app = interviewModal.application;
+          const st  = app.status || 'submitted';
+          const r1  = app.round1Status || '';
+          const r2  = app.round2Status || '';
+
+          const inp = {
+            width: '100%', border: '1.5px solid rgba(0,0,0,0.1)', borderRadius: 10,
+            padding: '10px 14px', background: '#f5f6fa', color: '#1a1f36',
+            outline: 'none', fontSize: '0.88rem', boxSizing: 'border-box', fontFamily: 'inherit',
+          };
+
+          /* determine which step we're on */
+          const step =
+            st === 'hired' || st === 'rejected' ? 'done' :
+            r1 === 'selected' && !r2 ? 'schedule_r2_or_r2_result' :   // r1 passed, choose next
+            r1 === 'scheduled' ? 'r1_result' :                          // r1 scheduled, awaiting result
+            r2 === 'scheduled' ? 'r2_result' :                          // r2 scheduled, awaiting result
+            'shortlist';                                                 // not yet shortlisted
+
+          return (
+            <div
+              style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+              onClick={e => e.target === e.currentTarget && closeInterviewModal()}
+            >
+              <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 540, boxShadow: '0 32px 80px rgba(0,0,0,0.25)', overflow: 'hidden' }}>
+                {/* header */}
+                <div style={{ background: 'linear-gradient(135deg,#7c5cfc,#5a3fd4)', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div>
+                    <p style={{ margin: 0, fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.7)' }}>Interview Management</p>
+                    <h3 style={{ margin: '4px 0 0', fontSize: '1.1rem', color: '#fff', fontWeight: 700 }}>{app.firstName} {app.lastName}</h3>
+                    <p style={{ margin: '2px 0 0', fontSize: '0.8rem', color: 'rgba(255,255,255,0.75)' }}>{app.role} · {app.email}</p>
+                  </div>
+                  <button onClick={closeInterviewModal} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', borderRadius: 9, width: 34, height: 34, cursor: 'pointer', color: '#fff', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <i className="bi bi-x-lg" />
+                  </button>
+                </div>
+
+                {/* pipeline progress */}
+                <div style={{ padding: '16px 24px 0', display: 'flex', gap: 8, alignItems: 'center' }}>
+                  {[
+                    { label: 'Shortlist', done: ['shortlisted','reviewing'].includes(st) || r1 !== '' },
+                    { label: 'R1 Technical', done: r1 === 'selected' || r1 === 'rejected' },
+                    { label: 'R2 Practical', done: r2 === 'selected' || r2 === 'rejected' },
+                    { label: 'Final', done: st === 'hired' || st === 'rejected' },
+                  ].map((s, i, arr) => (
+                    <React.Fragment key={s.label}>
+                      <div style={{ textAlign: 'center', flex: 1 }}>
+                        <div style={{ width: 28, height: 28, borderRadius: '50%', background: s.done ? '#7c5cfc' : '#e2e8f0', color: s.done ? '#fff' : '#94a3b8', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 4px', fontSize: '0.75rem', fontWeight: 800 }}>
+                          {s.done ? <i className="bi bi-check-lg" /> : i + 1}
+                        </div>
+                        <p style={{ margin: 0, fontSize: '0.66rem', fontWeight: 700, color: s.done ? '#7c5cfc' : '#94a3b8', whiteSpace: 'nowrap' }}>{s.label}</p>
+                      </div>
+                      {i < arr.length - 1 && <div style={{ flex: 0, width: 24, height: 2, background: s.done ? '#7c5cfc' : '#e2e8f0', borderRadius: 2, flexShrink: 0 }} />}
+                    </React.Fragment>
+                  ))}
+                </div>
+
+                <div style={{ padding: '20px 24px 24px' }}>
+
+                  {/* STEP: shortlist + schedule R1 */}
+                  {step === 'shortlist' && (
+                    <div style={{ display: 'grid', gap: 14 }}>
+                      <p style={{ margin: 0, fontSize: '0.88rem', color: '#334155', lineHeight: 1.6 }}>
+                        Shortlist this applicant and schedule <strong>Round 1 – Technical Interview</strong>.
+                        An email will be sent automatically to <strong>{app.email}</strong>.
+                      </p>
+                      <label style={{ display: 'grid', gap: 5, fontSize: '0.82rem', fontWeight: 700, color: '#64748b' }}>
+                        Interview Date *
+                        <input type="date" style={inp} value={interviewForm.date} onChange={e => setInterviewForm(p => ({ ...p, date: e.target.value }))} />
+                      </label>
+                      <label style={{ display: 'grid', gap: 5, fontSize: '0.82rem', fontWeight: 700, color: '#64748b' }}>
+                        Interview Time *
+                        <input type="time" style={inp} value={interviewForm.time} onChange={e => setInterviewForm(p => ({ ...p, time: e.target.value }))} />
+                      </label>
+                      {interviewStatus.message && (
+                        <p style={{ margin: 0, fontSize: '0.82rem', color: interviewStatus.type === 'success' ? '#16a34a' : interviewStatus.type === 'error' ? '#dc2626' : '#7c5cfc', padding: '8px 12px', borderRadius: 8, background: interviewStatus.type === 'success' ? 'rgba(22,163,74,0.08)' : interviewStatus.type === 'error' ? 'rgba(239,68,68,0.08)' : 'rgba(124,92,252,0.08)' }}>
+                          {interviewStatus.message}
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        disabled={interviewStatus.type === 'loading'}
+                        onClick={() => submitInterviewAction('shortlist')}
+                        style={{ background: 'linear-gradient(135deg,#7c5cfc,#5a3fd4)', color: '#fff', border: 'none', borderRadius: 10, padding: '11px 20px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, opacity: interviewStatus.type === 'loading' ? 0.7 : 1 }}
+                      >
+                        <i className="bi bi-send-fill" />
+                        {interviewStatus.type === 'loading' ? 'Sending…' : 'Shortlist & Send R1 Invite'}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* STEP: R1 scheduled — set result */}
+                  {step === 'r1_result' && (
+                    <div style={{ display: 'grid', gap: 14 }}>
+                      <div style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 10, padding: '12px 16px' }}>
+                        <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 700, color: '#6366f1' }}>
+                          <i className="bi bi-calendar-check" /> Round 1 scheduled: {app.round1Date} at {app.round1Time}
+                        </p>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '0.88rem', color: '#334155', lineHeight: 1.6 }}>
+                        Round 1 – Technical Interview result. An email will be sent automatically.
+                      </p>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                        <button
+                          type="button"
+                          disabled={interviewStatus.type === 'loading'}
+                          onClick={() => submitInterviewAction('round1_result', 'selected')}
+                          style={{ background: 'rgba(22,163,74,0.08)', color: '#16a34a', border: '1.5px solid rgba(22,163,74,0.25)', borderRadius: 10, padding: '11px 14px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <i className="bi bi-check-circle-fill" /> Selected for R2
+                        </button>
+                        <button
+                          type="button"
+                          disabled={interviewStatus.type === 'loading'}
+                          onClick={() => submitInterviewAction('round1_result', 'rejected')}
+                          style={{ background: 'rgba(239,68,68,0.08)', color: '#dc2626', border: '1.5px solid rgba(239,68,68,0.25)', borderRadius: 10, padding: '11px 14px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <i className="bi bi-x-circle-fill" /> Not Selected
+                        </button>
+                      </div>
+                      {interviewStatus.message && (
+                        <p style={{ margin: 0, fontSize: '0.82rem', color: interviewStatus.type === 'success' ? '#16a34a' : interviewStatus.type === 'error' ? '#dc2626' : '#7c5cfc', padding: '8px 12px', borderRadius: 8, background: interviewStatus.type === 'success' ? 'rgba(22,163,74,0.08)' : 'rgba(239,68,68,0.08)' }}>
+                          {interviewStatus.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* STEP: R1 passed — schedule R2 OR enter R2 result (if already scheduled) */}
+                  {step === 'schedule_r2_or_r2_result' && (
+                    <div style={{ display: 'grid', gap: 14 }}>
+                      <div style={{ background: 'rgba(22,163,74,0.06)', border: '1px solid rgba(22,163,74,0.2)', borderRadius: 10, padding: '12px 16px' }}>
+                        <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 700, color: '#16a34a' }}>
+                          <i className="bi bi-check-circle-fill" /> Round 1 passed! Ready for Round 2 – Practical.
+                        </p>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '0.88rem', color: '#334155', lineHeight: 1.6 }}>
+                        Schedule <strong>Round 2 – Practical Interview</strong> and notify the applicant.
+                      </p>
+                      <label style={{ display: 'grid', gap: 5, fontSize: '0.82rem', fontWeight: 700, color: '#64748b' }}>
+                        Interview Date *
+                        <input type="date" style={inp} value={interviewForm.date} onChange={e => setInterviewForm(p => ({ ...p, date: e.target.value }))} />
+                      </label>
+                      <label style={{ display: 'grid', gap: 5, fontSize: '0.82rem', fontWeight: 700, color: '#64748b' }}>
+                        Interview Time *
+                        <input type="time" style={inp} value={interviewForm.time} onChange={e => setInterviewForm(p => ({ ...p, time: e.target.value }))} />
+                      </label>
+                      {interviewStatus.message && (
+                        <p style={{ margin: 0, fontSize: '0.82rem', color: interviewStatus.type === 'success' ? '#16a34a' : interviewStatus.type === 'error' ? '#dc2626' : '#7c5cfc', padding: '8px 12px', borderRadius: 8, background: interviewStatus.type === 'success' ? 'rgba(22,163,74,0.08)' : interviewStatus.type === 'error' ? 'rgba(239,68,68,0.08)' : 'rgba(124,92,252,0.08)' }}>
+                          {interviewStatus.message}
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        disabled={interviewStatus.type === 'loading'}
+                        onClick={() => submitInterviewAction('schedule_round2')}
+                        style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)', color: '#fff', border: 'none', borderRadius: 10, padding: '11px 20px', fontWeight: 700, fontSize: '0.88rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 7, opacity: interviewStatus.type === 'loading' ? 0.7 : 1 }}
+                      >
+                        <i className="bi bi-send-fill" />
+                        {interviewStatus.type === 'loading' ? 'Sending…' : 'Schedule R2 & Send Invite'}
+                      </button>
+                    </div>
+                  )}
+
+                  {/* STEP: R2 scheduled — set final result */}
+                  {step === 'r2_result' && (
+                    <div style={{ display: 'grid', gap: 14 }}>
+                      <div style={{ background: 'rgba(249,115,22,0.06)', border: '1px solid rgba(249,115,22,0.2)', borderRadius: 10, padding: '12px 16px' }}>
+                        <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 700, color: '#ea580c' }}>
+                          <i className="bi bi-calendar-check" /> Round 2 scheduled: {app.round2Date} at {app.round2Time}
+                        </p>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '0.88rem', color: '#334155', lineHeight: 1.6 }}>
+                        Round 2 – Practical Interview final result. An email will be sent automatically.
+                      </p>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                        <button
+                          type="button"
+                          disabled={interviewStatus.type === 'loading'}
+                          onClick={() => submitInterviewAction('round2_result', 'hired')}
+                          style={{ background: 'rgba(22,163,74,0.08)', color: '#16a34a', border: '1.5px solid rgba(22,163,74,0.25)', borderRadius: 10, padding: '11px 14px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <i className="bi bi-trophy-fill" /> Hired!
+                        </button>
+                        <button
+                          type="button"
+                          disabled={interviewStatus.type === 'loading'}
+                          onClick={() => submitInterviewAction('round2_result', 'not_selected')}
+                          style={{ background: 'rgba(239,68,68,0.08)', color: '#dc2626', border: '1.5px solid rgba(239,68,68,0.25)', borderRadius: 10, padding: '11px 14px', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+                        >
+                          <i className="bi bi-x-circle-fill" /> Not Selected
+                        </button>
+                      </div>
+                      {interviewStatus.message && (
+                        <p style={{ margin: 0, fontSize: '0.82rem', color: interviewStatus.type === 'success' ? '#16a34a' : interviewStatus.type === 'error' ? '#dc2626' : '#7c5cfc', padding: '8px 12px', borderRadius: 8, background: interviewStatus.type === 'success' ? 'rgba(22,163,74,0.08)' : 'rgba(239,68,68,0.08)' }}>
+                          {interviewStatus.message}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* STEP: done */}
+                  {step === 'done' && (
+                    <div style={{ textAlign: 'center', padding: '12px 0' }}>
+                      <div style={{ fontSize: '2rem', marginBottom: 10 }}>
+                        {st === 'hired' ? '🎉' : '📋'}
+                      </div>
+                      <p style={{ margin: 0, fontWeight: 700, fontSize: '1rem', color: st === 'hired' ? '#16a34a' : '#dc2626' }}>
+                        {st === 'hired' ? 'Applicant Hired!' : 'Application Closed'}
+                      </p>
+                      <p style={{ margin: '8px 0 0', fontSize: '0.82rem', color: '#64748b' }}>
+                        Final status: <strong>{app.finalStatus || st}</strong>
+                      </p>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {activeTab === 'contacts' ? (
           <section className="admin-panel">
